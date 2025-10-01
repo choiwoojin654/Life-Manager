@@ -9,88 +9,44 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
-        /* --- 기본 및 라이트 모드 변수 --- */
         :root {
-            --phone-bg: #eef2f7;
-            --text-main: #1a202c;
-            --text-light: #718096;
+            --phone-bg: #eef2f7; --text-main: #1a202c; --text-light: #718096;
             --neo-outset-shadow: 7px 7px 14px #cbcfd4, -7px -7px 14px #ffffff;
             --neo-inset-shadow: inset 5px 5px 10px #cbcfd4, inset -5px -5px 10px #ffffff;
         }
-
-        /* --- 다크 모드 변수 --- */
         .dark {
-            --phone-bg: #2d3748; /* 테두리(1a202c)보다 살짝 밝은 색 */
-            --text-main: #e2e8f0;
-            --text-light: #a0aec0;
+            --phone-bg: #2d3748; --text-main: #e2e8f0; --text-light: #a0aec0;
             --neo-outset-shadow: 7px 7px 14px #141821, -7px -7px 14px #46566d;
             --neo-inset-shadow: inset 5px 5px 10px #141821, inset -5px -5px 10px #46566d;
         }
-
         body { font-family: 'Noto Sans KR', sans-serif; background-color: #e2e8f0; }
         .phone { width: 375px; height: 812px; background-color: var(--phone-bg); border-radius: 40px; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2); border: 12px solid #1a202c; position: relative; overflow: hidden; display: flex; flex-direction: column; transition: background-color 0.3s ease; }
         .notch { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 210px; height: 30px; background: #1a202c; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px; z-index: 10; }
-        .screen { flex-grow: 1; padding-top: 40px; display: flex; flex-direction: column; background-color: var(--phone-bg); transition: background-color 0.3s ease; }
-        .content { flex-grow: 1; padding: 0 24px; overflow-y: auto; }
+        .screen { flex-grow: 1; padding-top: 40px; display: flex; flex-direction: column; background-color: var(--phone-bg); transition: background-color 0.3s ease; overflow: hidden; }
+        .content { flex-grow: 1; padding: 0 24px; overflow-y: auto; cursor: grab; user-select: none; }
+        .content:active { cursor: grabbing; }
         .content::-webkit-scrollbar { display: none; }
         .primary-bg { background: linear-gradient(145deg, #315e92, #2a507a); }
-        .primary-text { color: #2c5282; }
-        .text-main { color: var(--text-main); }
-        .text-light { color: var(--text-light); }
-        
-        /* 점수별 색상 */
+        .primary-text { color: #2c5282; } .dark .primary-text { color: #63b3ed; }
+        .text-main { color: var(--text-main); } .text-light { color: var(--text-light); }
         .score-red-text { color: #c53030; } .score-yellow-text { color: #b7791f; } .score-orange-text { color: #c05621; } .score-green-text { color: #2f855a; } .score-blue-text { color: #2b6cb0; }
-
-        /* 입체 효과(네오모피즘) 스타일 */
         .neo-outset { background: var(--phone-bg); border-radius: 1.5rem; box-shadow: var(--neo-outset-shadow); transition: all 0.3s ease; }
         .neo-inset { background: var(--phone-bg); border-radius: 0.75rem; box-shadow: var(--neo-inset-shadow); transition: all 0.3s ease; }
         .neo-button { background: var(--phone-bg); border-radius: 50%; box-shadow: var(--neo-outset-shadow); transition: all 0.2s ease-in-out; }
         .neo-button:active { box-shadow: var(--neo-inset-shadow); }
         .bottom-nav { background: var(--phone-bg); box-shadow: 0 -5px 15px rgba(0,0,0,0.05); transition: all 0.3s ease; }
-
-        /* 스코어 원 애니메이션 */
         @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-        @keyframes pulse-blue {
-            0%, 100% { box-shadow: var(--neo-outset-shadow), 0 0 20px 5px rgba(49, 130, 206, 0.4); }
-            50% { box-shadow: var(--neo-outset-shadow), 0 0 35px 15px rgba(49, 130, 206, 0.6); }
-        }
-
+        @keyframes pulse-blue { 0%, 100% { box-shadow: var(--neo-outset-shadow), 0 0 20px 5px rgba(49, 130, 206, 0.4); } 50% { box-shadow: var(--neo-outset-shadow), 0 0 35px 15px rgba(49, 130, 206, 0.6); } }
         .outer-score-circle { width: 240px; height: 240px; border-radius: 50%; position: relative; display: flex; justify-content: center; align-items: center; overflow: hidden; box-shadow: var(--neo-outset-shadow); transition: all 0.3s ease; }
         .outer-score-circle::before { content: ''; position: absolute; width: 100%; height: 100%; animation: spin 4s linear infinite; }
         .inner-score-circle { width: calc(100% - 20px); height: calc(100% - 20px); background-color: var(--phone-bg); border-radius: 50%; position: relative; z-index: 1; box-shadow: var(--neo-inset-shadow); transition: all 0.3s ease; }
-        
-        .score-red::before { background: conic-gradient(from 0deg, #e53e3e, #f56565 50%, #e53e3e 100%); }
-        .score-yellow::before { background: conic-gradient(from 0deg, #d69e2e, #f6e05e 50%, #d69e2e 100%); }
-        .score-orange::before { background: conic-gradient(from 0deg, #dd6b20, #f6ad55 50%, #dd6b20 100%); }
-        .score-green::before { background: conic-gradient(from 0deg, #38a169, #68d391 50%, #38a169 100%); }
-        .score-blue::before { background: conic-gradient(from 0deg, #3182ce, #63b3ed 50%, #3182ce 100%); }
-        .score-blue { animation: pulse-blue 2s infinite; }
-
-        /* 커스텀 체크박스 스타일 */
-        .custom-checkbox input { display: none; }
-        .custom-checkbox span { width: 24px; height: 24px; display: inline-block; border-radius: 8px; transition: all 0.2s; }
-        .custom-checkbox input:not(:checked) + span { box-shadow: var(--neo-outset-shadow); }
-        .custom-checkbox input:checked + span { box-shadow: var(--neo-inset-shadow); background-color: #d1d9e6; }
-        .dark .custom-checkbox input:checked + span { background-color: #4a5568; }
-        .custom-checkbox input:checked ~ p { text-decoration: line-through; color: #a0aec0; }
-
-        /* 캘린더 스타일 */
-        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; }
-        .calendar-grid > div { text-align: center; padding: 8px 0; font-weight: 500; }
-        
-        /* 다크모드 토글 스위치 */
-        .theme-switch { width: 60px; height: 32px; background-color: #cbd5e0; border-radius: 16px; padding: 4px; cursor: pointer; }
-        .dark .theme-switch { background-color: #4a5568; }
-        .theme-switch-handle { width: 24px; height: 24px; background-color: white; border-radius: 50%; box-shadow: 0 2px 4px rgba(0,0,0,0.2); transition: transform 0.3s ease; }
-        .dark .theme-switch-handle { transform: translateX(28px); }
-        
-        /* 구독 추가 모달 */
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); display: none; justify-content: center; align-items: center; z-index: 1000; }
-        .modal-overlay.active { display: flex; }
-        .modal-content { background-color: var(--phone-bg); padding: 2rem; border-radius: 1.5rem; box-shadow: 0 10px 30px rgba(0,0,0,0.2); width: 90%; max-width: 320px; position: relative; }
-        .modal-content h2 { color: var(--text-main); }
-        .close-button { position: absolute; top: 1rem; right: 1.5rem; font-size: 1.5rem; font-weight: bold; color: var(--text-light); background: none; border: none; cursor: pointer; }
-
+        .score-red::before { background: conic-gradient(from 0deg, #e53e3e, #f56565 50%, #e53e3e 100%); } .score-yellow::before { background: conic-gradient(from 0deg, #d69e2e, #f6e05e 50%, #d69e2e 100%); } .score-orange::before { background: conic-gradient(from 0deg, #dd6b20, #f6ad55 50%, #dd6b20 100%); } .score-green::before { background: conic-gradient(from 0deg, #38a169, #68d391 50%, #38a169 100%); } .score-blue::before { background: conic-gradient(from 0deg, #3182ce, #63b3ed 50%, #3182ce 100%); } .score-blue { animation: pulse-blue 2s infinite; }
+        .custom-checkbox input { display: none; } .custom-checkbox span { width: 24px; height: 24px; display: inline-block; border-radius: 8px; transition: all 0.2s; } .custom-checkbox input:not(:checked) + span { box-shadow: var(--neo-outset-shadow); } .custom-checkbox input:checked + span { box-shadow: var(--neo-inset-shadow); background-color: #d1d9e6; } .dark .custom-checkbox input:checked + span { background-color: #4a5568; } .custom-checkbox input:checked ~ p { text-decoration: line-through; color: #a0aec0; }
+        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; } .calendar-grid > div { text-align: center; padding: 8px 0; font-weight: 500; } .calendar-date { position: relative; padding: 8px 0 !important; cursor: pointer; border-radius: 50%; } .calendar-date.today { background-color: #2c5282; color: white; } .event-dot { width: 6px; height: 6px; background-color: #dd6b20; border-radius: 50%; position: absolute; bottom: 4px; left: 50%; transform: translateX(-50%); }
+        .theme-switch { width: 60px; height: 32px; background-color: #cbd5e0; border-radius: 16px; padding: 4px; cursor: pointer; } .dark .theme-switch { background-color: #4a5568; } .theme-switch-handle { width: 24px; height: 24px; background-color: white; border-radius: 50%; box-shadow: 0 2px 4px rgba(0,0,0,0.2); transition: transform 0.3s ease; } .dark .theme-switch-handle { transform: translateX(28px); }
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); display: none; justify-content: center; align-items: center; z-index: 1000; } .modal-overlay.active { display: flex; } .modal-content { background-color: var(--phone-bg); padding: 2rem; border-radius: 1.5rem; box-shadow: 0 10px 30px rgba(0,0,0,0.2); width: 90%; max-width: 320px; position: relative; } .modal-content h2 { color: var(--text-main); } .close-button { position: absolute; top: 1rem; right: 1.5rem; font-size: 1.5rem; font-weight: bold; color: var(--text-light); background: none; border: none; cursor: pointer; }
+        .category-update { background-color: #4A90E2; } .category-notice { background-color: #50E3C2; } .category-event { background-color: #F5A623; }
+        .context-menu { position: absolute; display: none; z-index: 100; width: 150px; padding: 0.5rem; } .context-menu button { width: 100%; padding: 0.75rem 1rem; text-align: left; background: none; border: none; color: var(--text-main); font-weight: 500; } .context-menu button:hover { background-color: rgba(0,0,0,0.05); } .dark .context-menu button:hover { background-color: rgba(255,255,255,0.05); }
     </style>
 </head>
 <body class="p-8 lg:p-12 flex flex-wrap justify-center items-start gap-12">
@@ -125,26 +81,7 @@
     <div class="flex flex-col items-center gap-4">
         <h2 class="text-xl font-bold text-slate-700">가. 로그인</h2>
         <div class="phone">
-            <div class="notch"></div>
-            <div class="screen">
-                <div class="content flex flex-col justify-center items-center p-8">
-                    <div class="w-full text-center">
-                        <div class="w-20 h-20 primary-bg rounded-2xl mx-auto flex items-center justify-center mb-12 shadow-lg">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-                        </div>
-                        <h1 class="text-3xl font-bold text-main mb-8">로그인</h1>
-                        <div class="w-full text-left mb-4">
-                            <label class="font-bold text-main">이메일</label>
-                            <input type="email" class="w-full mt-2 p-4 rounded-lg focus:outline-none neo-inset border-none text-main" placeholder="email@example.com">
-                        </div>
-                        <div class="w-full text-left mb-8">
-                            <label class="font-bold text-main">비밀번호</label>
-                            <input type="password" class="w-full mt-2 p-4 rounded-lg focus:outline-none neo-inset border-none text-main" placeholder="••••••••">
-                        </div>
-                        <button class="w-full primary-bg text-white font-bold py-4 rounded-lg text-lg shadow-md active:scale-95 transition">로그인</button>
-                    </div>
-                </div>
-            </div>
+            <div class="notch"></div><div class="screen"><div class="content flex flex-col justify-center items-center p-8"><div class="w-full text-center"><div class="w-20 h-20 primary-bg rounded-2xl mx-auto flex items-center justify-center mb-12 shadow-lg"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg></div><h1 class="text-3xl font-bold text-main mb-8">로그인</h1><div class="w-full text-left mb-4"><label class="font-bold text-main">이메일</label><input type="email" class="w-full mt-2 p-4 rounded-lg focus:outline-none neo-inset border-none text-main" placeholder="email@example.com"></div><div class="w-full text-left mb-8"><label class="font-bold text-main">비밀번호</label><input type="password" class="w-full mt-2 p-4 rounded-lg focus:outline-none neo-inset border-none text-main" placeholder="••••••••"></div><button class="w-full primary-bg text-white font-bold py-4 rounded-lg text-lg shadow-md active:scale-95 transition">로그인</button></div></div></div>
         </div>
     </div>
 
@@ -152,35 +89,7 @@
     <div class="flex flex-col items-center gap-4">
         <h2 class="text-xl font-bold text-slate-700">나. 메인 대시보드</h2>
         <div class="phone" data-nav="home">
-            <div class="notch"></div>
-            <div class="screen">
-                <div class="content pt-8">
-                    <div class="flex justify-between items-center mb-6">
-                        <h1 class="text-2xl font-bold text-main">사용자님,<br>좋은 하루예요! 👋</h1>
-                        <div class="w-12 h-12 rounded-full flex items-center justify-center neo-button">
-                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
-                        </div>
-                    </div>
-                    <div class="p-6 rounded-3xl mb-6 neo-outset">
-                        <p class="text-light font-bold">이번 달 예상 구독료</p>
-                        <p id="total-monthly-fee" class="text-3xl font-bold text-main mt-1">₩0</p>
-                    </div>
-                    <h2 class="text-lg font-bold text-main mb-4 mt-8">오늘 할 일</h2>
-                    <div class="p-4 rounded-2xl neo-outset space-y-4">
-                        <label class="flex items-center gap-4 custom-checkbox">
-                            <input type="checkbox" checked>
-                            <span class="flex-shrink-0"></span>
-                            <p class="font-medium text-main">아침 스트레칭</p>
-                        </label>
-                        <label class="flex items-center gap-4 custom-checkbox">
-                            <input type="checkbox">
-                            <span class="flex-shrink-0"></span>
-                            <p class="font-medium text-main">팀 프로젝트 회의</p>
-                        </label>
-                    </div>
-                </div>
-                <div class="bottom-nav-container"></div>
-            </div>
+            <div class="notch"></div><div class="screen"><div class="content pt-8"><div class="flex justify-between items-center mb-6"><h1 class="text-2xl font-bold text-main">사용자님,<br>좋은 하루예요! 👋</h1><div class="w-12 h-12 rounded-full flex items-center justify-center neo-button"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg></div></div><div class="p-6 rounded-3xl mb-6 neo-outset"><p class="text-light font-bold">이번 달 예상 구독료</p><p id="total-monthly-fee" class="text-3xl font-bold text-main mt-1">₩0</p></div><h2 class="text-lg font-bold text-main mb-4 mt-8">오늘 할 일</h2><div id="dashboard-todo-list" class="p-4 rounded-2xl neo-outset space-y-4"></div></div><div class="bottom-nav-container"></div></div>
         </div>
     </div>
     
@@ -188,141 +97,31 @@
     <div class="flex flex-col items-center gap-4">
         <h2 class="text-xl font-bold text-slate-700">다. 구독 관리</h2>
         <div class="phone" data-nav="home">
-             <div class="notch"></div>
-            <div class="screen">
-                 <div class="content pt-8">
-                    <h1 class="text-2xl font-bold text-main mb-6">나의 구독 목록</h1>
-                    <div id="main-sub-list" class="space-y-4">
-                        <!-- 구독 목록이 여기에 동적으로 추가됩니다 -->
-                    </div>
-                </div>
-                <div class="absolute bottom-24 right-6">
-                    <button class="add-sub-button w-16 h-16 primary-bg rounded-full text-white shadow-lg flex items-center justify-center active:scale-95 transition">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                    </button>
-                </div>
-                <div class="bottom-nav-container"></div>
-            </div>
+            <div class="notch"></div><div class="screen"><div class="content pt-8"><h1 class="text-2xl font-bold text-main mb-6">나의 구독 목록</h1><div id="main-sub-list" class="space-y-4"></div></div><div class="absolute bottom-24 right-6"><button class="add-sub-button w-16 h-16 primary-bg rounded-full text-white shadow-lg flex items-center justify-center active:scale-95 transition"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg></button></div><div class="bottom-nav-container"></div></div>
+        </div>
+    </div>
+    
+    <!-- 4. 스코어 화면 -->
+    <div class="flex flex-col items-center gap-4">
+        <h2 class="text-xl font-bold text-slate-700">라. 스코어</h2>
+        <div class="phone" data-nav="score">
+            <div class="notch"></div><div class="screen"><div class="content pt-8 flex flex-col items-center justify-center text-center"><h1 class="text-2xl font-bold text-main mb-10">나의 Life Score</h1><div id="score-circle" class="outer-score-circle"><div class="inner-score-circle flex flex-col items-center justify-center"><p class="text-lg text-light">Life Score</p><p id="score-display" class="text-6xl font-bold">82<span class="text-3xl">점</span></p></div></div><p id="score-message" class="text-lg text-main font-bold mt-12"></p></div><div class="bottom-nav-container"></div></div>
+        </div>
+    </div>
+    
+    <!-- 5. 캘린더 화면 -->
+    <div class="flex flex-col items-center gap-4">
+        <h2 class="text-xl font-bold text-slate-700">마. 캘린더</h2>
+        <div class="phone" data-nav="calendar">
+            <div class="notch"></div><div class="screen"><div class="content pt-8"><div class="flex justify-between items-center mb-6"><h1 class="text-2xl font-bold text-main">2025년 10월</h1><div class="flex gap-4"><button class="neo-button w-10 h-10 flex justify-center items-center">&lt;</button><button class="neo-button w-10 h-10 flex justify-center items-center">&gt;</button></div></div><div class="p-4 neo-outset rounded-2xl"><div class="calendar-grid text-light mb-2"><div>일</div><div>월</div><div>화</div><div>수</div><div>목</div><div>금</div><div>토</div></div><div id="calendar-dates" class="calendar-grid text-main"></div></div><h2 class="text-lg font-bold text-main mb-3 mt-8">오늘의 일정</h2><div id="event-list" class="space-y-4"></div></div><div class="absolute bottom-24 right-6"><button id="add-event-button" class="w-16 h-16 primary-bg rounded-full text-white shadow-lg flex items-center justify-center active:scale-95 transition"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg></button></div><div class="bottom-nav-container"></div></div>
         </div>
     </div>
 
-    <!-- 4. 커뮤니티 화면 -->
+    <!-- 6. 커뮤니티 화면 -->
     <div class="flex flex-col items-center gap-4">
-        <h2 class="text-xl font-bold text-slate-700">라. 커뮤니티</h2>
-        <div class="phone">
-            <div class="notch"></div>
-            <div class="screen">
-                 <div class="content pt-8">
-                    <h1 class="text-2xl font-bold text-main mb-6">새로운 소식</h1>
-                     <div class="space-y-4">
-                        <div class="p-4 rounded-2xl neo-outset">
-                            <span class="inline-block py-1 px-3 text-xs font-bold rounded-full text-white primary-bg shadow-sm">업데이트</span>
-                            <h3 class="font-bold text-main mt-2">v1.1.0 업데이트 및 신규 기능 안내</h3>
-                            <p class="text-sm text-light mt-1">2025년 9월 24일</p>
-                        </div>
-                        <div class="p-4 rounded-2xl neo-outset">
-                            <span class="inline-block py-1 px-3 text-xs font-bold rounded-full text-white" style="background-color: #50E3C2;">공지</span>
-                            <h3 class="font-bold text-main mt-2">Life Manager 정식 출시 안내</h3>
-                            <p class="text-sm text-light mt-1">2025년 9월 20일</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="w-full h-24 bottom-nav flex justify-around items-center pt-2">
-                    <div class="flex flex-col items-center gap-1 text-light">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-                        <p class="text-xs font-bold">홈</p>
-                    </div>
-                     <div class="flex flex-col items-center gap-1 text-light">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
-                        <p class="text-xs font-bold">스코어</p>
-                    </div>
-                    <div class="flex flex-col items-center gap-1 text-light">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-                        <p class="text-xs font-bold">캘린더</p>
-                    </div>
-                    <div class="flex flex-col items-center gap-1 primary-text">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
-                        <p class="text-xs font-bold">커뮤니티</p>
-                    </div>
-                    <div class="flex flex-col items-center gap-1 text-light">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
-                        <p class="text-xs font-bold">설정</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <!-- 5. 스코어 화면 -->
-    <div class="flex flex-col items-center gap-4">
-        <h2 class="text-xl font-bold text-slate-700">마. 스코어</h2>
-        <div class="phone" data-nav="score">
-            <div class="notch"></div>
-            <div class="screen">
-                <div class="content pt-8 flex flex-col items-center justify-center text-center">
-                    <h1 class="text-2xl font-bold text-main mb-10">나의 Life Score</h1>
-                    <div id="score-circle" class="outer-score-circle">
-                        <div class="inner-score-circle flex flex-col items-center justify-center">
-                            <p class="text-lg text-light">Life Score</p>
-                            <p id="score-display" class="text-6xl font-bold">82<span class="text-3xl">점</span></p>
-                        </div>
-                    </div>
-                    <p id="score-message" class="text-lg text-main font-bold mt-12"></p>
-                </div>
-                <div class="bottom-nav-container"></div>
-            </div>
-        </div>
-    </div>
-    
-    <!-- 6. 캘린더 화면 -->
-    <div class="flex flex-col items-center gap-4">
-        <h2 class="text-xl font-bold text-slate-700">바. 캘린더</h2>
-        <div class="phone" data-nav="calendar">
-            <div class="notch"></div>
-            <div class="screen">
-                <div class="content pt-8">
-                    <div class="flex justify-between items-center mb-6">
-                        <h1 class="text-2xl font-bold text-main">2025년 10월</h1>
-                        <div class="flex gap-4">
-                            <button class="neo-button w-10 h-10 flex justify-center items-center">&lt;</button>
-                            <button class="neo-button w-10 h-10 flex justify-center items-center">&gt;</button>
-                        </div>
-                    </div>
-                    <div class="p-4 neo-outset rounded-2xl">
-                        <div class="calendar-grid text-light mb-2">
-                            <div>일</div><div>월</div><div>화</div><div>수</div><div>목</div><div>금</div><div>토</div>
-                        </div>
-                        <div class="calendar-grid text-main">
-                            <div class="text-slate-400">28</div><div class="text-slate-400">29</div><div class="text-slate-400">30</div>
-                            <div>1</div><div>2</div><div>3</div><div>4</div>
-                            <div>5</div><div>6</div><div>7</div><div>8</div>
-                            <div>9</div><div>10</div><div>11</div><div>12</div>
-                            <div>13</div><div class="today">14</div><div>15</div>
-                            <div>16</div><div>17</div><div>18</div><div>19</div>
-                            <div>20</div><div>21</div><div>22</div><div>23</div>
-                            <div>24</div><div>25</div><div>26</div><div>27</div>
-                            <div>28</div><div>29</div><div>30</div><div>31</div>
-                        </div>
-                    </div>
-                     <h2 class="text-lg font-bold text-main mb-3 mt-8">10월 14일 화요일</h2>
-                     <div class="p-4 rounded-2xl neo-outset flex items-center justify-between">
-                         <div class="flex items-center gap-4">
-                            <div class="w-2 h-10 bg-orange-500 rounded-full"></div>
-                            <div>
-                                <p class="font-bold text-main">팀 프로젝트 마감</p>
-                                <p class="text-sm text-light">오후 2:00</p>
-                            </div>
-                        </div>
-                        <button class="text-red-500 font-bold text-2xl">&times;</button>
-                     </div>
-                </div>
-                <div class="absolute bottom-24 right-6">
-                    <button class="w-16 h-16 primary-bg rounded-full text-white shadow-lg flex items-center justify-center active:scale-95 transition">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                    </button>
-                </div>
-                <div class="bottom-nav-container"></div>
-            </div>
+        <h2 class="text-xl font-bold text-slate-700">바. 커뮤니티</h2>
+        <div class="phone" data-nav="community">
+            <div class="notch"></div><div class="screen"><div class="content pt-8"><h1 class="text-2xl font-bold text-main mb-6">새로운 소식</h1><div id="community-post-list" class="space-y-4"></div></div><div class="absolute bottom-24 right-6"><button id="add-post-button" class="w-16 h-16 primary-bg rounded-full text-white shadow-lg flex items-center justify-center active:scale-95 transition"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg></button></div><div class="bottom-nav-container"></div></div>
         </div>
     </div>
 
@@ -330,66 +129,21 @@
     <div class="flex flex-col items-center gap-4">
         <h2 class="text-xl font-bold text-slate-700">사. 제어 목록</h2>
         <div class="phone" id="settings-phone" data-nav="settings">
-            <div class="notch"></div>
-            <div class="screen">
-                <div class="content pt-8 pb-8">
-                    <h1 class="text-2xl font-bold text-main mb-8">제어 목록</h1>
-                    
-                    <div class="p-6 rounded-3xl neo-outset w-full mb-6">
-                        <div class="flex justify-between items-center">
-                            <label class="font-bold text-main">다크 모드</label>
-                            <div class="theme-switch" id="theme-toggle">
-                                <div class="theme-switch-handle"></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="p-6 rounded-3xl neo-outset w-full mb-6">
-                        <label for="score-input-settings" class="font-bold text-main">오늘의 Life Score 입력</label>
-                        <input type="number" id="score-input-settings" min="0" max="100" class="w-full mt-4 p-4 text-2xl font-bold text-center rounded-lg focus:outline-none neo-inset border-none text-main" value="82">
-                         <button class="w-full primary-bg text-white font-bold py-4 rounded-lg text-lg shadow-md active:scale-95 transition mt-6">저장하기</button>
-                    </div>
-
-                    <div class="p-6 rounded-3xl neo-outset w-full mb-6">
-                        <h3 class="font-bold text-main mb-4">구독 관리</h3>
-                        <div id="settings-sub-list" class="space-y-3">
-                            <!-- 구독 목록 -->
-                        </div>
-                        <button class="add-sub-button w-full border-2 border-dashed border-slate-400 text-slate-500 font-bold py-3 rounded-lg mt-4">+ 구독 추가</button>
-                    </div>
-                    
-                    <div class="p-6 rounded-3xl neo-outset w-full mb-6">
-                        <h3 class="font-bold text-main mb-4">커뮤니티 글 관리</h3>
-                        <div class="space-y-3">
-                            <div class="flex justify-between items-center text-main"><p>v1.1.0 업데이트 안내</p><button class="text-red-500 font-bold text-2xl">&times;</button></div>
-                        </div>
-                        <button class="w-full border-2 border-dashed border-slate-400 text-slate-500 font-bold py-3 rounded-lg mt-4">+ 새 글 작성</button>
-                    </div>
-                </div>
-                <div class="bottom-nav-container"></div>
-            </div>
+            <div class="notch"></div><div class="screen"><div class="content pt-8 pb-8"><h1 class="text-2xl font-bold text-main mb-8">제어 목록</h1><div class="p-6 rounded-3xl neo-outset w-full mb-6"><div class="flex justify-between items-center"><label class="font-bold text-main">다크 모드</label><div class="theme-switch" id="theme-toggle"><div class="theme-switch-handle"></div></div></div></div><div class="p-6 rounded-3xl neo-outset w-full mb-6"><label for="score-input-settings" class="font-bold text-main">오늘의 Life Score 입력</label><input type="number" id="score-input-settings" min="0" max="100" class="w-full mt-4 p-4 text-2xl font-bold text-center rounded-lg focus:outline-none neo-inset border-none text-main" value="82"><button class="w-full primary-bg text-white font-bold py-4 rounded-lg text-lg shadow-md active:scale-95 transition mt-6">저장하기</button></div><div class="p-6 rounded-3xl neo-outset w-full mb-6"><h3 class="font-bold text-main mb-4">구독 관리</h3><div id="settings-sub-list" class="space-y-3"></div><button class="add-sub-button w-full border-2 border-dashed border-slate-400 text-slate-500 font-bold py-3 rounded-lg mt-4">+ 구독 추가</button></div><div class="p-6 rounded-3xl neo-outset w-full mb-6"><h3 class="font-bold text-main mb-4">커뮤니티 글 관리</h3><div id="settings-post-list" class="space-y-3"></div><button class="add-post-button w-full border-2 border-dashed border-slate-400 text-slate-500 font-bold py-3 rounded-lg mt-4">+ 새 글 작성</button></div></div><div class="bottom-nav-container"></div></div>
         </div>
     </div>
     
-    <!-- 구독 추가 모달 -->
-    <div id="sub-modal" class="modal-overlay">
-        <div class="modal-content">
-            <button id="close-sub-modal" class="close-button">&times;</button>
-            <h2 class="text-xl font-bold text-main mb-6">새 구독 추가</h2>
-            <form id="sub-form" class="space-y-4">
-                <input type="text" id="sub-name" class="w-full p-4 rounded-lg focus:outline-none neo-inset border-none text-main" placeholder="서비스 이름" required>
-                <input type="number" id="sub-fee" class="w-full p-4 rounded-lg focus:outline-none neo-inset border-none text-main" placeholder="월 납부액" required>
-                <button type="submit" class="w-full primary-bg text-white font-bold py-4 rounded-lg text-lg shadow-md active:scale-95 transition">추가하기</button>
-            </form>
-        </div>
-    </div>
+    <!-- 모달들 -->
+    <div id="sub-modal" class="modal-overlay"><div class="modal-content"><button id="close-sub-modal" class="close-button">&times;</button><h2 class="text-xl font-bold text-main mb-6">새 구독 추가</h2><form id="sub-form" class="space-y-4"><input type="text" id="sub-name" class="w-full p-4 rounded-lg focus:outline-none neo-inset border-none text-main" placeholder="서비스 이름" required><input type="number" id="sub-fee" class="w-full p-4 rounded-lg focus:outline-none neo-inset border-none text-main" placeholder="월 납부액" required><button type="submit" class="w-full primary-bg text-white font-bold py-4 rounded-lg text-lg shadow-md active:scale-95 transition">추가하기</button></form></div></div>
+    <div id="event-modal" class="modal-overlay"><div class="modal-content"><button id="close-event-modal" class="close-button">&times;</button><h2 class="text-xl font-bold text-main mb-6">새 일정 추가</h2><form id="event-form" class="space-y-4"><input type="text" id="event-title" class="w-full p-4 rounded-lg focus:outline-none neo-inset border-none text-main" placeholder="일정 제목" required><input type="time" id="event-time" class="w-full p-4 rounded-lg focus:outline-none neo-inset border-none text-main" required><button type="submit" class="w-full primary-bg text-white font-bold py-4 rounded-lg text-lg shadow-md active:scale-95 transition">추가하기</button></form></div></div>
+    <div id="post-modal" class="modal-overlay"><div class="modal-content"><button id="close-post-modal" class="close-button">&times;</button><h2 class="text-xl font-bold text-main mb-6">새 글 작성</h2><form id="post-form" class="space-y-4"><input type="text" id="post-title" class="w-full p-4 rounded-lg focus:outline-none neo-inset border-none text-main" placeholder="글 제목" required><textarea id="post-content" rows="4" class="w-full p-4 rounded-lg focus:outline-none neo-inset border-none text-main" placeholder="내용을 입력하세요..."></textarea><select id="post-category" class="w-full p-4 rounded-lg focus:outline-none neo-inset border-none text-main"><option value="update">UPDATE</option><option value="notice">NOTICE</option><option value="event">EVENT</option></select><button type="submit" class="w-full primary-bg text-white font-bold py-4 rounded-lg text-lg shadow-md active:scale-95 transition mt-4">등록하기</button></form></div></div>
     
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            let subscriptions = [
-                { id: 1, name: 'Netflix', fee: 17000 },
-                { id: 2, name: 'Youtube Premium', fee: 14900 }
-            ];
+            let subscriptions = [ { id: 1, name: 'Netflix', fee: 17000 } ];
+            let posts = [ { id: 1, category: 'update', title: 'v1.1.0 업데이트', content: '다크 모드가 추가되었습니다.' } ];
+            let events = [ { id: 1, date: 14, title: '팀 프로젝트 마감', time: '14:00' } ];
+            let currentScore = 82;
 
             const scoreInput = document.getElementById('score-input-settings');
             const scoreCircle = document.getElementById('score-circle');
@@ -402,7 +156,20 @@
             const subModal = document.getElementById('sub-modal');
             const closeSubModal = document.getElementById('close-sub-modal');
             const subForm = document.getElementById('sub-form');
-
+            const settingsPostList = document.getElementById('settings-post-list');
+            const communityPostList = document.getElementById('community-post-list');
+            const addPostButtons = document.querySelectorAll('.add-post-button');
+            const postModal = document.getElementById('post-modal');
+            const closePostModal = document.getElementById('close-post-modal');
+            const postForm = document.getElementById('post-form');
+            const calendarDates = document.getElementById('calendar-dates');
+            const eventList = document.getElementById('event-list');
+            const dashboardTodoList = document.getElementById('dashboard-todo-list');
+            const addEventButton = document.getElementById('add-event-button');
+            const eventModal = document.getElementById('event-modal');
+            const closeEventModal = document.getElementById('close-event-modal');
+            const eventForm = document.getElementById('event-form');
+            
             function updateScoreUI(score) {
                 if (!scoreCircle || !scoreDisplay || !scoreMessage) return;
                 score = parseInt(score, 10); if (isNaN(score)) score = 0; if (score > 100) score = 100; if (score < 0) score = 0;
@@ -420,93 +187,125 @@
             }
 
             function renderAllSubscriptionLists() {
-                let totalFee = 0;
+                let totalFee = subscriptions.reduce((sum, sub) => sum + sub.fee, 0);
+                if (totalMonthlyFee) {
+                    let oldTotal = parseInt(totalMonthlyFee.dataset.total || '0', 10);
+                    if (totalFee !== oldTotal) {
+                        animateValue(totalMonthlyFee, oldTotal, totalFee, 500);
+                        totalMonthlyFee.dataset.total = totalFee;
+                    }
+                }
                 if (settingsSubList) {
                     settingsSubList.innerHTML = '';
                     subscriptions.forEach(sub => {
                         const item = document.createElement('div');
                         item.className = 'flex justify-between items-center text-main';
-                        item.innerHTML = `<p>${sub.name} - ₩${sub.fee.toLocaleString()}</p><button data-id="${sub.id}" class="delete-sub-btn text-red-500 font-bold text-2xl">&times;</button>`;
+                        item.innerHTML = `<p>${sub.name}</p><button data-id="${sub.id}" class="delete-sub-btn text-red-500 font-bold text-2xl">&times;</button>`;
                         settingsSubList.appendChild(item);
                     });
                 }
                 if (mainSubList) {
                     mainSubList.innerHTML = '';
                     subscriptions.forEach(sub => {
-                        totalFee += sub.fee;
                         const item = document.createElement('div');
                         item.className = 'p-4 rounded-2xl flex items-center justify-between neo-outset';
                         item.innerHTML = `<div class="flex items-center gap-4"><div class="w-12 h-12 bg-gray-500 rounded-lg flex items-center justify-center text-white font-bold text-xl shadow-inner">${sub.name.charAt(0)}</div><div><p class="font-bold text-main">${sub.name}</p></div></div><p class="text-lg font-bold text-main">₩${sub.fee.toLocaleString()}</p>`;
                         mainSubList.appendChild(item);
                     });
                 }
-                if (totalMonthlyFee) {
-                    totalMonthlyFee.textContent = `₩${totalFee.toLocaleString()}`;
-                }
             }
             
-            function deleteSubscription(id) {
-                subscriptions = subscriptions.filter(s => s.id !== id);
-                renderAllSubscriptionLists();
-            }
-
-            if (scoreInput) {
-                scoreInput.addEventListener('input', (e) => updateScoreUI(e.target.value));
-                updateScoreUI(scoreInput.value);
-            }
-            
-            addSubButtons.forEach(btn => btn.addEventListener('click', () => subModal.classList.add('active')));
-            if (closeSubModal) closeSubModal.addEventListener('click', () => subModal.classList.remove('active'));
-            if (subModal) subModal.addEventListener('click', (e) => { if (e.target === subModal) subModal.classList.remove('active'); });
-
-            if (subForm) {
-                subForm.addEventListener('submit', (e) => {
-                    e.preventDefault();
-                    const name = document.getElementById('sub-name').value;
-                    const fee = parseInt(document.getElementById('sub-fee').value, 10);
-                    if (name && fee) {
-                        subscriptions.push({ id: Date.now(), name, fee });
-                        renderAllSubscriptionLists();
-                        subForm.reset();
-                        subModal.classList.remove('active');
-                    }
+            function renderCommunityPosts() {
+                const categoryMap = { update: 'UPDATE', notice: 'NOTICE', event: 'EVENT' };
+                [communityPostList, settingsPostList].forEach(list => {
+                    if(!list) return;
+                    list.innerHTML = '';
+                    posts.forEach(post => {
+                        const item = document.createElement('div');
+                        if (list.id === 'settings-post-list') {
+                            item.className = 'flex justify-between items-center text-main';
+                            item.innerHTML = `<p>${post.title}</p><button data-id="${post.id}" class="delete-post-btn text-red-500 font-bold text-2xl">&times;</button>`;
+                        } else {
+                            item.className = 'p-4 rounded-2xl neo-outset';
+                            item.innerHTML = `<span class="inline-block py-1 px-3 text-xs font-bold rounded-full text-white category-${post.category} shadow-sm">${categoryMap[post.category]}</span><h3 class="font-bold text-main mt-2">${post.title}</h3><p class="text-sm text-light mt-1">${post.content}</p>`;
+                        }
+                        list.appendChild(item);
+                    });
                 });
+            }
+
+            function renderCalendar() {
+                if(!calendarDates || !eventList || !dashboardTodoList) return;
+                calendarDates.innerHTML = '';
+                for(let i=0; i<3; i++) calendarDates.innerHTML += `<div></div>`;
+                for(let i=1; i<=31; i++) {
+                    const hasEvent = events.some(e => e.date === i);
+                    calendarDates.innerHTML += `<div class="calendar-date ${i === 14 ? 'today' : ''}">${i}${hasEvent ? '<div class="event-dot"></div>': ''}</div>`;
+                }
+                
+                const todayEvents = events.filter(e => e.date === 14);
+                eventList.innerHTML = '';
+                dashboardTodoList.innerHTML = '';
+
+                todayEvents.forEach(ev => {
+                    const eventItem = document.createElement('div');
+                    eventItem.className = 'p-4 rounded-2xl neo-outset flex items-center justify-between';
+                    eventItem.innerHTML = `<div class="flex items-center gap-4"><div class="w-2 h-10 bg-orange-500 rounded-full"></div><div><p class="font-bold text-main">${ev.title}</p><p class="text-sm text-light">${ev.time}</p></div></div><button data-id="${ev.id}" class="delete-event-btn text-red-500 font-bold text-2xl">&times;</button>`;
+                    eventList.appendChild(eventItem);
+
+                    const todoItem = document.createElement('label');
+                    todoItem.className = 'flex items-center gap-4 custom-checkbox';
+                    todoItem.innerHTML = `<input type="checkbox"><span class="flex-shrink-0"></span><p class="font-medium text-main">${ev.title}</p>`;
+                    dashboardTodoList.appendChild(todoItem);
+                });
+            }
+            
+            function animateValue(obj, start, end, duration) {
+                let startTimestamp = null;
+                const step = (timestamp) => {
+                    if (!startTimestamp) startTimestamp = timestamp;
+                    const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                    obj.textContent = `₩${Math.floor(progress * (end - start) + start).toLocaleString()}`;
+                    if (progress < 1) window.requestAnimationFrame(step);
+                };
+                window.requestAnimationFrame(step);
             }
             
             document.body.addEventListener('click', (e) => {
-                if (e.target && e.target.classList.contains('delete-sub-btn')) {
-                    const idToDelete = parseInt(e.target.dataset.id, 10);
-                    if (confirm('이 구독을 삭제하시겠습니까?')) {
-                       deleteSubscription(idToDelete);
-                    }
-                }
+                if (e.target?.classList.contains('delete-sub-btn')) { if (confirm('이 구독을 삭제하시겠습니까?')) { subscriptions = subscriptions.filter(s => s.id !== parseInt(e.target.dataset.id, 10)); renderAllSubscriptionLists(); } }
+                if (e.target?.classList.contains('delete-post-btn')) { if (confirm('이 게시글을 삭제하시겠습니까?')) { posts = posts.filter(p => p.id !== parseInt(e.target.dataset.id, 10)); renderCommunityPosts(); } }
+                if (e.target?.classList.contains('delete-event-btn')) { if (confirm('이 일정을 삭제하시겠습니까?')) { events = events.filter(ev => ev.id !== parseInt(e.target.dataset.id, 10)); renderCalendar(); } }
             });
+
+            if (scoreInput) { scoreInput.addEventListener('input', (e) => { e.target.value = Math.max(0, Math.min(100, parseInt(e.target.value) || 0)); updateScoreUI(e.target.value); }); }
+            addSubButtons.forEach(btn => btn.addEventListener('click', () => subModal.classList.add('active')));
+            addPostButtons.forEach(btn => btn.addEventListener('click', () => postModal.classList.add('active')));
+            if(addEventButton) addEventButton.addEventListener('click', () => eventModal.classList.add('active'));
+            [closeSubModal, closePostModal, closeEventModal].forEach(btn => { if(btn) btn.addEventListener('click', () => btn.closest('.modal-overlay').classList.remove('active')); });
+            [subModal, postModal, eventModal].forEach(modal => { if(modal) modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('active'); }); });
+
+            if (subForm) { subForm.addEventListener('submit', (e) => { e.preventDefault(); const name = document.getElementById('sub-name').value; const fee = parseInt(document.getElementById('sub-fee').value, 10); if (name && fee) { subscriptions.push({ id: Date.now(), name, fee }); renderAllSubscriptionLists(); subForm.reset(); subModal.classList.remove('active'); } }); }
+            if (postForm) { postForm.addEventListener('submit', (e) => { e.preventDefault(); const title = document.getElementById('post-title').value; const content = document.getElementById('post-content').value; const category = document.getElementById('post-category').value; if (title) { posts.unshift({ id: Date.now(), title, content, category }); renderCommunityPosts(); postForm.reset(); postModal.classList.remove('active'); } }); }
+            if (eventForm) { eventForm.addEventListener('submit', (e) => { e.preventDefault(); const title = document.getElementById('event-title').value; const time = document.getElementById('event-time').value; if (title && time) { events.push({ id: Date.now(), date: 14, title, time }); renderCalendar(); eventForm.reset(); eventModal.classList.remove('active'); } }); }
             
             const bottomNavTemplate = document.getElementById('bottom-nav-template');
-            if(bottomNavTemplate) {
-                document.querySelectorAll('.phone').forEach(phone => {
-                    const navContainer = phone.querySelector('.bottom-nav-container');
-                    if (navContainer) {
-                        navContainer.innerHTML = bottomNavTemplate.innerHTML;
-                        const activeNav = phone.dataset.nav;
-                        if (activeNav) {
-                            const targetItem = navContainer.querySelector(`.nav-item[data-target="${activeNav}"]`);
-                            if(targetItem) {
-                                targetItem.classList.remove('text-light');
-                                targetItem.classList.add('primary-text');
-                            }
-                        }
-                    }
-                });
-            }
+            if(bottomNavTemplate) { document.querySelectorAll('.phone').forEach(phone => { const navContainer = phone.querySelector('.bottom-nav-container'); if (navContainer) { navContainer.innerHTML = bottomNavTemplate.innerHTML; const activeNav = phone.dataset.nav; if (activeNav) { const targetItem = navContainer.querySelector(`.nav-item[data-target="${activeNav}"]`); if(targetItem) { targetItem.classList.remove('text-light'); targetItem.classList.add('primary-text'); } } } }); }
 
             const themeToggle = document.getElementById('theme-toggle');
-            if (themeToggle) {
-                themeToggle.addEventListener('click', () => {
-                    document.querySelectorAll('.phone').forEach(p => p.classList.toggle('dark'));
-                });
-            }
+            if (themeToggle) { themeToggle.addEventListener('click', () => { document.querySelectorAll('.phone').forEach(p => p.classList.toggle('dark')); }); }
+            
+            updateScoreUI(currentScore);
             renderAllSubscriptionLists();
+            renderCommunityPosts();
+            renderCalendar();
+
+            document.querySelectorAll('.content').forEach(slider => {
+                let isDown = false; let startY; let scrollTop;
+                slider.addEventListener('mousedown', (e) => { isDown = true; startY = e.pageY - slider.offsetTop; scrollTop = slider.scrollTop; });
+                slider.addEventListener('mouseleave', () => { isDown = false; });
+                slider.addEventListener('mouseup', () => { isDown = false; });
+                slider.addEventListener('mousemove', (e) => { if(!isDown) return; e.preventDefault(); const y = e.pageY - slider.offsetTop; const walk = (y - startY) * 2; slider.scrollTop = scrollTop - walk; });
+            });
         });
     </script>
 </body>
