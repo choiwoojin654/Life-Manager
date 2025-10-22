@@ -6,7 +6,7 @@
     <title>MOA - All-in-One App</title>
     <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
     <style>
-        /* --- CSS 변수 정의 --- */
+        /* --- CSS 변수 정의 (라이트 모드 기본) --- */
         :root {
             --primary-color: #007AFF;
             --primary-color-light: #EBF5FF;
@@ -19,11 +19,45 @@
             --green-color: #34C759;
             --red-color: #FF3B30;
             --orange-color: #FF9500;
+            --body-bg-color: #E5E5EA; /* 바깥 배경색 추가 */
+            --modal-bg-color: #FFFFFF; /* 모달 배경색 추가 */
+            --input-bg-color: #FFFFFF; /* 입력 필드 배경색 추가 */
+            --filter-btn-bg: #EEE; /* 필터 버튼 배경 */
+            --filter-btn-active-bg: var(--primary-color); /* 활성 필터 버튼 배경 */
+            --filter-btn-text: var(--text-secondary); /* 필터 버튼 텍스트 */
+            --filter-btn-active-text: #FFFFFF; /* 활성 필터 버튼 텍스트 */
+            --detail-item-bg: var(--background-color); /* 상세 정보 배경 */
+            --nav-bg-color: rgba(255, 255, 255, 0.75); /* 네비게이션 배경 */
+            --sidebar-bg-color: #FFFFFF; /* 사이드바 배경 */
+            --login-bg-color: var(--widget-background); /* 로그인 배경 */
+            --readonly-textarea-bg: #f9f9f9; /* 읽기 전용 텍스트 영역 배경 */
         }
+
+        /* --- 다크 모드 변수 정의 --- */
+        body.dark-mode {
+            --background-color: #1C1C1E; /* 어두운 화면 배경 */
+            --widget-background: #2C2C2E; /* 어두운 위젯 배경 */
+            --text-primary: #FFFFFF; /* 밝은 기본 텍스트 */
+            --text-secondary: #8D8D93; /* 약간 밝은 보조 텍스트 */
+            --border-color: #3A3A3C; /* 어두운 경계선 */
+            --shadow: 0 10px 25px rgba(0, 0, 0, 0.2); /* 약간 진한 그림자 */
+            --modal-bg-color: #2C2C2E; /* 모달 배경 어둡게 */
+            --input-bg-color: #3A3A3C; /* 입력 필드 배경 어둡게 */
+            --filter-btn-bg: #3A3A3C; /* 필터 버튼 배경 */
+            --filter-btn-active-bg: var(--primary-color);
+            --filter-btn-text: #EBEBF5; /* 필터 버튼 텍스트 */
+            --filter-btn-active-text: #FFFFFF;
+            --detail-item-bg: #3A3A3C; /* 상세 정보 배경 */
+            --nav-bg-color: rgba(44, 44, 46, 0.75); /* 네비게이션 배경 */
+            --sidebar-bg-color: #2C2C2E; /* 사이드바 배경 */
+            --login-bg-color: #1C1C1E; /* 로그인 배경 */
+            --readonly-textarea-bg: #1C1C1E;
+        }
+
 
         /* --- 기본 및 프레임 스타일 --- */
         body {
-            background-color: #E5E5EA;
+            background-color: var(--body-bg-color); /* 변수 사용 */
             font-family: "Pretendard", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
             display: flex;
             justify-content: center;
@@ -33,12 +67,13 @@
             color: var(--text-primary);
             gap: 40px;
             flex-wrap: wrap;
+            transition: background-color 0.3s ease; /* 테마 전환 애니메이션 */
         }
 
         .mobile-frame {
             width: 375px;
             height: 812px;
-            background-color: #1c1c1e;
+            background-color: #1c1c1e; /* 프레임 색상은 고정 */
             border-radius: 40px;
             padding: 18px;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
@@ -47,7 +82,7 @@
         }
 
         .screen {
-            background-color: var(--background-color);
+            background-color: var(--background-color); /* 변수 사용 */
             height: 100%;
             width: 100%;
             border-radius: 22px;
@@ -55,6 +90,7 @@
             position: relative;
             display: flex;
             flex-direction: column;
+            transition: background-color 0.3s ease; /* 테마 전환 애니메이션 */
         }
 
         .app-content {
@@ -73,18 +109,17 @@
             stroke-linecap: round;
             stroke-linejoin: round;
             transition: all 0.2s ease-in-out;
-            flex-shrink: 0; /* 아이콘 크기 고정 */
+            flex-shrink: 0;
         }
-        
+
         .icon-svg.icon-sm {
             width: 20px;
             height: 20px;
         }
-        .icon-svg.icon-xs { /* 더 작은 아이콘 (리스트용) */
+        .icon-svg.icon-xs {
              width: 18px;
              height: 18px;
         }
-
 
         /* --- 페이지 기본 스타일 --- */
         .page {
@@ -97,7 +132,7 @@
             height: 100%;
             top: 0;
             overflow-y: auto;
-            padding-bottom: 90px; /* 하단 네비게이션 공간 확보 */
+            padding-bottom: 90px;
         }
 
         .page.active {
@@ -117,20 +152,22 @@
             display: flex;
             align-items: center;
             gap: 12px;
+            color: var(--text-primary); /* 변수 사용 */
         }
 
         /* --- 하단 네비게이션 --- */
         .bottom-nav {
             display: flex;
             justify-content: space-around;
-            border-top: 1px solid var(--border-color);
+            border-top: 1px solid var(--border-color); /* 변수 사용 */
             padding: 10px 0 15px;
-            background-color: rgba(255, 255, 255, 0.75);
+            background-color: var(--nav-bg-color); /* 변수 사용 */
             backdrop-filter: blur(15px);
             position: absolute;
             bottom: 0;
             width: 100%;
             z-index: 10;
+            transition: background-color 0.3s ease, border-color 0.3s ease; /* 테마 전환 애니메이션 */
         }
 
         .nav-button {
@@ -138,20 +175,20 @@
             border: none;
             font-size: 10px;
             font-weight: 500;
-            color: var(--text-secondary);
+            color: var(--text-secondary); /* 변수 사용 */
             cursor: pointer;
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 4px;
             transition: color 0.2s ease;
-            flex: 1; /* 버튼들이 공간 균등하게 차지 */
+            flex: 1;
         }
-        
+
         .nav-button.active {
             color: var(--primary-color);
         }
-        
+
         .nav-button.active .icon-svg {
             stroke-width: 2;
             transform: scale(1.1);
@@ -159,12 +196,12 @@
 
         /* --- 공용 컴포넌트 --- */
         .widget {
-            background-color: var(--widget-background);
+            background-color: var(--widget-background); /* 변수 사용 */
             border-radius: 20px;
             padding: 20px;
             margin-bottom: 20px;
-            box-shadow: var(--shadow);
-            transition: transform 0.2s ease;
+            box-shadow: var(--shadow); /* 변수 사용 */
+            transition: transform 0.2s ease, background-color 0.3s ease, box-shadow 0.3s ease; /* 테마 전환 애니메이션 */
         }
         .widget:active {
             transform: scale(0.98);
@@ -177,18 +214,23 @@
             display: flex;
             align-items: center;
             gap: 10px;
+            color: var(--text-primary); /* 변수 사용 */
         }
 
         .list-item {
             display: flex;
             align-items: center;
             padding: 14px 0;
-            border-bottom: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color); /* 변수 사용 */
             cursor: pointer;
-            transition: background-color 0.2s ease;
+            transition: background-color 0.2s ease, border-color 0.3s ease; /* 테마 전환 애니메이션 */
         }
         .list-item:hover {
-            background-color: var(--background-color);
+            /* hover 효과는 라이트 모드에서만 보이게 할 수 있음 */
+            background-color: rgba(0, 0, 0, 0.03);
+        }
+        body.dark-mode .list-item:hover {
+            background-color: rgba(255, 255, 255, 0.05);
         }
         .list-item:last-child {
             border-bottom: none;
@@ -198,52 +240,63 @@
             color: var(--primary-color);
             display: flex;
             align-items: center;
-            background: var(--primary-color-light);
+            background: var(--primary-color-light); /* 변수 사용 */
             padding: 8px;
             border-radius: 12px;
             flex-shrink: 0;
+            /* 다크 모드 아이콘 배경 조정 */
+            transition: background-color 0.3s ease;
         }
+        body.dark-mode .list-item .icon {
+            background: rgba(0, 122, 255, 0.2); /* 반투명 파랑 */
+        }
+
         .list-item-content {
             flex-grow: 1;
-            overflow: hidden; /* Prevent text overflow */
+            overflow: hidden;
         }
         .list-item-content strong {
             font-weight: 600;
-            color: var(--text-primary);
-            display: block; /* Ensure block display */
+            color: var(--text-primary); /* 변수 사용 */
+            display: block;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
         .list-item-content span {
             font-size: 14px;
-            color: var(--text-secondary);
-             display: block; /* Ensure block display */
+            color: var(--text-secondary); /* 변수 사용 */
+             display: block;
              white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
-        
+
         .stock-change { font-weight: 600; text-align: right; white-space: nowrap; }
         .stock-change.up { color: var(--red-color); }
-        .stock-change.down { color: var(--primary-color); }
+        .stock-change.down { color: var(--primary-color); } /* 다크모드에서 파란색이 잘 안보이면 다른 색 고려 */
+        body.dark-mode .stock-change.down { color: #5AC8FA; } /* 예시: 밝은 파랑 */
+
 
         /* Input & Button Styles */
         input[type="text"], input[type="password"], textarea {
             width: 100%;
             padding: 12px 15px;
             margin-bottom: 15px;
-            border: 1px solid var(--border-color);
+            border: 1px solid var(--border-color); /* 변수 사용 */
             border-radius: 12px;
             font-size: 16px;
             box-sizing: border-box;
             font-family: inherit;
+            background-color: var(--input-bg-color); /* 변수 사용 */
+            color: var(--text-primary); /* 변수 사용 */
+            transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease; /* 테마 전환 애니메이션 */
         }
-         textarea {
+        textarea {
             resize: vertical;
             min-height: 80px;
         }
-        
+
         .btn {
             width: 100%;
             padding: 14px;
@@ -263,93 +316,146 @@
         }
         .btn-primary:hover { opacity: 0.9; }
         .btn-secondary {
-            background-color: var(--primary-color-light);
+            background-color: var(--primary-color-light); /* 변수 사용 */
             color: var(--primary-color);
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
+        body.dark-mode .btn-secondary {
+             background: rgba(0, 122, 255, 0.2); /* 반투명 파랑 */
+             color: var(--primary-color);
+        }
+
         .btn-sm { padding: 8px 16px; font-size: 14px; width: auto; }
-        
+
          .filter-tabs { display: flex; gap: 10px; margin-bottom: 20px; padding-bottom: 5px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
-        .filter-tabs button { background-color: #EEE; color: var(--text-secondary); border: none; border-radius: 16px; padding: 8px 16px; font-size: 14px; font-weight: 600; transition: all 0.2s ease; white-space: nowrap; cursor: pointer; }
-        .filter-tabs button.active { background-color: var(--primary-color); color: white; box-shadow: 0 4px 10px rgba(0, 122, 255, 0.3); }
+        .filter-tabs button {
+            background-color: var(--filter-btn-bg); /* 변수 사용 */
+            color: var(--filter-btn-text); /* 변수 사용 */
+            border: none;
+            border-radius: 16px;
+            padding: 8px 16px;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+            cursor: pointer;
+        }
+        .filter-tabs button.active {
+            background-color: var(--filter-btn-active-bg); /* 변수 사용 */
+            color: var(--filter-btn-active-text); /* 변수 사용 */
+            box-shadow: 0 4px 10px rgba(0, 122, 255, 0.3);
+        }
+        body.dark-mode .filter-tabs button.active {
+             box-shadow: 0 4px 10px rgba(0, 122, 255, 0.5); /* 다크모드 그림자 */
+        }
+
 
         /* --- 로그인 페이지 스타일 --- */
-        .login-container { display: flex; flex-direction: column; justify-content: center; height: 100%; padding: 40px; box-sizing: border-box; background: var(--widget-background); }
-        .login-container .app-title { font-size: 36px; font-weight: 800; text-align: center; margin-bottom: 10px; }
+        .login-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            height: 100%;
+            padding: 40px;
+            box-sizing: border-box;
+            background: var(--login-bg-color); /* 변수 사용 */
+            transition: background-color 0.3s ease;
+        }
+        .login-container .app-title { font-size: 36px; font-weight: 800; text-align: center; margin-bottom: 10px; color: var(--text-primary); }
         .login-container .app-subtitle { font-size: 16px; color: var(--text-secondary); text-align: center; margin-bottom: 60px; }
         .social-login-btn { width: 100%; padding: 14px; margin-bottom: 12px; border: none; border-radius: 12px; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; justify-content: center; gap: 10px; }
         .social-login-btn .logo { width: 20px; height: 20px; }
         .btn-kakao { background-color: #FEE500; color: #191919; }
         .btn-google { background-color: #FFFFFF; color: #1F1F1F; border: 1px solid #DADCE0; }
+        /* 다크 모드 구글 버튼 */
+        body.dark-mode .btn-google { background-color: #424242; color: #E8EAED; border: 1px solid #5F6368; }
         .btn-apple { background-color: #000000; color: #FFFFFF; }
+        /* 다크 모드 애플 버튼 */
+        body.dark-mode .btn-apple { background-color: #FFFFFF; color: #000000; }
+        body.dark-mode .btn-apple svg path { fill: black; } /* 애플 로고 색 반전 */
+
         .login-divider { display: flex; align-items: center; text-align: center; color: var(--text-secondary); font-size: 12px; margin: 30px 0; }
-        .login-divider::before, .login-divider::after { content: ''; flex: 1; border-bottom: 1px solid var(--border-color); }
+        .login-divider::before, .login-divider::after { content: ''; flex: 1; border-bottom: 1px solid var(--border-color); transition: border-color 0.3s ease; }
         .login-divider:not(:empty)::before { margin-right: .5em; }
         .login-divider:not(:empty)::after { margin-left: .5em; }
         .email-login-link { text-align: center; font-size: 14px; font-weight: 500; color: var(--text-secondary); cursor: pointer; }
-        
+
+
         /* --- 캘린더 페이지 스타일 --- */
         .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; text-align: center; }
         .calendar-day, .calendar-header { padding: 8px 0; font-size: 14px; }
         .calendar-header { font-weight: 600; color: var(--text-secondary); }
         .calendar-day.today { background-color: var(--primary-color); color: white; border-radius: 50%; font-weight: 700; }
         .calendar-day.other-month { color: #ccc; }
+        body.dark-mode .calendar-day.other-month { color: #555; }
+
 
         /* --- 쇼핑 페이지 스타일 --- */
         .product-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
         .product-card img { width: 100%; border-radius: 15px; margin-bottom: 10px; }
         .product-card h4, .product-card p { margin: 0; padding: 0 5px; }
-        .product-card h4 { font-size: 14px; font-weight: 600; }
+        .product-card h4 { font-size: 14px; font-weight: 600; color: var(--text-primary); }
         .product-card p { font-size: 14px; font-weight: 700; color: var(--primary-color); }
-        
+
+
         /* --- 사이드바 --- */
-        .sidebar { position: absolute; top: 0; left: 0; width: 280px; height: 100%; background-color: #FFFFFF; z-index: 100; transform: translateX(-100%); transition: transform 0.3s ease-in-out; display: flex; flex-direction: column; box-shadow: 10px 0 30px rgba(0,0,0,0.1); }
+        .sidebar { position: absolute; top: 0; left: 0; width: 280px; height: 100%; background-color: var(--sidebar-bg-color); z-index: 100; transform: translateX(-100%); transition: transform 0.3s ease-in-out, background-color 0.3s ease; display: flex; flex-direction: column; box-shadow: 10px 0 30px rgba(0,0,0,0.1); }
+        body.dark-mode .sidebar { box-shadow: 10px 0 30px rgba(0,0,0,0.4); }
         .sidebar.active { transform: translateX(0); }
-        .sidebar-header { padding: 20px; border-bottom: 1px solid var(--border-color); }
+        .sidebar-header { padding: 20px; border-bottom: 1px solid var(--border-color); transition: border-color 0.3s ease;}
         .sidebar-profile { display: flex; align-items: center; gap: 15px; }
         .sidebar-profile .profile-avatar { width: 50px; height: 50px; border-radius: 50%; background-image: url('https://placehold.co/100x100/A8B5FE/FFFFFF?text=U'); background-size: cover; }
-        .sidebar-profile strong { font-size: 18px; }
+        .sidebar-profile strong { font-size: 18px; color: var(--text-primary); }
         .sidebar-profile span { font-size: 14px; color: var(--text-secondary); }
         .sidebar-menu { flex-grow: 1; overflow-y: auto; padding: 10px 0; }
-        .sidebar-menu-item { display: flex; align-items: center; gap: 15px; padding: 15px 20px; color: var(--text-primary); cursor: pointer; }
-        .sidebar-menu-item:hover { background-color: var(--background-color); }
+        .sidebar-menu-item { display: flex; align-items: center; gap: 15px; padding: 15px 20px; color: var(--text-primary); cursor: pointer; transition: background-color 0.2s ease;}
+        .sidebar-menu-item:hover { background-color: rgba(0, 0, 0, 0.03); }
+        body.dark-mode .sidebar-menu-item:hover { background-color: rgba(255, 255, 255, 0.05); }
         .sidebar-menu-category { padding: 15px 20px 5px; font-size: 12px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; }
 
-        .overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.4); z-index: 99; opacity: 0; visibility: hidden; transition: opacity 0.3s ease-in-out; }
+        .overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.4); z-index: 99; opacity: 0; visibility: hidden; transition: opacity 0.3s ease-in-out, background-color 0.3s ease; }
+        body.dark-mode .overlay { background-color: rgba(0,0,0,0.6); }
         .overlay.active { opacity: 1; visibility: visible; }
 
+
         /* --- 편집 모달 --- */
-        .modal { position: absolute; bottom: 0; left: 0; width: 100%; background: white; z-index: 101; border-top-left-radius: 20px; border-top-right-radius: 20px; padding: 10px 20px 20px; box-sizing: border-box; box-shadow: 0 -10px 30px rgba(0,0,0,0.1); transform: translateY(100%); transition: transform 0.3s ease-in-out; max-height: 60vh; display: flex; flex-direction: column; }
+        .modal { position: absolute; bottom: 0; left: 0; width: 100%; background: var(--modal-bg-color); z-index: 101; border-top-left-radius: 20px; border-top-right-radius: 20px; padding: 10px 20px 20px; box-sizing: border-box; box-shadow: 0 -10px 30px rgba(0,0,0,0.1); transform: translateY(100%); transition: transform 0.3s ease-in-out, background-color 0.3s ease, box-shadow 0.3s ease; max-height: 60vh; display: flex; flex-direction: column; }
+        body.dark-mode .modal { box-shadow: 0 -10px 30px rgba(0,0,0,0.4); }
         .modal.active { transform: translateY(0); }
         .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-shrink: 0; }
         .modal-header .drag-handle { width: 40px; height: 4px; background-color: #ccc; border-radius: 2px; position: absolute; top: 8px; left: 50%; transform: translateX(-50%); }
-        .modal-header h3 { margin: 0; font-size: 20px; font-weight: 700; padding-top: 20px; }
+        body.dark-mode .modal-header .drag-handle { background-color: #555; }
+        .modal-header h3 { margin: 0; font-size: 20px; font-weight: 700; padding-top: 20px; color: var(--text-primary); }
         .modal-header button { background: var(--primary-color); color: white; border: none; padding: 8px 16px; border-radius: 12px; font-weight: 600; cursor: pointer; }
         .customize-list { overflow-y: auto; }
-        .customize-list label { display: flex; align-items: center; padding: 12px 0; gap: 10px; } /* 아이콘과 텍스트 간격 조정 */
+        .customize-list label { display: flex; align-items: center; padding: 12px 0; gap: 10px; color: var(--text-primary); }
         .customize-list input { width: 20px; height: 20px; flex-shrink: 0; }
-        .customize-list span { display: flex; align-items: center; gap: 8px; } /* 아이콘과 텍스트 간격 조정 */
+        .customize-list span { display: flex; align-items: center; gap: 8px; }
         .customize-list input:disabled + span { color: var(--text-secondary); }
-        .customize-list .item-icon { flex-shrink: 0; width: 20px; height: 20px; color: var(--text-secondary); } /* 아이콘 크기 및 색상 조정 */
+        .customize-list .item-icon { flex-shrink: 0; width: 20px; height: 20px; color: var(--text-secondary); }
+
 
         /* --- 페이지별 스타일 --- */
         #page-home .header { display: flex; align-items: center; margin-bottom: 24px; margin-top: 10px; }
-        #page-home .header .hamburger-menu { cursor: pointer; padding: 5px; margin-right: 10px; }
+        #page-home .header .hamburger-menu { cursor: pointer; padding: 5px; margin-right: 10px; color: var(--text-primary); }
         #page-home .header-text { flex-grow: 1; }
-        #page-home .header-text h1 { font-size: 30px; font-weight: 800; margin: 0; }
+        #page-home .header-text h1 { font-size: 30px; font-weight: 800; margin: 0; color: var(--text-primary);}
         #home-widgets-container .widget { /* For drag/drop */ }
-        
+
         #page-map { padding: 0; position: relative; }
         #page-map .search-bar { position: absolute; top: 20px; left: 20px; right: 20px; z-index: 5; }
-        #page-map .search-bar input { width: 100%; padding: 14px 20px; font-size: 16px; border-radius: 14px; border: none; box-sizing: border-box; background-color: var(--widget-background); box-shadow: var(--shadow); }
+        #page-map .search-bar input { width: 100%; padding: 14px 20px; font-size: 16px; border-radius: 14px; border: none; box-sizing: border-box; background-color: var(--widget-background); box-shadow: var(--shadow); color: var(--text-primary);}
         #page-map .map-placeholder { background-image: url('https://placehold.co/375x812/E5E5EA/8A8A8E?text=Map+API'); background-size: cover; position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
+        body.dark-mode #page-map .map-placeholder { background-image: url('https://placehold.co/375x812/1C1C1E/555?text=Map+API'); }
         #page-map .route-options { position: absolute; bottom: 95px; left: 20px; right: 20px; z-index: 5; background: var(--widget-background); padding: 20px; border-radius: 20px; box-shadow: var(--shadow); }
-        
-        #page-life .top-tabs { display: flex; border-bottom: 1px solid var(--border-color); margin-bottom: 20px; }
+
+        #page-life .top-tabs { display: flex; border-bottom: 1px solid var(--border-color); margin-bottom: 20px; transition: border-color 0.3s ease; }
         #page-life .top-tabs button { flex: 1; background: none; border: none; padding: 14px; font-size: 16px; font-weight: 600; color: var(--text-secondary); border-bottom: 3px solid transparent; display: flex; justify-content: center; align-items: center; gap: 8px; transition: all 0.2s ease; cursor: pointer; }
         #page-life .top-tabs button.active { color: var(--primary-color); border-bottom-color: var(--primary-color); }
         #page-life .tab-content { display: none; }
         #page-life .tab-content.active { display: block; animation: fadeIn 0.3s; }
-        #page-life .progress-bar { width: 100%; height: 8px; background-color: #EEE; border-radius: 4px; overflow: hidden; margin-top: 8px; }
+        #page-life .progress-bar { width: 100%; height: 8px; background-color: #EEE; border-radius: 4px; overflow: hidden; margin-top: 8px; transition: background-color 0.3s ease; }
+        body.dark-mode #page-life .progress-bar { background-color: #444; }
         #page-life .progress-bar-inner { height: 100%; background-color: var(--primary-color); border-radius: 4px; }
         #page-life .data-label { display: flex; justify-content: space-between; font-size: 14px; margin-top: 4px; color: var(--text-secondary); }
         #page-life .data-label strong { color: var(--text-primary); }
@@ -359,21 +465,31 @@
         #page-news .news-list .list-item img { width: 70px; height: 70px; object-fit: cover; border-radius: 10px; margin-right: 15px; flex-shrink: 0;}
 
         #page-translate textarea { min-height: 100px; }
-        #page-translate .language-selector { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-        #page-translate select { padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 14px; }
+        #page-translate .language-selector { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; color: var(--text-primary); }
+        #page-translate select { padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 14px; background-color: var(--input-bg-color); color: var(--text-primary); transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease; }
+        #page-translate textarea[readonly] { background-color: var(--readonly-textarea-bg); transition: background-color 0.3s ease; } /* 변수 사용 */
 
         #page-sports .team-score { background: linear-gradient(135deg, #6A82FB, #FC5C7D); color: white; padding: 25px 20px; border-radius: 20px; text-align: center; margin-bottom: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        body.dark-mode #page-sports .team-score { box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
         #page-sports .team-score h3 { margin: 0 0 10px 0; font-size: 16px; font-weight: 600; opacity: 0.8; }
-        #page-sports .team-score .score { font-size: 48px; font-weight: 800; margin-bottom: 5px; }
+        #page-sports .team-score .score {
+            font-size: 42px;
+            font-weight: 650;
+            margin-bottom: 5px;
+            white-space: nowrap; /* 줄바꿈 방지 추가 */
+            overflow: hidden; /* 넘칠 경우 숨김 */
+            text-overflow: ellipsis; /* 넘칠 경우 ... 처리 (선택사항) */
+            line-height: 1; /* 폰트 크기 때문에 높이가 달라지는 것 방지 */
+        }
         #page-sports .team-score .status { font-size: 14px; font-weight: 500; opacity: 0.9; }
 
         /* News list item specific styles */
         .news-list .list-item-content strong {
-            white-space: normal; /* Allow wrapping */
+            white-space: normal;
             overflow: visible;
             text-overflow: clip;
             display: -webkit-box;
-            -webkit-line-clamp: 2; /* Limit to 2 lines */
+            -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -381,12 +497,16 @@
              margin-bottom: 4px;
         }
 
-        /* --- 날씨 페이지 전용 스타일 (추가됨) --- */
+        /* --- 날씨 페이지 전용 스타일 --- */
         .weather-current {
             background: linear-gradient(135deg, var(--primary-color), #5899FF);
             color: white;
             text-align: center;
             padding: 30px 20px;
+        }
+        /* 다크모드 날씨 배경 */
+        body.dark-mode .weather-current {
+             background: linear-gradient(135deg, #0A2C5A, #0052A3);
         }
         .weather-location {
             font-size: 16px;
@@ -419,12 +539,12 @@
             display: flex;
             overflow-x: auto;
             gap: 20px;
-            padding-bottom: 10px; /* 스크롤바 공간 */
-            scrollbar-width: none; /* Firefox */
-            -ms-overflow-style: none;  /* IE and Edge */
+            padding-bottom: 10px;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
         }
         .hourly-forecast::-webkit-scrollbar {
-            display: none; /* Chrome, Safari, Opera */
+            display: none;
         }
         .hourly-item {
             display: flex;
@@ -433,7 +553,7 @@
             gap: 8px;
             font-size: 14px;
             flex-shrink: 0;
-            width: 50px; /* 아이템 너비 고정 */
+            width: 50px;
         }
         .hourly-item .time {
             font-weight: 600;
@@ -445,6 +565,7 @@
         .hourly-item .temp {
             font-weight: 700;
             font-size: 16px;
+            color: var(--text-primary);
         }
 
         /* 주간 예보 */
@@ -468,9 +589,10 @@
             gap: 15px;
         }
         .detail-item {
-            background-color: var(--background-color);
+            background-color: var(--detail-item-bg); /* 변수 사용 */
             border-radius: 12px;
             padding: 15px;
+            transition: background-color 0.3s ease;
         }
         .detail-item .label {
             display: block;
@@ -486,10 +608,61 @@
             color: var(--text-primary);
         }
 
+        /* --- 다크 모드 토글 스위치 스타일 --- */
+        .theme-switch-wrapper {
+            display: flex;
+            align-items: center;
+            margin-left: auto; /* 오른쪽으로 밀기 */
+        }
+        .theme-switch {
+            display: inline-block;
+            height: 22px; /* 크기 조정 */
+            position: relative;
+            width: 40px; /* 크기 조정 */
+        }
+        .theme-switch input {
+            display:none;
+        }
+        .slider {
+            background-color: #ccc;
+            bottom: 0;
+            cursor: pointer;
+            left: 0;
+            position: absolute;
+            right: 0;
+            top: 0;
+            transition: .4s;
+        }
+        .slider:before {
+            background-color: #fff;
+            bottom: 3px; /* 위치 조정 */
+            content: "";
+            height: 16px; /* 크기 조정 */
+            left: 3px; /* 위치 조정 */
+            position: absolute;
+            transition: .4s;
+            width: 16px; /* 크기 조정 */
+        }
+        input:checked + .slider {
+            background-color: var(--primary-color);
+        }
+        input:checked + .slider:before {
+            transform: translateX(18px); /* 이동 거리 조정 */
+        }
+        .slider.round {
+            border-radius: 34px;
+        }
+        .slider.round:before {
+            border-radius: 50%;
+        }
+        body.dark-mode .slider {
+             background-color: #555;
+        }
+
     </style>
 </head>
 <body>
-    
+
     <div class="mobile-frame" id="login-frame">
         <div class="screen">
             <div class="login-container">
@@ -566,7 +739,7 @@
                     <div id="home-widgets-container">
                         </div>
                 </div>
-                
+
                 <div id="page-messenger" class="page">
                     <h2><svg class="icon-svg" viewBox="0 0 24 24"><path d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>메신저</h2>
                      <div class="filter-tabs">
@@ -595,7 +768,7 @@
 
                 <div id="page-weather" class="page">
                     <h2><svg class="icon-svg" viewBox="0 0 24 24"><path d="M2.25 15a4.5 4.5 0 004.5 4.5H18a3.75 3.75 0 001.332-7.257 3 3 0 00-3.758-3.758A3.75 3.75 0 0013.5 4.5h-2.25A3.75 3.75 0 007.5 8.25v.75" /></svg>날씨</h2>
-        
+
                     <div class="weather-current widget">
                         <div class="weather-location">원주시 흥업면 흥업리</div>
                         <div class="weather-icon-large">☀️</div>
@@ -603,7 +776,7 @@
                         <div class="weather-desc">맑음</div>
                         <div class="weather-highlow">최고: 25° / 최저: 18°</div>
                     </div>
-        
+
                     <div class="widget">
                         <div class="widget-title">시간대별 예보</div>
                         <div class="hourly-forecast">
@@ -639,7 +812,7 @@
                             </div>
                         </div>
                     </div>
-        
+
                     <div class="widget">
                         <div class="widget-title">주간 예보</div>
                         <div class="weekly-forecast-list">
@@ -661,7 +834,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="widget">
                          <div class="widget-title">상세 정보</div>
                          <div class="widget-grid">
@@ -693,9 +866,9 @@
                     </div>
                     <div class="widget">
                         <div class="widget-title" style="justify-content: space-between; align-items: center;">
-                            <button style="background:none; border:none; cursor:pointer;">&lt;</button>
+                            <button style="background:none; border:none; cursor:pointer; color: var(--text-primary); font-size: 1.2em;">&lt;</button>
                             <h3>2025년 10월</h3>
-                            <button style="background:none; border:none; cursor:pointer;">&gt;</button>
+                            <button style="background:none; border:none; cursor:pointer; color: var(--text-primary); font-size: 1.2em;">&gt;</button>
                         </div>
                         <div class="calendar-grid">
                             <div class="calendar-header">일</div><div class="calendar-header">월</div><div class="calendar-header">화</div><div class="calendar-header">수</div><div class="calendar-header">목</div><div class="calendar-header">금</div><div class="calendar-header">토</div>
@@ -728,7 +901,13 @@
                         </div>
                         <div class="list-item">
                             <span class="icon" style="background-color: #E6F6EC; color: var(--green-color);"><svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" /></svg></span>
-                            <div class="list-item-content"><strong>화면 및 테마</strong></div>
+                            <div class="list-item-content"><strong>다크 모드</strong></div>
+                            <div class="theme-switch-wrapper">
+                                <label class="theme-switch" for="theme-toggle">
+                                    <input type="checkbox" id="theme-toggle" />
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
                         </div>
                         <div class="list-item">
                              <span class="icon" style="background-color: #F0F0F0; color: #888;"><svg class="icon-svg" viewBox="0 0 24 24"><path d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" /></svg></span>
@@ -740,7 +919,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div id="page-map" class="page">
                     <h2><svg class="icon-svg" viewBox="0 0 24 24"><path d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" /><path d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" /></svg>지도</h2>
                        <div class="widget">
@@ -916,7 +1095,7 @@
                             <select><option>영어</option><option>한국어</option></select>
                         </div>
                         <textarea placeholder="텍스트 입력"></textarea>
-                        <textarea placeholder="번역 결과" readonly style="background-color: #f9f9f9; margin-top: 10px;"></textarea>
+                        <textarea placeholder="번역 결과" readonly></textarea>
                         <button class="btn btn-primary" style="margin-top: 15px;">번역하기</button>
                     </div>
                 </div>
@@ -934,7 +1113,8 @@
             // --- DOM Elements ---
             const loginFrame = document.getElementById('login-frame');
             const mainAppFrame = document.getElementById('main-app-frame');
-            
+            const themeToggle = document.getElementById('theme-toggle'); // 테마 토글 추가
+
             if (loginFrame) {
                 const loginButtons = loginFrame.querySelectorAll('.social-login-btn, .email-login-link');
                 loginButtons.forEach(button => {
@@ -960,7 +1140,7 @@
             const homeModalSaveButton = mainAppFrame.querySelector("#home-modal-save-button");
             const customizeHomeList = mainAppFrame.querySelector("#customize-home-list");
             const homeWidgetsContainer = mainAppFrame.querySelector("#home-widgets-container");
-            
+
             // --- Data ---
             const allNavItems = {
                 home: { name: '홈', iconSVG: '<svg class="icon-svg icon-xs" viewBox="0 0 24 24"><path d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" /></svg>', icon: '<svg class="icon-svg" viewBox="0 0 24 24"><path d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" /></svg>' },
@@ -989,36 +1169,67 @@
                 bank: { name: '금융', iconSVG: allNavItems.bank.iconSVG, content: `<div class="widget" data-widget-id="bank"><div class="widget-title"><svg class="icon-svg icon-sm" viewBox="0 0 24 24"><path d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3.375m-3.375 2.25h13.5m0-13.5V21A2.25 2.25 0 0118 23.25H6a2.25 2.25 0 01-2.25-2.25V7.5A2.25 2.25 0 016 5.25h12A2.25 2.25 0 0120.25 7.5v0-1.5z" /></svg>내 계좌</div><p style="font-size: 14px; margin-bottom: 5px;">• 하나은행: 1,500,000 원</p><p style="font-size: 14px; margin-bottom: 0;">• 카카오뱅크: 3,620,000 원</p></div>`},
                 translate: { name: '빠른 번역', iconSVG: allNavItems.translate.iconSVG, content: `<div class="widget" data-widget-id="translate"><div class="widget-title"><svg class="icon-svg icon-sm" viewBox="0 0 24 24"><path d="M10.5 21l5.25-11.25L21 21m-9-3h7.5M3 5.621a48.474 48.474 0 016-.371m0 0c1.12 0 2.233.038 3.334.114M9 5.25V3m3.334 2.364C13.18 7.061 14.122 7.5 15 7.5h0c.878 0 1.82-.439 2.666-1.136m0 0V3m0 2.364a48.458 48.458 0 01-2.666.475" /></svg>빠른 번역</div><textarea placeholder="번역할 내용 입력..." rows="2" style="min-height: 40px; margin-bottom: 10px;"></textarea><button class="btn btn-secondary btn-sm">번역하기</button></div>`}
             };
-            
-            let currentNavIds = ['home', 'messenger', 'weather', 'calendar', 'settings'];
-            let currentHomeWidgetIds = ['weather', 'calendar', 'news', 'stocks']; // Default order
 
+            let currentNavIds = ['home', 'messenger', 'weather', 'calendar', 'settings'];
+            let currentHomeWidgetIds = ['weather', 'calendar', 'news', 'stocks'];
+
+            // --- 테마 설정 ---
+            function applyTheme(theme) {
+                if (theme === 'dark') {
+                    document.body.classList.add('dark-mode');
+                    themeToggle.checked = true;
+                } else {
+                    document.body.classList.remove('dark-mode');
+                    themeToggle.checked = false;
+                }
+            }
+
+            // 페이지 로드 시 저장된 테마 적용
+            const savedTheme = localStorage.getItem('theme') || 'light'; // 기본은 라이트
+            applyTheme(savedTheme);
+
+            // 테마 토글 리스너
+            themeToggle.addEventListener('change', function() {
+                if (this.checked) {
+                    applyTheme('dark');
+                    localStorage.setItem('theme', 'dark');
+                } else {
+                    applyTheme('light');
+                    localStorage.setItem('theme', 'light');
+                }
+            });
+
+
+            // --- 페이지 및 네비게이션 ---
             function showPage(targetPageId) {
                 pages.forEach(page => page.classList.remove("active"));
                 const targetPage = mainAppFrame.querySelector(`#page-${targetPageId}`);
                 if(targetPage) {
                     targetPage.classList.add("active");
+                    // 페이지 전환 시 스크롤 맨 위로
+                    targetPage.scrollTop = 0;
                 }
                 mainAppFrame.querySelectorAll("#main-nav .nav-button").forEach(btn => {
                     btn.classList.toggle("active", btn.dataset.target === targetPageId);
                 });
             }
-            
+
             function rebindNavButtons() {
-                mainAppFrame.querySelectorAll("#main-nav .nav-button").forEach(button => {
-                    button.replaceWith(button.cloneNode(true));
-                });
-                 mainAppFrame.querySelectorAll("#main-nav .nav-button").forEach(button => {
-                    button.addEventListener("click", () => {
-                        showPage(button.dataset.target);
+                // 기존 이벤트 리스너 제거 방식보다 복제 후 재할당이 간단
+                const navButtons = mainAppFrame.querySelectorAll("#main-nav .nav-button");
+                navButtons.forEach(button => {
+                    const newButton = button.cloneNode(true); // 이벤트 리스너 없이 복제
+                    button.parentNode.replaceChild(newButton, button); // 새 버튼으로 교체
+                    newButton.addEventListener("click", () => { // 새 버튼에만 리스너 추가
+                        showPage(newButton.dataset.target);
                     });
-                 });
+                });
             }
 
             function buildNavBar(ids) {
                 mainNav.innerHTML = ids.map(id => {
                     const item = allNavItems[id];
-                    if (!item) return ''; // Skip if item doesn't exist (safety check)
+                    if (!item) return '';
                     return `
                         <button class="nav-button" data-target="${id}">
                             <span class="icon">${item.icon}</span>
@@ -1026,26 +1237,33 @@
                         </button>
                     `;
                 }).join('');
-                rebindNavButtons();
-                 const currentPage = mainAppFrame.querySelector(".page.active")?.id.replace('page-', '');
+                rebindNavButtons(); // 이벤트 리스너 재설정
+                const currentPage = mainAppFrame.querySelector(".page.active")?.id.replace('page-', '');
                  if (currentPage && ids.includes(currentPage)) {
-                     showPage(currentPage);
+                     showPage(currentPage); // 현재 페이지 유지 시도
                  } else {
-                     showPage(ids.includes('home') ? 'home' : ids[0]);
+                     showPage(ids.includes('home') ? 'home' : ids[0]); // 아니면 홈 또는 첫번째로 이동
                  }
             }
 
              function buildHomeWidgets(widgetIds) {
                  homeWidgetsContainer.innerHTML = widgetIds
-                     .map(id => allHomeWidgets[id]?.content || '') // Use optional chaining
+                     .map(id => allHomeWidgets[id]?.content || '')
                      .join('');
-                 // Re-add event listener for map button if map widget is present
                  const mapButton = homeWidgetsContainer.querySelector('[data-page="map"]');
                  if (mapButton) {
                      mapButton.addEventListener('click', () => showPage('map'));
                  }
+                 // 빠른 번역 위젯 이벤트 리스너 (위젯이 추가될 때마다 바인딩 필요)
+                 const translateWidget = homeWidgetsContainer.querySelector('[data-widget-id="translate"]');
+                 if (translateWidget) {
+                     const translateButton = translateWidget.querySelector('.btn-secondary');
+                     if (translateButton) {
+                         translateButton.addEventListener('click', () => showPage('translate'));
+                     }
+                 }
              }
-            
+
             function buildSidebar() {
                 sidebarMenu.innerHTML = `
                     <div class="sidebar-menu-category">주요 기능</div>
@@ -1086,21 +1304,21 @@
             overlay.addEventListener("click", () => {
                 closeSidebar();
                 customizeModal.classList.remove("active");
-                customizeHomeModal.classList.remove("active"); 
+                customizeHomeModal.classList.remove("active");
             });
-            
+
             // 하단 바 편집 버튼
             customizeButton.addEventListener("click", () => {
                 overlay.classList.add("active");
                 customizeModal.classList.add("active");
-                
+
                 customizeList.innerHTML = Object.keys(allNavItems).filter(id => id !== 'home' && id !== 'settings').map(id => {
                     const item = allNavItems[id];
                     const isChecked = currentNavIds.includes(id);
                     return `
                         <label>
                             <input type="checkbox" value="${id}" ${isChecked ? 'checked' : ''}>
-                            <span class="item-icon">${item.iconSVG || ''}</span> 
+                            <span class="item-icon">${item.iconSVG || ''}</span>
                             <span>${item.name}</span>
                         </label>
                     `;
@@ -1114,7 +1332,7 @@
                     selectedItems.push(input.value);
                 });
 
-                if (selectedItems.length > 3 || selectedItems.length < 1) { // 최소 1개, 최대 3개 선택 (홈, 설정 제외)
+                if (selectedItems.length > 3 || selectedItems.length < 1) {
                     alert('홈과 설정을 제외하고 1개 이상, 3개 이하의 메뉴를 선택해주세요.');
                     return;
                 }
@@ -1130,68 +1348,98 @@
                  overlay.classList.add("active");
                  customizeHomeModal.classList.add("active");
 
-                 customizeHomeList.innerHTML = Object.keys(allHomeWidgets).map(id => {
+                 // 현재 순서를 반영하여 모달 리스트 생성
+                 const currentWidgetOrder = currentHomeWidgetIds.slice(); // 복사본 사용
+                 const allWidgetKeys = Object.keys(allHomeWidgets);
+                 const modalListHtml = allWidgetKeys.map(id => {
                      const item = allHomeWidgets[id];
-                     const isChecked = currentHomeWidgetIds.includes(id); // Check if currently active
+                     const isChecked = currentWidgetOrder.includes(id);
+                     const orderStyle = isChecked ? `style="order: ${currentWidgetOrder.indexOf(id)}"` : ''; // 현재 순서 반영
                      return `
-                         <label draggable="true" data-widget-id="${id}">
-                             <input type="checkbox" value="${id}" ${isChecked ? 'checked' : ''}> 
+                         <label draggable="true" data-widget-id="${id}" ${orderStyle}>
+                             <input type="checkbox" value="${id}" ${isChecked ? 'checked' : ''}>
                              <span class="item-icon">${item.iconSVG || ''}</span>
                              <span>${item.name}</span>
                          </label>
                      `;
+                 }).sort((a, b) => { // 순서대로 정렬 (체크된 것 먼저)
+                     const orderA = parseInt(a.match(/order: (\d+)/)?.[1] ?? '9999');
+                     const orderB = parseInt(b.match(/order: (\d+)/)?.[1] ?? '9999');
+                     return orderA - orderB;
                  }).join('');
-                 // 드래그 앤 드롭 로직 (간단 구현)
+
+                 customizeHomeList.innerHTML = modalListHtml;
+                 customizeHomeList.style.display = 'flex'; // Flexbox 정렬 활성화
+                 customizeHomeList.style.flexDirection = 'column';
+
+                 // 드래그 앤 드롭 로직
                 let draggedItem = null;
                 customizeHomeList.querySelectorAll('label').forEach(item => {
-                    item.addEventListener('dragstart', () => {
+                    item.addEventListener('dragstart', (e) => {
                         draggedItem = item;
                         setTimeout(() => item.style.opacity = '0.5', 0);
+                        // 드래그 데이터 설정 (선택사항, 필요시)
+                        // e.dataTransfer.setData('text/plain', item.dataset.widgetId);
                     });
                     item.addEventListener('dragend', () => {
                          setTimeout(() => {
-                             draggedItem.style.opacity = '1';
+                             if (draggedItem) { // Check if draggedItem exists
+                                draggedItem.style.opacity = '1';
+                             }
                              draggedItem = null;
                          }, 0);
                     });
                     item.addEventListener('dragover', (e) => {
-                        e.preventDefault();
+                        e.preventDefault(); // 필수: drop 이벤트가 발생하도록 함
                     });
-                     item.addEventListener('dragenter', (e) => {
+                    item.addEventListener('dragenter', (e) => {
                          e.preventDefault();
                          if (draggedItem && draggedItem !== item) {
-                             const rect = item.getBoundingClientRect();
-                             const offset = e.clientY - rect.top - rect.height / 2;
-                             if(offset > 0) { // Below middle
+                             const containerRect = customizeHomeList.getBoundingClientRect();
+                             const itemRect = item.getBoundingClientRect();
+                             // 컨테이너 내에서의 Y 좌표 계산
+                             const relativeY = e.clientY - containerRect.top;
+                             const itemMiddleY = itemRect.top - containerRect.top + itemRect.height / 2;
+
+                             // 스크롤 위치 고려
+                             const scrollTop = customizeHomeList.scrollTop;
+                             const adjustedMiddleY = itemMiddleY - scrollTop;
+
+                             if (relativeY > adjustedMiddleY) { // 드롭 대상의 중간 아래로 들어왔을 때
                                  item.after(draggedItem);
-                             } else { // Above middle
+                             } else { // 드롭 대상의 중간 위로 들어왔을 때
                                  item.before(draggedItem);
                              }
                          }
-                     });
+                    });
+                    item.addEventListener('drop', (e) => {
+                         e.preventDefault(); // 기본 동작 방지
+                         // 드롭 시 특별한 동작이 필요하면 여기에 추가
+                    });
+
                 });
             });
 
             // 홈 화면 위젯 저장 버튼
             homeModalSaveButton.addEventListener("click", () => {
                 const orderedWidgets = [];
-                 customizeHomeList.querySelectorAll('label').forEach(label => { // Get order from DOM
+                 customizeHomeList.querySelectorAll('label').forEach(label => {
                      const checkbox = label.querySelector('input');
                      if (checkbox.checked) {
                          orderedWidgets.push(checkbox.value);
                      }
                  });
-                
+
                 currentHomeWidgetIds = orderedWidgets;
                 buildHomeWidgets(currentHomeWidgetIds);
                 overlay.classList.remove("active");
                 customizeHomeModal.classList.remove("active");
             });
-            
+
             // --- Initial Build ---
             buildNavBar(currentNavIds);
             buildSidebar();
-            buildHomeWidgets(currentHomeWidgetIds); // 초기 홈 위젯 로드
+            buildHomeWidgets(currentHomeWidgetIds);
         });
     </script>
 </body>
