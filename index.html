@@ -381,6 +381,111 @@
              margin-bottom: 4px;
         }
 
+        /* --- 날씨 페이지 전용 스타일 (추가됨) --- */
+        .weather-current {
+            background: linear-gradient(135deg, var(--primary-color), #5899FF);
+            color: white;
+            text-align: center;
+            padding: 30px 20px;
+        }
+        .weather-location {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            opacity: 0.9;
+        }
+        .weather-icon-large {
+            font-size: 72px;
+            margin: 10px 0;
+        }
+        .weather-temp-large {
+            font-size: 64px;
+            font-weight: 800;
+            margin: 0;
+        }
+        .weather-desc {
+            font-size: 20px;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+        .weather-highlow {
+            font-size: 14px;
+            font-weight: 500;
+            opacity: 0.9;
+        }
+
+        /* 시간대별 예보 */
+        .hourly-forecast {
+            display: flex;
+            overflow-x: auto;
+            gap: 20px;
+            padding-bottom: 10px; /* 스크롤바 공간 */
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none;  /* IE and Edge */
+        }
+        .hourly-forecast::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, Opera */
+        }
+        .hourly-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            flex-shrink: 0;
+            width: 50px; /* 아이템 너비 고정 */
+        }
+        .hourly-item .time {
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+        .hourly-item .icon {
+            font-size: 24px;
+        }
+        .hourly-item .temp {
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        /* 주간 예보 */
+        .weekly-forecast-list .list-item {
+            padding: 16px 0;
+        }
+        .weekly-temp {
+            font-weight: 600;
+            white-space: nowrap;
+            color: var(--text-primary);
+        }
+        .weekly-temp span:last-child {
+            color: var(--text-secondary);
+            margin-left: 8px;
+        }
+
+        /* 상세 정보 그리드 */
+        .widget-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        .detail-item {
+            background-color: var(--background-color);
+            border-radius: 12px;
+            padding: 15px;
+        }
+        .detail-item .label {
+            display: block;
+            font-size: 13px;
+            color: var(--text-secondary);
+            font-weight: 500;
+            margin-bottom: 6px;
+        }
+        .detail-item .value {
+            display: block;
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
     </style>
 </head>
 <body>
@@ -465,11 +570,11 @@
                 <div id="page-messenger" class="page">
                     <h2><svg class="icon-svg" viewBox="0 0 24 24"><path d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>메신저</h2>
                      <div class="filter-tabs">
-                        <button class="active">전체</button>
-                        <button>안 읽음</button>
-                        <button>Gmail</button>
-                        <button>SMS</button>
-                    </div>
+                         <button class="active">전체</button>
+                         <button>안 읽음</button>
+                         <button>Gmail</button>
+                         <button>SMS</button>
+                     </div>
                     <div class="message-list widget">
                         <div class="list-item">
                             <span class="icon" style="background-color: #E6F6EC; color: var(--green-color);"><svg class="icon-svg" viewBox="0 0 24 24"><path d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg></span>
@@ -487,14 +592,99 @@
                         </div>
                     </div>
                 </div>
+
                 <div id="page-weather" class="page">
                     <h2><svg class="icon-svg" viewBox="0 0 24 24"><path d="M2.25 15a4.5 4.5 0 004.5 4.5H18a3.75 3.75 0 001.332-7.257 3 3 0 00-3.758-3.758A3.75 3.75 0 0013.5 4.5h-2.25A3.75 3.75 0 007.5 8.25v.75" /></svg>날씨</h2>
+        
+                    <div class="weather-current widget">
+                        <div class="weather-location">원주시 흥업면 흥업리</div>
+                        <div class="weather-icon-large">☀️</div>
+                        <div class="weather-temp-large">23°</div>
+                        <div class="weather-desc">맑음</div>
+                        <div class="weather-highlow">최고: 25° / 최저: 18°</div>
+                    </div>
+        
                     <div class="widget">
-                        <p style="text-align: center;">현재 위치</p>
-                        <h1 style="text-align: center; font-size: 60px; margin: 0;">23°</h1>
-                        <p style="text-align: center; font-size: 20px; color: var(--text-secondary); margin: 0;">맑음</p>
+                        <div class="widget-title">시간대별 예보</div>
+                        <div class="hourly-forecast">
+                            <div class="hourly-item">
+                                <span class="time">지금</span>
+                                <span class="icon">☀️</span>
+                                <span class="temp">23°</span>
+                            </div>
+                            <div class="hourly-item">
+                                <span class="time">10시</span>
+                                <span class="icon">☀️</span>
+                                <span class="temp">24°</span>
+                            </div>
+                            <div class="hourly-item">
+                                <span class="time">11시</span>
+                                <span class="icon">🌤️</span>
+                                <span class="temp">25°</span>
+                            </div>
+                            <div class="hourly-item">
+                                <span class="time">12시</span>
+                                <span class="icon">🌤️</span>
+                                <span class="temp">25°</span>
+                            </div>
+                            <div class="hourly-item">
+                                <span class="time">13시</span>
+                                <span class="icon">☁️</span>
+                                <span class="temp">24°</span>
+                            </div>
+                            <div class="hourly-item">
+                                <span class="time">14시</span>
+                                <span class="icon">☁️</span>
+                                <span class="temp">23°</span>
+                            </div>
+                        </div>
+                    </div>
+        
+                    <div class="widget">
+                        <div class="widget-title">주간 예보</div>
+                        <div class="weekly-forecast-list">
+                            <div class="list-item">
+                                <div class="list-item-content"><strong>오늘</strong><span>맑음</span></div>
+                                <div class="weekly-temp"><span>25°</span> / <span>18°</span></div>
+                            </div>
+                            <div class="list-item">
+                                <div class="list-item-content"><strong>내일 (목)</strong><span>구름 많음</span></div>
+                                <div class="weekly-temp"><span>23°</span> / <span>17°</span></div>
+                            </div>
+                            <div class="list-item">
+                                <div class="list-item-content"><strong>금</strong><span>비</span></div>
+                                <div class="weekly-temp"><span>20°</span> / <span>15°</span></div>
+                            </div>
+                            <div class="list-item">
+                                <div class="list-item-content"><strong>토</strong><span>맑음</span></div>
+                                <div class="weekly-temp"><span>22°</span> / <span>14°</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="widget">
+                         <div class="widget-title">상세 정보</div>
+                         <div class="widget-grid">
+                             <div class="detail-item">
+                                 <span class="label">습도</span>
+                                 <span class="value">45%</span>
+                             </div>
+                             <div class="detail-item">
+                                 <span class="label">바람</span>
+                                 <span class="value">북서풍 3m/s</span>
+                             </div>
+                             <div class="detail-item">
+                                 <span class="label">강수 확률</span>
+                                 <span class="value">0%</span>
+                             </div>
+                             <div class="detail-item">
+                                 <span class="label">미세먼지</span>
+                                 <span class="value">좋음 (12µg/m³)</span>
+                             </div>
+                         </div>
                     </div>
                 </div>
+
                 <div id="page-calendar" class="page">
                     <h2><svg class="icon-svg" viewBox="0 0 24 24"><path d="M6.75 3v2.25m10.5-2.25v2.25M6.75 21V5.25h10.5V21M3 10.5h18M3 5.25a2.25 2.25 0 012.25-2.25h13.5a2.25 2.25 0 012.25 2.25v13.5a2.25 2.25 0 01-2.25 2.25H5.25a2.25 2.25 0 01-2.25-2.25V5.25z" /></svg>캘린더</h2>
                     <div class="widget">
@@ -553,12 +743,12 @@
                 
                 <div id="page-map" class="page">
                     <h2><svg class="icon-svg" viewBox="0 0 24 24"><path d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" /><path d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" /></svg>지도</h2>
-                     <div class="widget">
-                         <input type="text" placeholder="출발지 입력">
-                         <input type="text" placeholder="도착지 입력">
-                         <button class="btn btn-primary" style="margin-top: 10px;">길찾기</button>
-                     </div>
-                     <div class="widget" style="padding: 0; overflow: hidden;"><img src="https://placehold.co/375x300/E5E5EA/8A8A8E?text=Map+View" style="width: 100%; display: block;"></div>
+                       <div class="widget">
+                           <input type="text" placeholder="출발지 입력">
+                           <input type="text" placeholder="도착지 입력">
+                           <button class="btn btn-primary" style="margin-top: 10px;">길찾기</button>
+                       </div>
+                       <div class="widget" style="padding: 0; overflow: hidden;"><img src="https://placehold.co/375x300/E5E5EA/8A8A8E?text=Map+View" style="width: 100%; display: block;"></div>
                 </div>
                 <div id="page-life" class="page">
                     <h2><svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0012 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75l.008-.008H12v.008z" /></svg>생활</h2>
@@ -677,15 +867,15 @@
                      <div class="widget">
                          <div class="widget-title">정기 구독</div>
                          <div class="list-item">
-                            <span class="icon">📺</span>
-                            <div class="list-item-content"><strong>Netflix</strong><br><span>매월 15일 결제 예정</span></div>
-                            <span style="font-weight: 600;">17,000 원</span>
-                        </div>
+                             <span class="icon">📺</span>
+                             <div class="list-item-content"><strong>Netflix</strong><br><span>매월 15일 결제 예정</span></div>
+                             <span style="font-weight: 600;">17,000 원</span>
+                         </div>
                          <div class="list-item">
-                            <span class="icon">🎵</span>
-                            <div class="list-item-content"><strong>Spotify</strong><br><span>매월 25일 결제 예정</span></div>
-                            <span style="font-weight: 600;">10,900 원</span>
-                        </div>
+                             <span class="icon">🎵</span>
+                             <div class="list-item-content"><strong>Spotify</strong><br><span>매월 25일 결제 예정</span></div>
+                             <span style="font-weight: 600;">10,900 원</span>
+                         </div>
                     </div>
                 </div>
                 <div id="page-stocks" class="page">
@@ -698,9 +888,9 @@
                            <div style="text-align: right;"><strong>1,400,000 원</strong><br><span class="stock-change up">+1.5%</span></div>
                         </div>
                         <div class="list-item">
-                            <img src="https://placehold.co/40x40/FF9500/FFF?text=K" style="border-radius: 50%; margin-right: 15px;">
-                            <div class="list-item-content"><strong>카카오</strong><br><span>15주 보유</span></div>
-                           <div style="text-align: right;"><strong>1,020,000 원</strong><br><span class="stock-change down">-0.8%</span></div>
+                             <img src="https://placehold.co/40x40/FF9500/FFF?text=K" style="border-radius: 50%; margin-right: 15px;">
+                             <div class="list-item-content"><strong>카카오</strong><br><span>15주 보유</span></div>
+                            <div style="text-align: right;"><strong>1,020,000 원</strong><br><span class="stock-change down">-0.8%</span></div>
                         </div>
                     </div>
                     <div class="widget">
@@ -711,9 +901,9 @@
                            <div style="text-align: right;"><strong>$175.50</strong><br><span class="stock-change up">+2.1%</span></div>
                         </div>
                          <div class="list-item">
-                            <img src="https://placehold.co/40x40/34C759/FFF?text=T" style="border-radius: 50%; margin-right: 15px;">
-                            <div class="list-item-content"><strong>Tesla</strong></div>
-                           <div style="text-align: right;"><strong>$250.10</strong><br><span class="stock-change down">-1.2%</span></div>
+                             <img src="https://placehold.co/40x40/34C759/FFF?text=T" style="border-radius: 50%; margin-right: 15px;">
+                             <div class="list-item-content"><strong>Tesla</strong></div>
+                            <div style="text-align: right;"><strong>$250.10</strong><br><span class="stock-change down">-1.2%</span></div>
                         </div>
                     </div>
                 </div>
@@ -730,7 +920,6 @@
                         <button class="btn btn-primary" style="margin-top: 15px;">번역하기</button>
                     </div>
                 </div>
-
 
             </div>
 
@@ -789,7 +978,7 @@
                 settings: { name: '설정', iconSVG: '<svg class="icon-svg icon-xs" viewBox="0 0 24 24"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>', icon: '<svg class="icon-svg" viewBox="0 0 24 24"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>' }
             };
              const allHomeWidgets = {
-                weather: { name: '날씨', iconSVG: allNavItems.weather.iconSVG, content: `<div class="widget" data-widget-id="weather"><div class="widget-title"><svg class="icon-svg icon-sm" viewBox="0 0 24 24"><path d="M2.25 15a4.5 4.5 0 004.5 4.5H18a3.75 3.75 0 001.332-7.257 3 3 0 00-3.758-3.758A3.75 3.75 0 0013.5 4.5h-2.25A3.75 3.75 0 007.5 8.25v.75" /></svg>날씨</div><p>원주시 반곡관설동 | 23°C 맑음 (미세먼지: 좋음)</p></div>` },
+                weather: { name: '날씨', iconSVG: allNavItems.weather.iconSVG, content: `<div class="widget" data-widget-id="weather"><div class="widget-title"><svg class="icon-svg icon-sm" viewBox="0 0 24 24"><path d="M2.25 15a4.5 4.5 0 004.5 4.5H18a3.75 3.75 0 001.332-7.257 3 3 0 00-3.758-3.758A3.75 3.75 0 0013.5 4.5h-2.25A3.75 3.75 0 007.5 8.25v.75" /></svg>날씨</div><p>원주시 흥업면 흥업리 | 23°C 맑음 (미세먼지: 좋음)</p></div>` },
                 calendar: { name: '일정', iconSVG: allNavItems.calendar.iconSVG, content: `<div class="widget" data-widget-id="calendar"><div class="widget-title"><svg class="icon-svg icon-sm" viewBox="0 0 24 24"><path d="M6.75 3v2.25m10.5-2.25v2.25M6.75 21V5.25h10.5V21M3 10.5h18M3 5.25a2.25 2.25 0 012.25-2.25h13.5a2.25 2.25 0 012.25 2.25v13.5a2.25 2.25 0 01-2.25 2.25H5.25a2.25 2.25 0 01-2.25-2.25V5.25z" /></svg>오늘 일정</div><p>(14:30) ⚪️ (은행) 송금 알림</p><p>(18:00) 🔵 친구와 저녁 약속</p></div>` },
                 news: { name: '뉴스', iconSVG: allNavItems.news.iconSVG, content: `<div class="widget" data-widget-id="news"><div class="widget-title"><svg class="icon-svg icon-sm" viewBox="0 0 24 24"><path d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 01-2.25 2.25M16.5 7.5V18a2.25 2.25 0 002.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 002.25 2.25h13.5M6 7.5h3v3H6v-3z" /></svg>주요 뉴스</div><p style="font-size: 14px; margin-bottom: 5px;">• [속보] 코스피 장중 2700선 돌파</p><p style="font-size: 14px; margin-bottom: 0;">• 가을 단풍 절정, 주말 나들이객 '북적'</p></div>` },
                 stocks: { name: '증권', iconSVG: allNavItems.stocks.iconSVG, content: `<div class="widget" data-widget-id="stocks"><div class="widget-title"><svg class="icon-svg icon-sm" viewBox="0 0 24 24"><path d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-3.976 5.197M21 18H2.25" /></svg>내 주식</div><div style="display: flex; justify-content: space-between; font-size: 14px;"><span style="font-weight: 500;">삼성전자</span> <span class="stock-change up">+1.5%</span></div><div style="display: flex; justify-content: space-between; font-size: 14px; margin-top: 5px;"><span style="font-weight: 500;">카카오</span> <span class="stock-change down">-0.8%</span></div></div>` },
@@ -848,8 +1037,8 @@
 
              function buildHomeWidgets(widgetIds) {
                  homeWidgetsContainer.innerHTML = widgetIds
-                    .map(id => allHomeWidgets[id]?.content || '') // Use optional chaining
-                    .join('');
+                     .map(id => allHomeWidgets[id]?.content || '') // Use optional chaining
+                     .join('');
                  // Re-add event listener for map button if map widget is present
                  const mapButton = homeWidgetsContainer.querySelector('[data-page="map"]');
                  if (mapButton) {
@@ -946,9 +1135,9 @@
                      const isChecked = currentHomeWidgetIds.includes(id); // Check if currently active
                      return `
                          <label draggable="true" data-widget-id="${id}">
-                            <input type="checkbox" value="${id}" ${isChecked ? 'checked' : ''}> 
-                            <span class="item-icon">${item.iconSVG || ''}</span>
-                            <span>${item.name}</span>
+                             <input type="checkbox" value="${id}" ${isChecked ? 'checked' : ''}> 
+                             <span class="item-icon">${item.iconSVG || ''}</span>
+                             <span>${item.name}</span>
                          </label>
                      `;
                  }).join('');
@@ -961,8 +1150,8 @@
                     });
                     item.addEventListener('dragend', () => {
                          setTimeout(() => {
-                            draggedItem.style.opacity = '1';
-                            draggedItem = null;
+                             draggedItem.style.opacity = '1';
+                             draggedItem = null;
                          }, 0);
                     });
                     item.addEventListener('dragover', (e) => {
@@ -989,7 +1178,7 @@
                  customizeHomeList.querySelectorAll('label').forEach(label => { // Get order from DOM
                      const checkbox = label.querySelector('input');
                      if (checkbox.checked) {
-                        orderedWidgets.push(checkbox.value);
+                         orderedWidgets.push(checkbox.value);
                      }
                  });
                 
