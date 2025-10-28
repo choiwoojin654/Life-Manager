@@ -3,1443 +3,859 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MOA - All-in-One App</title>
-    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+    <title>Moa Now - 와이어프레임 (최종본 - 컬러 차트 수정)</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <style>
-        /* --- CSS 변수 정의 (라이트 모드 기본) --- */
-        :root {
-            --primary-color: #007AFF;
-            --primary-color-light: #EBF5FF;
-            --background-color: #F9F9FB;
-            --widget-background: #FFFFFF;
-            --text-primary: #1D1D1F;
-            --text-secondary: #8A8A8E;
-            --border-color: #EFEFEF;
-            --shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
-            --green-color: #34C759;
-            --red-color: #FF3B30;
-            --orange-color: #FF9500;
-            --body-bg-color: #E5E5EA; /* 바깥 배경색 추가 */
-            --modal-bg-color: #FFFFFF; /* 모달 배경색 추가 */
-            --input-bg-color: #FFFFFF; /* 입력 필드 배경색 추가 */
-            --filter-btn-bg: #EEE; /* 필터 버튼 배경 */
-            --filter-btn-active-bg: var(--primary-color); /* 활성 필터 버튼 배경 */
-            --filter-btn-text: var(--text-secondary); /* 필터 버튼 텍스트 */
-            --filter-btn-active-text: #FFFFFF; /* 활성 필터 버튼 텍스트 */
-            --detail-item-bg: var(--background-color); /* 상세 정보 배경 */
-            --nav-bg-color: rgba(255, 255, 255, 0.75); /* 네비게이션 배경 */
-            --sidebar-bg-color: #FFFFFF; /* 사이드바 배경 */
-            --login-bg-color: var(--widget-background); /* 로그인 배경 */
-            --readonly-textarea-bg: #f9f9f9; /* 읽기 전용 텍스트 영역 배경 */
-        }
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap');
 
-        /* --- 다크 모드 변수 정의 --- */
-        body.dark-mode {
-            --background-color: #1C1C1E; /* 어두운 화면 배경 */
-            --widget-background: #2C2C2E; /* 어두운 위젯 배경 */
-            --text-primary: #FFFFFF; /* 밝은 기본 텍스트 */
-            --text-secondary: #8D8D93; /* 약간 밝은 보조 텍스트 */
-            --border-color: #3A3A3C; /* 어두운 경계선 */
-            --shadow: 0 10px 25px rgba(0, 0, 0, 0.2); /* 약간 진한 그림자 */
-            --modal-bg-color: #2C2C2E; /* 모달 배경 어둡게 */
-            --input-bg-color: #3A3A3C; /* 입력 필드 배경 어둡게 */
-            --filter-btn-bg: #3A3A3C; /* 필터 버튼 배경 */
-            --filter-btn-active-bg: var(--primary-color);
-            --filter-btn-text: #EBEBF5; /* 필터 버튼 텍스트 */
-            --filter-btn-active-text: #FFFFFF;
-            --detail-item-bg: #3A3A3C; /* 상세 정보 배경 */
-            --nav-bg-color: rgba(44, 44, 46, 0.75); /* 네비게이션 배경 */
-            --sidebar-bg-color: #2C2C2E; /* 사이드바 배경 */
-            --login-bg-color: #1C1C1E; /* 로그인 배경 */
-            --readonly-textarea-bg: #1C1C1E;
-        }
-
-
-        /* --- 기본 및 프레임 스타일 --- */
         body {
-            background-color: var(--body-bg-color); /* 변수 사용 */
-            font-family: "Pretendard", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            font-family: 'Noto Sans KR', sans-serif;
             display: flex;
             justify-content: center;
             align-items: flex-start;
-            padding: 40px;
+            min-height: 100vh;
+            background-color: #f0f2f5;
             margin: 0;
-            color: var(--text-primary);
-            gap: 40px;
-            flex-wrap: wrap;
-            transition: background-color 0.3s ease; /* 테마 전환 애니메이션 */
-        }
-
-        .mobile-frame {
-            width: 375px;
-            height: 812px;
-            background-color: #1c1c1e; /* 프레임 색상은 고정 */
-            border-radius: 40px;
-            padding: 18px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-            display: flex;
-            flex-direction: column;
-        }
-
-        .screen {
-            background-color: var(--background-color); /* 변수 사용 */
-            height: 100%;
-            width: 100%;
-            border-radius: 22px;
-            overflow: hidden;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            transition: background-color 0.3s ease; /* 테마 전환 애니메이션 */
-        }
-
-        .app-content {
-            flex-grow: 1;
-            overflow-y: hidden;
-            position: relative;
-        }
-
-        /* --- SVG 아이콘 기본 스타일 --- */
-        .icon-svg {
-            width: 24px;
-            height: 24px;
-            stroke: currentColor;
-            fill: none;
-            stroke-width: 1.5;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-            transition: all 0.2s ease-in-out;
-            flex-shrink: 0;
-        }
-
-        .icon-svg.icon-sm {
-            width: 20px;
-            height: 20px;
-        }
-        .icon-svg.icon-xs {
-             width: 18px;
-             height: 18px;
-        }
-
-        /* --- 페이지 기본 스타일 --- */
-        .page {
-            display: none;
-            flex-direction: column;
-            padding: 12px 20px 20px;
-            box-sizing: border-box;
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            overflow-y: auto;
-            padding-bottom: 90px;
-        }
-
-        .page.active {
-            display: flex;
-            animation: fadeIn 0.3s ease-in-out;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        h2 {
-            font-size: 28px;
-            font-weight: 800;
-            margin: 20px 0;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            color: var(--text-primary); /* 변수 사용 */
-        }
-
-        /* --- 하단 네비게이션 --- */
-        .bottom-nav {
-            display: flex;
-            justify-content: space-around;
-            border-top: 1px solid var(--border-color); /* 변수 사용 */
-            padding: 10px 0 15px;
-            background-color: var(--nav-bg-color); /* 변수 사용 */
-            backdrop-filter: blur(15px);
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            z-index: 10;
-            transition: background-color 0.3s ease, border-color 0.3s ease; /* 테마 전환 애니메이션 */
-        }
-
-        .nav-button {
-            background: none;
-            border: none;
-            font-size: 10px;
-            font-weight: 500;
-            color: var(--text-secondary); /* 변수 사용 */
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-            transition: color 0.2s ease;
-            flex: 1;
-        }
-
-        .nav-button.active {
-            color: var(--primary-color);
-        }
-
-        .nav-button.active .icon-svg {
-            stroke-width: 2;
-            transform: scale(1.1);
-        }
-
-        /* --- 공용 컴포넌트 --- */
-        .widget {
-            background-color: var(--widget-background); /* 변수 사용 */
-            border-radius: 20px;
             padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: var(--shadow); /* 변수 사용 */
-            transition: transform 0.2s ease, background-color 0.3s ease, box-shadow 0.3s ease; /* 테마 전환 애니메이션 */
-        }
-        .widget:active {
-            transform: scale(0.98);
+            box-sizing: border-box;
         }
 
-        .widget-title {
-            font-size: 18px;
+        .phone-mockup {
+            width: 375px; 
+            height: 812px;
+            background-color: #fff;
+            border-radius: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            position: relative;
+            overflow: hidden;
+            border: 8px solid #333;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .phone-mockup::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 140px;
+            height: 25px;
+            background-color: #333;
+            border-bottom-left-radius: 15px;
+            border-bottom-right-radius: 15px;
+            z-index: 10;
+        }
+
+        .status-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            font-size: 13px;
+            color: #333;
+            background-color: #f7f7f7;
+            position: sticky;
+            top: 0;
+            z-index: 5;
+            border-top-left-radius: 32px;
+            border-top-right-radius: 32px;
+        }
+
+        .status-bar .time { font-weight: bold; }
+        .status-bar .icons { }
+
+        .app-header {
+            padding: 15px 20px;
+            background-color: #fff;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .app-header h1 {
+            font-size: 24px;
             font-weight: 700;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: var(--text-primary); /* 변수 사용 */
+            color: #333;
+            margin: 0;
+        }
+        .app-header .settings-icon { 
+            font-size: 22px; 
+            color: #555; 
+            cursor: pointer;
+        }
+        
+        .main-content {
+            flex-grow: 1;
+            overflow-y: auto;
+            background-color: #f7f7f7;
+            position: relative;
         }
 
-        .list-item {
+        .page-content {
+            display: none;
+            padding: 20px;
+        }
+        .page-content.active {
+            display: block;
+        }
+        
+        #page-my {
+            padding: 0;
+        }
+
+        /* --- 홈(NOW) 페이지 스타일 --- */
+        .now-feed-card {
+            background-image: linear-gradient(135deg, #8E2DE2 0%, #4A00E0 100%);
+            border-radius: 25px;
+            padding: 25px;
+            color: #fff;
+            box-shadow: 0 8px 20px rgba(74, 0, 224, 0.2);
+            margin-bottom: 25px;
+            position: relative;
+            overflow: hidden;
+        }
+        .now-feed-card::before {
+            content: '';
+            position: absolute;
+            top: -20px;
+            right: -20px;
+            width: 80px;
+            height: 80px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transform: rotate(45deg);
+        }
+        .now-feed-card .time-info { font-size: 14px; opacity: 0.8; margin-bottom: 10px; }
+        .now-feed-card .focus-score { font-size: 16px; font-weight: 700; margin-bottom: 20px; display: flex; align-items: center; }
+        .now-feed-card .focus-score span { margin-left: 5px; font-size: 20px; }
+        .now-feed-card .recommendation { font-size: 22px; font-weight: 700; margin-bottom: 25px; line-height: 1.4; }
+        .now-feed-card .action-button { background-color: #fff; color: #4A00E0; padding: 12px 25px; border-radius: 30px; font-size: 16px; font-weight: 700; text-align: center; display: inline-block; text-decoration: none; transition: background-color 0.3s, color 0.3s; }
+        .now-feed-card .action-button:hover { background-color: #eee; }
+
+        .score-section { background-color: #fff; border-radius: 20px; padding: 20px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); margin-bottom: 25px; }
+        .score-section h3 { font-size: 18px; font-weight: 700; color: #333; margin-top: 0; margin-bottom: 15px; }
+        .moa-score { display: flex; align-items: center; margin-bottom: 20px; }
+        .moa-score .score-value { font-size: 48px; font-weight: 700; color: #4A00E0; margin-right: 15px; }
+        .moa-score .score-icon { font-size: 36px; color: #FFC107; } /* (참고) 이 스타일은 이제 사용되지 않음 */
+        
+        /* [수정] 홈 화면의 '점' 텍스트 스타일 (스코어 페이지와 유사하게) */
+        .moa-score .unit {
+            font-size: 20px; /* 스코어 페이지의 '점'과 동일한 크기 */
+            font-weight: 500; 
+            color: #555; 
+            margin-left: -10px; /* 숫자와 '점' 사이 간격 조절 */
+            align-self: flex-end; /* 점을 숫자 하단에 맞춤 */
+            margin-bottom: 8px; /* 하단 정렬을 위한 미세조정 */
+        }
+        
+        .score-detail { margin-bottom: 15px; }
+        .score-detail div { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; font-size: 15px; color: #555; border-bottom: 1px dashed #eee; }
+        .score-detail div:last-child { border-bottom: none; }
+        
+        .score-detail .status-icon {
+            font-size: 16px; 
+            margin-left: 8px;
+            display: inline-block;
+        }
+        .score-detail .status-icon.good { color: #28A745; }
+        .score-detail .status-icon.neutral { color: #FFC107; }
+        .score-detail .status-icon.bad { color: #DC3545; }
+
+        #now-score-section {
+            cursor: pointer;
+        }
+        
+        .section-title { font-size: 20px; font-weight: 700; color: #333; margin-bottom: 15px; padding-left: 5px; }
+        
+        .micro-reminder-card { background-color: #fff; border-radius: 20px; padding: 20px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center; }
+        .micro-reminder-card .reminder-text { font-size: 16px; color: #333; font-weight: 500; }
+        .micro-reminder-card .do-it-button { background-color: #e0f7fa; color: #00BCD4; padding: 8px 15px; border-radius: 20px; font-size: 14px; font-weight: 600; text-decoration: none; }
+        
+        .digital-balance-card { background-color: #fff; border-radius: 20px; padding: 20px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); margin-bottom: 25px; }
+        .digital-balance-card h3 { font-size: 18px; font-weight: 700; color: #333; margin-top: 0; margin-bottom: 15px; }
+        .app-usage-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px dashed #eee; }
+        .app-usage-item:last-child { border-bottom: none; }
+        .app-usage-item .app-name { font-size: 15px; color: #555; display: flex; align-items: center; }
+        .app-usage-item .app-name i { margin-right: 8px; } 
+        
+        .app-usage-item .app-name .fa-youtube { color: #FF0000; }
+        .app-usage-item .app-name .fa-instagram { color: #E4405F; }
+        .app-usage-item .app-name .fa-book { color: #007AFF; } 
+        
+        .app-usage-item .usage-time { font-size: 15px; font-weight: 600; color: #333; }
+        .digital-balance-card .insight { font-size: 14px; color: #777; margin-top: 15px; line-height: 1.5; text-align: center; }
+
+        #page-now .digital-balance-card {
+            cursor: pointer;
+        }
+
+        /* ----- 리포트(스크린 타임) 페이지 스타일 ----- */
+        .report-header { margin-bottom: 20px; }
+        .report-header h2 { font-size: 18px; font-weight: 600; color: #555; margin: 0 0 5px 0; }
+        .total-time-display { font-size: 36px; font-weight: 700; color: #333; }
+        .total-time-display .unit { font-size: 20px; font-weight: 500; color: #555; margin-left: 2px; margin-right: 8px; }
+
+        .chart-container {
+            height: 220px; 
+            position: relative; 
+            background-color: #fff;
+            border-radius: 20px;
+            padding: 20px 15px 10px 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 25px;
+        }
+        
+        .category-list-container { background-color: #fff; border-radius: 20px; padding: 20px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); }
+        .category-list-container h3 { font-size: 18px; font-weight: 700; color: #333; margin-top: 0; margin-bottom: 15px; }
+        .category-item { display: flex; flex-wrap: wrap; align-items: center; padding: 12px 0; border-bottom: 1px solid #f0f0f0; }
+        .category-item:last-child { border-bottom: none; }
+        .category-info { display: flex; align-items: center; flex-grow: 1; }
+        .category-icon { width: 10px; height: 10px; border-radius: 50%; margin-right: 12px; }
+        .category-icon.social { background-color: #007AFF; } 
+        .category-icon.entertainment { background-color: #FF2D55; }
+        .category-icon.productivity { background-color: #FF9500; }
+        .category-icon.other { background-color: #8E8E93; }
+        .category-name { font-size: 16px; color: #333; }
+        .category-time { font-size: 15px; font-weight: 600; color: #555; white-space: nowrap; }
+        .category-progress-bar { width: 100%; height: 6px; background-color: #f0f0f0; border-radius: 3px; margin-top: 10px; overflow: hidden; }
+        .category-progress-bar .progress { height: 100%; border-radius: 3px; }
+        .category-item.social .progress { background-color: #007AFF; }
+        .category-item.entertainment .progress { background-color: #FF2D55; }
+        .category-item.productivity .progress { background-color: #FF9500; }
+        .category-item.other .progress { background-color: #8E8E93; }
+
+        /* 스코어 페이지 설명 카드 배경색 */
+        #page-score .digital-balance-card {
+            background-color: #fffbeb; 
+        }
+        #page-score .digital-balance-card .insight {
+            text-align: left;
+            color: #555;
+        }
+        
+        /* ----- MY 페이지 스타일 ----- */
+        .profile-section {
             display: flex;
             align-items: center;
-            padding: 14px 0;
-            border-bottom: 1px solid var(--border-color); /* 변수 사용 */
+            padding: 30px 20px;
+            background-color: #fff;
+            border-bottom: 10px solid #f7f7f7; 
             cursor: pointer;
-            transition: background-color 0.2s ease, border-color 0.3s ease; /* 테마 전환 애니메이션 */
+            transition: background-color 0.3s;
         }
-        .list-item:hover {
-            /* hover 효과는 라이트 모드에서만 보이게 할 수 있음 */
-            background-color: rgba(0, 0, 0, 0.03);
+        .profile-section:hover {
+            background-color: #fafafa;
         }
-        body.dark-mode .list-item:hover {
-            background-color: rgba(255, 255, 255, 0.05);
+        .profile-pic {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            margin-right: 15px;
+            object-fit: cover;
+            border: 2px solid #eee;
         }
-        .list-item:last-child {
+        
+        .profile-pic.default-profile {
+            display: flex; 
+            justify-content: center;
+            align-items: center;
+            background-color: #f7f7f7; 
+            object-fit: unset; 
+            border: 2px solid #eee; 
+        }
+        .profile-pic.default-profile .fas {
+            font-size: 28px; 
+            color: #aaa; 
+        }
+        
+        .profile-info {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .profile-name {
+            font-size: 20px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 2px;
+        }
+        .profile-email {
+            font-size: 14px;
+            color: #777;
+        }
+        .profile-section .fa-chevron-right {
+            font-size: 16px;
+            color: #ccc;
+        }
+
+        .settings-group {
+            background-color: #fff;
+            margin-bottom: 10px; 
+        }
+        .settings-item {
+            display: flex;
+            align-items: center;
+            padding: 16px 20px;
+            text-decoration: none;
+            color: #333;
+            font-size: 16px;
+            border-bottom: 1px solid #f7f7f7;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .settings-item:hover {
+            background-color: #fafafa;
+        }
+        .settings-item:last-child {
             border-bottom: none;
         }
-        .list-item .icon {
-            margin-right: 15px;
-            color: var(--primary-color);
-            display: flex;
-            align-items: center;
-            background: var(--primary-color-light); /* 변수 사용 */
-            padding: 8px;
-            border-radius: 12px;
-            flex-shrink: 0;
-            /* 다크 모드 아이콘 배경 조정 */
-            transition: background-color 0.3s ease;
+        .settings-item .fas { 
+            width: 30px; 
+            font-size: 18px;
+            color: #4A00E0; 
+            margin-right: 10px;
+            text-align: center;
         }
-        body.dark-mode .list-item .icon {
-            background: rgba(0, 122, 255, 0.2); /* 반투명 파랑 */
-        }
-
-        .list-item-content {
+        .settings-item span { 
             flex-grow: 1;
-            overflow: hidden;
         }
-        .list-item-content strong {
-            font-weight: 600;
-            color: var(--text-primary); /* 변수 사용 */
-            display: block;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        .list-item-content span {
+        .settings-item .fa-chevron-right { 
             font-size: 14px;
-            color: var(--text-secondary); /* 변수 사용 */
-             display: block;
-             white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            color: #ccc;
         }
-
-        .stock-change { font-weight: 600; text-align: right; white-space: nowrap; }
-        .stock-change.up { color: var(--red-color); }
-        .stock-change.down { color: var(--primary-color); } /* 다크모드에서 파란색이 잘 안보이면 다른 색 고려 */
-        body.dark-mode .stock-change.down { color: #5AC8FA; } /* 예시: 밝은 파랑 */
-
-
-        /* Input & Button Styles */
-        input[type="text"], input[type="password"], textarea {
-            width: 100%;
-            padding: 12px 15px;
-            margin-bottom: 15px;
-            border: 1px solid var(--border-color); /* 변수 사용 */
-            border-radius: 12px;
-            font-size: 16px;
-            box-sizing: border-box;
-            font-family: inherit;
-            background-color: var(--input-bg-color); /* 변수 사용 */
-            color: var(--text-primary); /* 변수 사용 */
-            transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease; /* 테마 전환 애니메이션 */
-        }
-        textarea {
-            resize: vertical;
-            min-height: 80px;
-        }
-
-        .btn {
-            width: 100%;
-            padding: 14px;
-            border: none;
-            border-radius: 12px;
-            font-size: 16px;
+        .settings-item.logout .fas,
+        .settings-item.logout span {
+            color: #DC3545; 
             font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            text-align: center;
-            box-sizing: border-box;
-        }
-        .btn-primary {
-            background-color: var(--primary-color);
-            color: white;
-            margin-bottom: 10px;
-        }
-        .btn-primary:hover { opacity: 0.9; }
-        .btn-secondary {
-            background-color: var(--primary-color-light); /* 변수 사용 */
-            color: var(--primary-color);
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
-        body.dark-mode .btn-secondary {
-             background: rgba(0, 122, 255, 0.2); /* 반투명 파랑 */
-             color: var(--primary-color);
-        }
-
-        .btn-sm { padding: 8px 16px; font-size: 14px; width: auto; }
-
-         .filter-tabs { display: flex; gap: 10px; margin-bottom: 20px; padding-bottom: 5px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
-        .filter-tabs button {
-            background-color: var(--filter-btn-bg); /* 변수 사용 */
-            color: var(--filter-btn-text); /* 변수 사용 */
-            border: none;
-            border-radius: 16px;
-            padding: 8px 16px;
-            font-size: 14px;
-            font-weight: 600;
-            transition: all 0.2s ease;
-            white-space: nowrap;
-            cursor: pointer;
-        }
-        .filter-tabs button.active {
-            background-color: var(--filter-btn-active-bg); /* 변수 사용 */
-            color: var(--filter-btn-active-text); /* 변수 사용 */
-            box-shadow: 0 4px 10px rgba(0, 122, 255, 0.3);
-        }
-        body.dark-mode .filter-tabs button.active {
-             box-shadow: 0 4px 10px rgba(0, 122, 255, 0.5); /* 다크모드 그림자 */
         }
 
 
-        /* --- 로그인 페이지 스타일 --- */
-        .login-container {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            height: 100%;
-            padding: 40px;
-            box-sizing: border-box;
-            background: var(--login-bg-color); /* 변수 사용 */
-            transition: background-color 0.3s ease;
-        }
-        .login-container .app-title { font-size: 36px; font-weight: 800; text-align: center; margin-bottom: 10px; color: var(--text-primary); }
-        .login-container .app-subtitle { font-size: 16px; color: var(--text-secondary); text-align: center; margin-bottom: 60px; }
-        .social-login-btn { width: 100%; padding: 14px; margin-bottom: 12px; border: none; border-radius: 12px; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; justify-content: center; gap: 10px; }
-        .social-login-btn .logo { width: 20px; height: 20px; }
-        .btn-kakao { background-color: #FEE500; color: #191919; }
-        .btn-google { background-color: #FFFFFF; color: #1F1F1F; border: 1px solid #DADCE0; }
-        /* 다크 모드 구글 버튼 */
-        body.dark-mode .btn-google { background-color: #424242; color: #E8EAED; border: 1px solid #5F6368; }
-        .btn-apple { background-color: #000000; color: #FFFFFF; }
-        /* 다크 모드 애플 버튼 */
-        body.dark-mode .btn-apple { background-color: #FFFFFF; color: #000000; }
-        body.dark-mode .btn-apple svg path { fill: black; } /* 애플 로고 색 반전 */
+        /* ----- 하단바 스타일 ----- */
+        .navbar { display: flex; justify-content: space-around; padding: 10px 10px; border-top: 1px solid #eee; background-color: #fff; position: sticky; bottom: 0; z-index: 5; border-bottom-left-radius: 32px; border-bottom-right-radius: 32px; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 12px; color: #aaa; text-decoration: none; transition: all 0.3s ease; padding: 4px 12px; border-radius: 16px; position: relative; min-width: 60px; }
+        .nav-item svg { width: 24px; height: 24px; margin-bottom: 4px; transition: all 0.3s ease; }
+        .nav-item svg path { fill: #aaa; transition: fill 0.3s ease; }
+        .nav-item.active { color: #4A00E0; background-color: #f0e6ff; transform: translateY(-2px); }
+        .nav-item.active svg path { fill: #4A00E0; }
 
-        .login-divider { display: flex; align-items: center; text-align: center; color: var(--text-secondary); font-size: 12px; margin: 30px 0; }
-        .login-divider::before, .login-divider::after { content: ''; flex: 1; border-bottom: 1px solid var(--border-color); transition: border-color 0.3s ease; }
-        .login-divider:not(:empty)::before { margin-right: .5em; }
-        .login-divider:not(:empty)::after { margin-left: .5em; }
-        .email-login-link { text-align: center; font-size: 14px; font-weight: 500; color: var(--text-secondary); cursor: pointer; }
-
-
-        /* --- 캘린더 페이지 스타일 --- */
-        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; text-align: center; }
-        .calendar-day, .calendar-header { padding: 8px 0; font-size: 14px; }
-        .calendar-header { font-weight: 600; color: var(--text-secondary); }
-        .calendar-day.today { background-color: var(--primary-color); color: white; border-radius: 50%; font-weight: 700; }
-        .calendar-day.other-month { color: #ccc; }
-        body.dark-mode .calendar-day.other-month { color: #555; }
-
-
-        /* --- 쇼핑 페이지 스타일 --- */
-        .product-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .product-card img { width: 100%; border-radius: 15px; margin-bottom: 10px; }
-        .product-card h4, .product-card p { margin: 0; padding: 0 5px; }
-        .product-card h4 { font-size: 14px; font-weight: 600; color: var(--text-primary); }
-        .product-card p { font-size: 14px; font-weight: 700; color: var(--primary-color); }
-
-
-        /* --- 사이드바 --- */
-        .sidebar { position: absolute; top: 0; left: 0; width: 280px; height: 100%; background-color: var(--sidebar-bg-color); z-index: 100; transform: translateX(-100%); transition: transform 0.3s ease-in-out, background-color 0.3s ease; display: flex; flex-direction: column; box-shadow: 10px 0 30px rgba(0,0,0,0.1); }
-        body.dark-mode .sidebar { box-shadow: 10px 0 30px rgba(0,0,0,0.4); }
-        .sidebar.active { transform: translateX(0); }
-        .sidebar-header { padding: 20px; border-bottom: 1px solid var(--border-color); transition: border-color 0.3s ease;}
-        .sidebar-profile { display: flex; align-items: center; gap: 15px; }
-        .sidebar-profile .profile-avatar { width: 50px; height: 50px; border-radius: 50%; background-image: url('https://placehold.co/100x100/A8B5FE/FFFFFF?text=U'); background-size: cover; }
-        .sidebar-profile strong { font-size: 18px; color: var(--text-primary); }
-        .sidebar-profile span { font-size: 14px; color: var(--text-secondary); }
-        .sidebar-menu { flex-grow: 1; overflow-y: auto; padding: 10px 0; }
-        .sidebar-menu-item { display: flex; align-items: center; gap: 15px; padding: 15px 20px; color: var(--text-primary); cursor: pointer; transition: background-color 0.2s ease;}
-        .sidebar-menu-item:hover { background-color: rgba(0, 0, 0, 0.03); }
-        body.dark-mode .sidebar-menu-item:hover { background-color: rgba(255, 255, 255, 0.05); }
-        .sidebar-menu-category { padding: 15px 20px 5px; font-size: 12px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; }
-
-        .overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.4); z-index: 99; opacity: 0; visibility: hidden; transition: opacity 0.3s ease-in-out, background-color 0.3s ease; }
-        body.dark-mode .overlay { background-color: rgba(0,0,0,0.6); }
-        .overlay.active { opacity: 1; visibility: visible; }
-
-
-        /* --- 편집 모달 --- */
-        .modal { position: absolute; bottom: 0; left: 0; width: 100%; background: var(--modal-bg-color); z-index: 101; border-top-left-radius: 20px; border-top-right-radius: 20px; padding: 10px 20px 20px; box-sizing: border-box; box-shadow: 0 -10px 30px rgba(0,0,0,0.1); transform: translateY(100%); transition: transform 0.3s ease-in-out, background-color 0.3s ease, box-shadow 0.3s ease; max-height: 60vh; display: flex; flex-direction: column; }
-        body.dark-mode .modal { box-shadow: 0 -10px 30px rgba(0,0,0,0.4); }
-        .modal.active { transform: translateY(0); }
-        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-shrink: 0; }
-        .modal-header .drag-handle { width: 40px; height: 4px; background-color: #ccc; border-radius: 2px; position: absolute; top: 8px; left: 50%; transform: translateX(-50%); }
-        body.dark-mode .modal-header .drag-handle { background-color: #555; }
-        .modal-header h3 { margin: 0; font-size: 20px; font-weight: 700; padding-top: 20px; color: var(--text-primary); }
-        .modal-header button { background: var(--primary-color); color: white; border: none; padding: 8px 16px; border-radius: 12px; font-weight: 600; cursor: pointer; }
-        .customize-list { overflow-y: auto; }
-        .customize-list label { display: flex; align-items: center; padding: 12px 0; gap: 10px; color: var(--text-primary); }
-        .customize-list input { width: 20px; height: 20px; flex-shrink: 0; }
-        .customize-list span { display: flex; align-items: center; gap: 8px; }
-        .customize-list input:disabled + span { color: var(--text-secondary); }
-        .customize-list .item-icon { flex-shrink: 0; width: 20px; height: 20px; color: var(--text-secondary); }
-
-
-        /* --- 페이지별 스타일 --- */
-        #page-home .header { display: flex; align-items: center; margin-bottom: 24px; margin-top: 10px; }
-        #page-home .header .hamburger-menu { cursor: pointer; padding: 5px; margin-right: 10px; color: var(--text-primary); }
-        #page-home .header-text { flex-grow: 1; }
-        #page-home .header-text h1 { font-size: 30px; font-weight: 800; margin: 0; color: var(--text-primary);}
-        #home-widgets-container .widget { /* For drag/drop */ }
-
-        #page-map { padding: 0; position: relative; }
-        #page-map .search-bar { position: absolute; top: 20px; left: 20px; right: 20px; z-index: 5; }
-        #page-map .search-bar input { width: 100%; padding: 14px 20px; font-size: 16px; border-radius: 14px; border: none; box-sizing: border-box; background-color: var(--widget-background); box-shadow: var(--shadow); color: var(--text-primary);}
-        #page-map .map-placeholder { background-image: url('https://placehold.co/375x812/E5E5EA/8A8A8E?text=Map+API'); background-size: cover; position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
-        body.dark-mode #page-map .map-placeholder { background-image: url('https://placehold.co/375x812/1C1C1E/555?text=Map+API'); }
-        #page-map .route-options { position: absolute; bottom: 95px; left: 20px; right: 20px; z-index: 5; background: var(--widget-background); padding: 20px; border-radius: 20px; box-shadow: var(--shadow); }
-
-        #page-life .top-tabs { display: flex; border-bottom: 1px solid var(--border-color); margin-bottom: 20px; transition: border-color 0.3s ease; }
-        #page-life .top-tabs button { flex: 1; background: none; border: none; padding: 14px; font-size: 16px; font-weight: 600; color: var(--text-secondary); border-bottom: 3px solid transparent; display: flex; justify-content: center; align-items: center; gap: 8px; transition: all 0.2s ease; cursor: pointer; }
-        #page-life .top-tabs button.active { color: var(--primary-color); border-bottom-color: var(--primary-color); }
-        #page-life .tab-content { display: none; }
-        #page-life .tab-content.active { display: block; animation: fadeIn 0.3s; }
-        #page-life .progress-bar { width: 100%; height: 8px; background-color: #EEE; border-radius: 4px; overflow: hidden; margin-top: 8px; transition: background-color 0.3s ease; }
-        body.dark-mode #page-life .progress-bar { background-color: #444; }
-        #page-life .progress-bar-inner { height: 100%; background-color: var(--primary-color); border-radius: 4px; }
-        #page-life .data-label { display: flex; justify-content: space-between; font-size: 14px; margin-top: 4px; color: var(--text-secondary); }
-        #page-life .data-label strong { color: var(--text-primary); }
-
-        #page-news .news-search-bar { margin-bottom: 20px; }
-        #page-news .news-list .list-item { align-items: flex-start; }
-        #page-news .news-list .list-item img { width: 70px; height: 70px; object-fit: cover; border-radius: 10px; margin-right: 15px; flex-shrink: 0;}
-
-        #page-translate textarea { min-height: 100px; }
-        #page-translate .language-selector { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; color: var(--text-primary); }
-        #page-translate select { padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 14px; background-color: var(--input-bg-color); color: var(--text-primary); transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease; }
-        #page-translate textarea[readonly] { background-color: var(--readonly-textarea-bg); transition: background-color 0.3s ease; } /* 변수 사용 */
-
-        #page-sports .team-score { background: linear-gradient(135deg, #6A82FB, #FC5C7D); color: white; padding: 25px 20px; border-radius: 20px; text-align: center; margin-bottom: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
-        body.dark-mode #page-sports .team-score { box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
-        #page-sports .team-score h3 { margin: 0 0 10px 0; font-size: 16px; font-weight: 600; opacity: 0.8; }
-        #page-sports .team-score .score {
-            font-size: 42px;
-            font-weight: 650;
-            margin-bottom: 5px;
-            white-space: nowrap; /* 줄바꿈 방지 추가 */
-            overflow: hidden; /* 넘칠 경우 숨김 */
-            text-overflow: ellipsis; /* 넘칠 경우 ... 처리 (선택사항) */
-            line-height: 1; /* 폰트 크기 때문에 높이가 달라지는 것 방지 */
-        }
-        #page-sports .team-score .status { font-size: 14px; font-weight: 500; opacity: 0.9; }
-
-        /* News list item specific styles */
-        .news-list .list-item-content strong {
-            white-space: normal;
-            overflow: visible;
-            text-overflow: clip;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            line-height: 1.4;
-             margin-bottom: 4px;
-        }
-
-        /* --- 날씨 페이지 전용 스타일 --- */
-        .weather-current {
-            background: linear-gradient(135deg, var(--primary-color), #5899FF);
-            color: white;
-            text-align: center;
-            padding: 30px 20px;
-        }
-        /* 다크모드 날씨 배경 */
-        body.dark-mode .weather-current {
-             background: linear-gradient(135deg, #0A2C5A, #0052A3);
-        }
-        .weather-location {
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 10px;
-            opacity: 0.9;
-        }
-        .weather-icon-large {
-            font-size: 72px;
-            margin: 10px 0;
-        }
-        .weather-temp-large {
-            font-size: 64px;
-            font-weight: 800;
-            margin: 0;
-        }
-        .weather-desc {
-            font-size: 20px;
-            font-weight: 500;
-            margin-bottom: 8px;
-        }
-        .weather-highlow {
-            font-size: 14px;
-            font-weight: 500;
-            opacity: 0.9;
-        }
-
-        /* 시간대별 예보 */
-        .hourly-forecast {
-            display: flex;
-            overflow-x: auto;
-            gap: 20px;
-            padding-bottom: 10px;
-            scrollbar-width: none;
-            -ms-overflow-style: none;
-        }
-        .hourly-forecast::-webkit-scrollbar {
-            display: none;
-        }
-        .hourly-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-            font-size: 14px;
-            flex-shrink: 0;
-            width: 50px;
-        }
-        .hourly-item .time {
-            font-weight: 600;
-            color: var(--text-secondary);
-        }
-        .hourly-item .icon {
-            font-size: 24px;
-        }
-        .hourly-item .temp {
-            font-weight: 700;
-            font-size: 16px;
-            color: var(--text-primary);
-        }
-
-        /* 주간 예보 */
-        .weekly-forecast-list .list-item {
-            padding: 16px 0;
-        }
-        .weekly-temp {
-            font-weight: 600;
-            white-space: nowrap;
-            color: var(--text-primary);
-        }
-        .weekly-temp span:last-child {
-            color: var(--text-secondary);
-            margin-left: 8px;
-        }
-
-        /* 상세 정보 그리드 */
-        .widget-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-        }
-        .detail-item {
-            background-color: var(--detail-item-bg); /* 변수 사용 */
-            border-radius: 12px;
-            padding: 15px;
-            transition: background-color 0.3s ease;
-        }
-        .detail-item .label {
-            display: block;
-            font-size: 13px;
-            color: var(--text-secondary);
-            font-weight: 500;
-            margin-bottom: 6px;
-        }
-        .detail-item .value {
-            display: block;
-            font-size: 16px;
-            font-weight: 700;
-            color: var(--text-primary);
-        }
-
-        /* --- 다크 모드 토글 스위치 스타일 --- */
-        .theme-switch-wrapper {
-            display: flex;
-            align-items: center;
-            margin-left: auto; /* 오른쪽으로 밀기 */
-        }
-        .theme-switch {
-            display: inline-block;
-            height: 22px; /* 크기 조정 */
-            position: relative;
-            width: 40px; /* 크기 조정 */
-        }
-        .theme-switch input {
-            display:none;
-        }
-        .slider {
-            background-color: #ccc;
-            bottom: 0;
-            cursor: pointer;
-            left: 0;
-            position: absolute;
-            right: 0;
-            top: 0;
-            transition: .4s;
-        }
-        .slider:before {
-            background-color: #fff;
-            bottom: 3px; /* 위치 조정 */
-            content: "";
-            height: 16px; /* 크기 조정 */
-            left: 3px; /* 위치 조정 */
-            position: absolute;
-            transition: .4s;
-            width: 16px; /* 크기 조정 */
-        }
-        input:checked + .slider {
-            background-color: var(--primary-color);
-        }
-        input:checked + .slider:before {
-            transform: translateX(18px); /* 이동 거리 조정 */
-        }
-        .slider.round {
-            border-radius: 34px;
-        }
-        .slider.round:before {
-            border-radius: 50%;
-        }
-        body.dark-mode .slider {
-             background-color: #555;
-        }
+        /* 스크롤바 숨기기 */
+        .main-content::-webkit-scrollbar { display: none; }
+        .main-content { -ms-overflow-style: none; scrollbar-width: none; }
 
     </style>
 </head>
 <body>
-
-    <div class="mobile-frame" id="login-frame">
-        <div class="screen">
-            <div class="login-container">
-                <h1 class="app-title">MOA</h1>
-                <p class="app-subtitle">하나의 앱으로 모든 것을</p>
-                <button class="social-login-btn btn-kakao">
-                    <svg class="logo" viewBox="0 0 32 32" style="fill: #191919;"><path d="M16 4.64c-6.96 0-12.64 4.48-12.64 10.08 0 3.52 2.32 6.64 5.76 8.48l-1.92 7.04 7.28-3.84c.48 0 .96.08 1.44.08 6.96 0 12.64-4.48 12.64-10.08s-5.68-10.08-12.64-10.08z"></path></svg>
-                    카카오로 계속하기
-                </button>
-                <button class="social-login-btn btn-google">
-                    <svg class="logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.611 20.083H42V20H24v8h11.303c-1.649 4.657-6.08 8-11.303 8c-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4C12.955 4 4 12.955 4 24s8.955 20 20 20s20-8.955 20-20c0-1.341-.138-2.65-.389-3.917z"></path><path fill="#FF3D00" d="M6.306 14.691l6.571 4.819C14.655 15.108 18.961 12 24 12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4C16.318 4 9.656 8.337 6.306 14.691z"></path><path fill="#4CAF50" d="M24 44c5.166 0 9.86-1.977 13.409-5.192l-6.19-5.238C29.211 35.091 26.715 36 24 36c-5.202 0-9.619-3.317-11.283-7.946l-6.522 5.025C9.505 39.556 16.227 44 24 44z"></path><path fill="#1976D2" d="M43.611 20.083H42V20H24v8h11.303c-.792 2.237-2.231 4.166-4.087 5.574l6.19 5.238C44.572 36.846 48 30.825 48 24c0-1.341-.138-2.65-.389-3.917z"></path></svg>
-                    Google로 계속하기
-                </button>
-                 <button class="social-login-btn btn-apple">
-                    <svg class="logo" viewBox="0 0 24 24" style="fill: white;"><path d="M19.3,4.24a5,5,0,0,0-4.08,2.15,5.3,5.3,0,0,0-4.44,0A5,5,0,0,0,6.7,4.24,9.81,9.81,0,0,0,4.23,9.73a10.4,10.4,0,0,0,2.3,7.24,9.39,9.39,0,0,0,6.26,3.78,8.8,8.8,0,0,0,1.15.08,9.75,9.75,0,0,0,7.36-4,10.15,10.15,0,0,0,2.36-7.39A9.55,9.55,0,0,0,19.3,4.24Zm-1,8.3a2.38,2.38,0,0,1-2.48,2.55,2.69,2.69,0,0,1-2.25-1.31,6.56,6.56,0,0,0-.73-1.42,6.29,6.29,0,0,0-1.39-1.38,2.88,2.88,0,0,1,1.13-2,2.5,2.5,0,0,1,1.9-.76,2.44,2.44,0,0,1,2.44,2.69A3,3,0,0,1,18.29,12.54ZM13.06,3.48a4.52,4.52,0,0,1,3.22-1.42,4.24,4.24,0,0,1,.46,2.39,4.46,4.46,0,0,1-3.26,1.44A4.1,4.1,0,0,1,13.06,3.48Z"></path></svg>
-                    Apple로 계속하기
-                </button>
-
-                <div class="login-divider">또는</div>
-                <div class="email-login-link">이메일로 계속하기</div>
+    <div class="phone-mockup">
+        <div class="status-bar">
+            <div class="time">10:42</div>
+            <div class="icons">
+                <i class="fas fa-wifi"></i>
+                <i class="fas fa-signal"></i>
+                <i class="fas fa-battery-full"></i>
             </div>
         </div>
-    </div>
 
-    <div class="mobile-frame" id="main-app-frame" style="display: none;">
-        <div class="screen">
-            <div id="overlay" class="overlay"></div>
+        <div class="app-header">
+            <h1>Moa Now</h1>
+            <i class="fas fa-cog settings-icon"></i>
+        </div>
 
-            <div id="sidebar" class="sidebar">
-                <div class="sidebar-header">
-                    <div class="sidebar-profile">
-                        <div class="profile-avatar"></div>
-                        <div>
-                            <strong>사용자</strong><br>
-                            <span>반갑습니다!</span>
-                        </div>
-                    </div>
+        <div class="main-content">
+            <div id="page-now" class="page-content active">
+                
+                <div class="now-feed-card">
+                    <div class="time-info">오전 10:42 | 강의 30분 후 시작</div>
+                    <div class="focus-score">오늘 집중도 78% <span>👍</span></div>
+                    <div class="recommendation">"10분 복습 노트 보기" 📖</div>
+                    <a href="#" class="action-button">지금 하기</a>
                 </div>
-                <div class="sidebar-menu">
+
+                <div class="score-section" id="now-score-section">
+                    <h3>오늘의 Moa Score</h3>
+                    <div class="moa-score">
+                        <span class="score-value" id="now-score-value"></span>
+                        <span class="unit">점</span> 
                     </div>
+                    <div class="score-detail" id="now-score-detail">
+                        </div>
+                </div>
+
+                <h3 class="section-title">Micro Reminder</h3>
+                
+                <div class="micro-reminder-card">
+                    <span class="reminder-text">"물 한잔 마시기" 💧</span>
+                    <a href="#" class="do-it-button">지금 할게요!</a>
+                </div>
+
+                <h3 class="section-title">디지털 밸런스</h3>
+                
+                <div class="digital-balance-card">
+                    <h3>스크린 타임 분석</h3>
+                    <div id="now-app-usage-list">
+                        </div>
+                    <p class="insight" id="now-insight">
+                        </p>
+                </div>
             </div>
 
-            <div id="customize-modal" class="modal">
-                <div class="modal-header">
-                    <div class="drag-handle"></div>
-                    <h3>하단 바 편집</h3>
-                    <button id="modal-save-button">저장</button>
+            <div id="page-report" class="page-content">
+                
+                <div class="report-header">
+                    <h2>오늘의 총 사용 시간 📊</h2>
+                    <div class="total-time-display" id="report-total-time">
+                        </div>
                 </div>
-                <div id="customize-list" class="customize-list">
+
+                <div class="chart-container">
+                    <canvas id="myBarChart"></canvas>
+                </div>
+
+                <div class="category-list-container" id="report-category-list">
                     </div>
+
             </div>
 
-            <div id="customize-home-modal" class="modal">
-                 <div class="modal-header">
-                    <div class="drag-handle"></div>
-                    <h3>홈 화면 위젯 편집</h3>
-                    <button id="home-modal-save-button">저장</button>
+            <div id="page-score" class="page-content">
+                
+                <div class="report-header">
+                    <h2>나의 Moa Score 🏆</h2>
+                    <div class="total-time-display" id="score-page-value">
+                        </div>
                 </div>
-                <div id="customize-home-list" class="customize-list">
-                    </div>
-                 <p style="font-size: 12px; color: var(--text-secondary); text-align: center; margin-top: 15px;">드래그하여 순서를 변경할 수 있습니다.</p>
-            </div>
-
-            <div class="app-content">
-                <div id="page-home" class="page active">
-                    <div class="header">
-                        <div class="hamburger-menu" id="hamburger-button">
-                             <svg class="icon-svg" viewBox="0 0 24 24"><path d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" /></svg>
-                        </div>
-                        <div class="header-text">
-                            <h1>MOA</h1>
-                        </div>
-                    </div>
-                    <div id="home-widgets-container">
+                
+                <div class="score-section" id="score-page-details">
+                    <h3>상세 내역 🔍</h3>
+                    <div class="score-detail" id="score-page-detail-list">
                         </div>
                 </div>
 
-                <div id="page-messenger" class="page">
-                    <h2><svg class="icon-svg" viewBox="0 0 24 24"><path d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>메신저</h2>
-                     <div class="filter-tabs">
-                         <button class="active">전체</button>
-                         <button>안 읽음</button>
-                         <button>Gmail</button>
-                         <button>SMS</button>
-                     </div>
-                    <div class="message-list widget">
-                        <div class="list-item">
-                            <span class="icon" style="background-color: #E6F6EC; color: var(--green-color);"><svg class="icon-svg" viewBox="0 0 24 24"><path d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg></span>
-                            <div class="list-item-content">
-                                <strong>사용자 1 (1)</strong><br>
-                                <span>회의 자료 보냈습니다.</span>
-                            </div>
-                        </div>
-                        <div class="list-item">
-                            <span class="icon" style="background-color: #FFF6E5; color: var(--orange-color);"><svg class="icon-svg" viewBox="0 0 24 24"><path d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" /></svg></span>
-                            <div class="list-item-content">
-                                <strong>(주)회사명 (3)</strong><br>
-                                <span>Re: 3분기 실적 보고...</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="page-weather" class="page">
-                    <h2><svg class="icon-svg" viewBox="0 0 24 24"><path d="M2.25 15a4.5 4.5 0 004.5 4.5H18a3.75 3.75 0 001.332-7.257 3 3 0 00-3.758-3.758A3.75 3.75 0 0013.5 4.5h-2.25A3.75 3.75 0 007.5 8.25v.75" /></svg>날씨</h2>
-
-                    <div class="weather-current widget">
-                        <div class="weather-location">원주시 흥업면 흥업리</div>
-                        <div class="weather-icon-large">☀️</div>
-                        <div class="weather-temp-large">23°</div>
-                        <div class="weather-desc">맑음</div>
-                        <div class="weather-highlow">최고: 25° / 최저: 18°</div>
-                    </div>
-
-                    <div class="widget">
-                        <div class="widget-title">시간대별 예보</div>
-                        <div class="hourly-forecast">
-                            <div class="hourly-item">
-                                <span class="time">지금</span>
-                                <span class="icon">☀️</span>
-                                <span class="temp">23°</span>
-                            </div>
-                            <div class="hourly-item">
-                                <span class="time">10시</span>
-                                <span class="icon">☀️</span>
-                                <span class="temp">24°</span>
-                            </div>
-                            <div class="hourly-item">
-                                <span class="time">11시</span>
-                                <span class="icon">🌤️</span>
-                                <span class="temp">25°</span>
-                            </div>
-                            <div class="hourly-item">
-                                <span class="time">12시</span>
-                                <span class="icon">🌤️</span>
-                                <span class="temp">25°</span>
-                            </div>
-                            <div class="hourly-item">
-                                <span class="time">13시</span>
-                                <span class="icon">☁️</span>
-                                <span class="temp">24°</span>
-                            </div>
-                            <div class="hourly-item">
-                                <span class="time">14시</span>
-                                <span class="icon">☁️</span>
-                                <span class="temp">23°</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="widget">
-                        <div class="widget-title">주간 예보</div>
-                        <div class="weekly-forecast-list">
-                            <div class="list-item">
-                                <div class="list-item-content"><strong>오늘</strong><span>맑음</span></div>
-                                <div class="weekly-temp"><span>25°</span> / <span>18°</span></div>
-                            </div>
-                            <div class="list-item">
-                                <div class="list-item-content"><strong>내일 (목)</strong><span>구름 많음</span></div>
-                                <div class="weekly-temp"><span>23°</span> / <span>17°</span></div>
-                            </div>
-                            <div class="list-item">
-                                <div class="list-item-content"><strong>금</strong><span>비</span></div>
-                                <div class="weekly-temp"><span>20°</span> / <span>15°</span></div>
-                            </div>
-                            <div class="list-item">
-                                <div class="list-item-content"><strong>토</strong><span>맑음</span></div>
-                                <div class="weekly-temp"><span>22°</span> / <span>14°</span></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="widget">
-                         <div class="widget-title">상세 정보</div>
-                         <div class="widget-grid">
-                             <div class="detail-item">
-                                 <span class="label">습도</span>
-                                 <span class="value">45%</span>
-                             </div>
-                             <div class="detail-item">
-                                 <span class="label">바람</span>
-                                 <span class="value">북서풍 3m/s</span>
-                             </div>
-                             <div class="detail-item">
-                                 <span class="label">강수 확률</span>
-                                 <span class="value">0%</span>
-                             </div>
-                             <div class="detail-item">
-                                 <span class="label">미세먼지</span>
-                                 <span class="value">좋음 (12µg/m³)</span>
-                             </div>
-                         </div>
-                    </div>
-                </div>
-
-                <div id="page-calendar" class="page">
-                    <h2><svg class="icon-svg" viewBox="0 0 24 24"><path d="M6.75 3v2.25m10.5-2.25v2.25M6.75 21V5.25h10.5V21M3 10.5h18M3 5.25a2.25 2.25 0 012.25-2.25h13.5a2.25 2.25 0 012.25 2.25v13.5a2.25 2.25 0 01-2.25 2.25H5.25a2.25 2.25 0 01-2.25-2.25V5.25z" /></svg>캘린더</h2>
-                    <div class="widget">
-                        <div class="widget-title">D-Day</div>
-                        <h3 style="text-align: center; font-size: 24px;">수능 D-26</h3>
-                    </div>
-                    <div class="widget">
-                        <div class="widget-title" style="justify-content: space-between; align-items: center;">
-                            <button style="background:none; border:none; cursor:pointer; color: var(--text-primary); font-size: 1.2em;">&lt;</button>
-                            <h3>2025년 10월</h3>
-                            <button style="background:none; border:none; cursor:pointer; color: var(--text-primary); font-size: 1.2em;">&gt;</button>
-                        </div>
-                        <div class="calendar-grid">
-                            <div class="calendar-header">일</div><div class="calendar-header">월</div><div class="calendar-header">화</div><div class="calendar-header">수</div><div class="calendar-header">목</div><div class="calendar-header">금</div><div class="calendar-header">토</div>
-                            <div class="calendar-day other-month">28</div><div class="calendar-day other-month">29</div><div class="calendar-day other-month">30</div><div class="calendar-day">1</div><div class="calendar-day">2</div><div class="calendar-day">3</div><div class="calendar-day">4</div>
-                            <div class="calendar-day">5</div><div class="calendar-day">6</div><div class="calendar-day">7</div><div class="calendar-day">8</div><div class="calendar-day">9</div><div class="calendar-day">10</div><div class="calendar-day">11</div>
-                            <div class="calendar-day">12</div><div class="calendar-day">13</div><div class="calendar-day">14</div><div class="calendar-day">15</div><div class="calendar-day">16</div><div class="calendar-day">17</div><div class="calendar-day">18</div>
-                            <div class="calendar-day">19</div><div class="calendar-day">20</div><div class="calendar-day today">21</div><div class="calendar-day">22</div><div class="calendar-day">23</div><div class="calendar-day">24</div><div class="calendar-day">25</div>
-                            <div class="calendar-day">26</div><div class="calendar-day">27</div><div class="calendar-day">28</div><div class="calendar-day">29</div><div class="calendar-day">30</div><div class="calendar-day">31</div><div class="calendar-day other-month">1</div>
-                        </div>
-                    </div>
-                </div>
-                <div id="page-settings" class="page">
-                    <h2><svg class="icon-svg" viewBox="0 0 24 24"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>설정</h2>
-                    <div class="settings-list widget">
-                        <div class="list-item">
-                            <span class="icon" style="background-color: #EBF5FF; color: var(--primary-color);"><svg class="icon-svg" viewBox="0 0 24 24"><path d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" /></svg></span>
-                            <div class="list-item-content"><strong>프로필 관리</strong></div>
-                        </div>
-                         <div class="list-item" id="customize-home-button">
-                             <span class="icon"><svg class="icon-svg" viewBox="0 0 24 24"><path d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25a2.25 2.25 0 01-2.25-2.25v-2.25z" /></svg></span>
-                            <div class="list-item-content"><strong>홈 화면 위젯 편집</strong></div>
-                        </div>
-                        <div class="list-item" id="customize-button">
-                             <span class="icon"><svg class="icon-svg" viewBox="0 0 24 24"><path d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-9.75 0h9.75" /></svg></span>
-                            <div class="list-item-content"><strong>하단 바 편집</strong></div>
-                        </div>
-                        <div class="list-item">
-                            <span class="icon" style="background-color: #FFF6E5; color: var(--orange-color);"><svg class="icon-svg" viewBox="0 0 24 24"><path d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.31 5.072A23.847 23.847 0 009.143 17.082" /></svg></span>
-                            <div class="list-item-content"><strong>알림 설정</strong></div>
-                        </div>
-                        <div class="list-item">
-                            <span class="icon" style="background-color: #E6F6EC; color: var(--green-color);"><svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" /></svg></span>
-                            <div class="list-item-content"><strong>다크 모드</strong></div>
-                            <div class="theme-switch-wrapper">
-                                <label class="theme-switch" for="theme-toggle">
-                                    <input type="checkbox" id="theme-toggle" />
-                                    <span class="slider round"></span>
-                                </label>
-                            </div>
-                        </div>
-                        <div class="list-item">
-                             <span class="icon" style="background-color: #F0F0F0; color: #888;"><svg class="icon-svg" viewBox="0 0 24 24"><path d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" /></svg></span>
-                            <div class="list-item-content"><strong>앱 정보</strong></div>
-                        </div>
-                         <div class="list-item">
-                             <span class="icon" style="background-color: #FFE5E5; color: var(--red-color);"><svg class="icon-svg" viewBox="0 0 24 24"><path d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" /></svg></span>
-                            <div class="list-item-content"><strong>로그아웃</strong></div>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="page-map" class="page">
-                    <h2><svg class="icon-svg" viewBox="0 0 24 24"><path d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" /><path d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" /></svg>지도</h2>
-                       <div class="widget">
-                           <input type="text" placeholder="출발지 입력">
-                           <input type="text" placeholder="도착지 입력">
-                           <button class="btn btn-primary" style="margin-top: 10px;">길찾기</button>
-                       </div>
-                       <div class="widget" style="padding: 0; overflow: hidden;"><img src="https://placehold.co/375x300/E5E5EA/8A8A8E?text=Map+View" style="width: 100%; display: block;"></div>
-                </div>
-                <div id="page-life" class="page">
-                    <h2><svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0012 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75l.008-.008H12v.008z" /></svg>생활</h2>
-                    <div class="widget">
-                         <div class="widget-title">👟 만보기</div>
-                         <h3 style="font-size: 36px; text-align: center; margin: 10px 0;">8,123<span style="font-size: 16px; font-weight: 500; color: var(--text-secondary);"> 걸음</span></h3>
-                         <div class="progress-bar"><div class="progress-bar-inner" style="width: 81%;"></div></div>
-                         <div class="data-label"><strong>8,123</strong><span>목표: 10,000</span></div>
-                    </div>
-                     <div class="widget">
-                         <div class="widget-title">📱 스크린 타임</div>
-                         <p>오늘 총 사용 시간: <strong style="font-size: 18px;">4시간 35분</strong></p>
-                         <div style="margin-top: 15px;">
-                             <strong>유튜브</strong>
-                             <div class="progress-bar"><div class="progress-bar-inner" style="width: 40%; background-color: var(--red-color);"></div></div>
-                             <div class="data-label"><span>1시간 50분</span></div>
-                         </div>
-                         <div style="margin-top: 15px;">
-                             <strong>카카오톡</strong>
-                             <div class="progress-bar"><div class="progress-bar-inner" style="width: 25%; background-color: #FEE500;"></div></div>
-                             <div class="data-label"><span>1시간 10분</span></div>
-                         </div>
-                    </div>
-                </div>
-                <div id="page-shopping" class="page">
-                    <h2><svg class="icon-svg" viewBox="0 0 24 24"><path d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c.51 0 .962-.328 1.087-.835l1.823-6.423a.75.75 0 00-.67-1.038H6.75a.75.75 0 00-.75.75v10.5a.75.75 0 00.75.75z" /></svg>쇼핑</h2>
-                    <div class="product-grid">
-                        <div class="product-card"><img src="https://placehold.co/150x150/EFEFEF/333?text=ITEM+1"><h4>편안한 스니커즈</h4><p>79,000원</p></div>
-                        <div class="product-card"><img src="https://placehold.co/150x150/EFEFEF/333?text=ITEM+2"><h4>무선 블루투스 이어폰</h4><p>129,000원</p></div>
-                        <div class="product-card"><img src="https://placehold.co/150x150/EFEFEF/333?text=ITEM+3"><h4>가을 니트 스웨터</h4><p>54,000원</p></div>
-                        <div class="product-card"><img src="https://placehold.co/150x150/EFEFEF/333?text=ITEM+4"><h4>핸드드립 커피 세트</h4><p>88,000원</p></div>
-                        <div class="product-card"><img src="https://placehold.co/150x150/EFEFEF/333?text=ITEM+5"><h4>심레이싱 레이싱휠</h4><p>250,000원</p></div>
-                        <div class="product-card"><img src="https://placehold.co/150x150/EFEFEF/333?text=ITEM+6"><h4>2035 챔피언스 리그 공인구</h4><p>67,500원</p></div>
-                        <div class="product-card"><img src="https://placehold.co/150x150/EFEFEF/333?text=ITEM+7"><h4>야구 글러브</h4><p>54,000원</p></div>
-                        <div class="product-card"><img src="https://placehold.co/150x150/EFEFEF/333?text=ITEM+8"><h4>버뮤다 팬츠</h4><p>32,500원</p></div>
-                    </div>
-                </div>
-                <div id="page-news" class="page">
-                    <h2><svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 01-2.25 2.25M16.5 7.5V18a2.25 2.25 0 002.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 002.25 2.25h13.5M6 7.5h3v3H6v-3z" /></svg>뉴스</h2>
-                    <input type="text" placeholder="뉴스 검색" class="news-search-bar">
-                    <div class="filter-tabs">
-                        <button class="active">전체</button>
-                        <button>정치</button>
-                        <button>경제</button>
-                        <button>사회</button>
-                        <button>연예</button>
-                        <button>스포츠</button>
-                    </div>
-                    <div class="news-list widget">
-                        <div class="list-item">
-                            <img src="https://placehold.co/70x70/EFEFEF/333?text=News1">
-                            <div class="list-item-content"><strong>[속보] 코스피 장중 2700선 돌파</strong><span>10분 전 | 경제</span></div>
-                        </div>
-                         <div class="list-item">
-                            <img src="https://placehold.co/70x70/EFEFEF/333?text=News2">
-                            <div class="list-item-content"><strong>가을 단풍 절정, 주말 나들이객 '북적'</strong><span>30분 전 | 사회</span></div>
-                        </div>
-                         <div class="list-item">
-                            <img src="https://placehold.co/70x70/EFEFEF/333?text=News3">
-                            <div class="list-item-content"><strong>한국 축구 대표팀, 월드컵 예선 쾌조의 스타트</strong><span>1시간 전 | 스포츠</span></div>
-                        </div>
-                         <div class="list-item">
-                            <img src="https://placehold.co/70x70/EFEFEF/333?text=News4">
-                            <div class="list-item-content"><strong>새 드라마 '가을의 전설' 시청률 15% 돌파</strong><span>2시간 전 | 연예</span></div>
-                        </div>
-                    </div>
-                </div>
-                <div id="page-sports" class="page">
-                    <h2><svg class="icon-svg" viewBox="0 0 24 24"><path d="M11.25 4.5l7.5 7.5-7.5 7.5M11.25 4.5l-7.5 7.5 7.5 7.5" /></svg>스포츠</h2>
-                    <div class="team-score widget">
-                         <h3>MY팀 실시간</h3>
-                         <div class="score">첼시 2 : 1 토트넘</div>
-                         <div class="status">후반 85'</div>
-                    </div>
-                    <div class="filter-tabs">
-                         <button class="active">전체</button>
-                         <button>축구</button>
-                         <button>야구</button>
-                         <button>농구</button>
-                         <button>e스포츠</button>
-                    </div>
-                    <div class="widget">
-                         <div class="widget-title">주요 경기</div>
-                         <div class="list-item">
-                             <span class="icon">⚽</span>
-                             <div class="list-item-content"><strong>맨유 vs 리버풀</strong><span>EPL | 종료</span></div>
-                             <strong style="font-size: 16px;">1 : 2</strong>
-                         </div>
-                         <div class="list-item">
-                             <span class="icon">⚾</span>
-                             <div class="list-item-content"><strong>두산 vs LG</strong><span>KBO | 7회초</span></div>
-                             <strong style="font-size: 16px;">5 : 3</strong>
-                         </div>
-                         <div class="list-item">
-                             <span class="icon">🏀</span>
-                             <div class="list-item-content"><strong>레이커스 vs 클리퍼스</strong><span>NBA | 3쿼터</span></div>
-                             <strong style="font-size: 16px;">88 : 92</strong>
-                         </div>
-                    </div>
-                </div>
-                <div id="page-bank" class="page">
-                    <h2><svg class="icon-svg" viewBox="0 0 24 24"><path d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3.375m-3.375 2.25h13.5m0-13.5V21A2.25 2.25 0 0118 23.25H6a2.25 2.25 0 01-2.25-2.25V7.5A2.25 2.25 0 016 5.25h12A2.25 2.25 0 0120.25 7.5v0-1.5z" /></svg>은행</h2>
-                    <div class="widget">
-                         <h3>총 자산: 5,120,000 원</h3>
-                        <div class="list-item">
-                            <span class="icon">💰</span>
-                            <div class="list-item-content"><strong>하나은행 입출금</strong><br><span>****-**-123456</span></div>
-                            <span style="font-weight: 600;">1,500,000 원</span>
-                        </div>
-                        <div class="list-item">
-                           <span class="icon">💸</span>
-                           <div class="list-item-content"><strong>카카오뱅크 세이프박스</strong><br><span>****-**-789012</span></div>
-                           <span style="font-weight: 600;">3,620,000 원</span>
-                        </div>
-                    </div>
-                     <div class="widget">
-                         <div class="widget-title">정기 구독</div>
-                         <div class="list-item">
-                             <span class="icon">📺</span>
-                             <div class="list-item-content"><strong>Netflix</strong><br><span>매월 15일 결제 예정</span></div>
-                             <span style="font-weight: 600;">17,000 원</span>
-                         </div>
-                         <div class="list-item">
-                             <span class="icon">🎵</span>
-                             <div class="list-item-content"><strong>Spotify</strong><br><span>매월 25일 결제 예정</span></div>
-                             <span style="font-weight: 600;">10,900 원</span>
-                         </div>
-                    </div>
-                </div>
-                <div id="page-stocks" class="page">
-                    <h2><svg class="icon-svg" viewBox="0 0 24 24"><path d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-3.976 5.197M21 18H2.25" /></svg>증권</h2>
-                    <div class="widget">
-                         <h3>내 주식: 2,420,000 원</h3>
-                        <div class="list-item">
-                           <img src="https://placehold.co/40x40/007AFF/FFF?text=S" style="border-radius: 50%; margin-right: 15px;">
-                           <div class="list-item-content"><strong>삼성전자</strong><br><span>20주 보유</span></div>
-                           <div style="text-align: right;"><strong>1,400,000 원</strong><br><span class="stock-change up">+1.5%</span></div>
-                        </div>
-                        <div class="list-item">
-                             <img src="https://placehold.co/40x40/FF9500/FFF?text=K" style="border-radius: 50%; margin-right: 15px;">
-                             <div class="list-item-content"><strong>카카오</strong><br><span>15주 보유</span></div>
-                            <div style="text-align: right;"><strong>1,020,000 원</strong><br><span class="stock-change down">-0.8%</span></div>
-                        </div>
-                    </div>
-                    <div class="widget">
-                        <div class="widget-title">인기 주식</div>
-                        <div class="list-item">
-                           <img src="https://placehold.co/40x40/FF3B30/FFF?text=A" style="border-radius: 50%; margin-right: 15px;">
-                           <div class="list-item-content"><strong>Apple</strong></div>
-                           <div style="text-align: right;"><strong>$175.50</strong><br><span class="stock-change up">+2.1%</span></div>
-                        </div>
-                         <div class="list-item">
-                             <img src="https://placehold.co/40x40/34C759/FFF?text=T" style="border-radius: 50%; margin-right: 15px;">
-                             <div class="list-item-content"><strong>Tesla</strong></div>
-                            <div style="text-align: right;"><strong>$250.10</strong><br><span class="stock-change down">-1.2%</span></div>
-                        </div>
-                    </div>
-                </div>
-                <div id="page-translate" class="page">
-                    <h2><svg class="icon-svg" viewBox="0 0 24 24"><path d="M10.5 21l5.25-11.25L21 21m-9-3h7.5M3 5.621a48.474 48.474 0 016-.371m0 0c1.12 0 2.233.038 3.334.114M9 5.25V3m3.334 2.364C13.18 7.061 14.122 7.5 15 7.5h0c.878 0 1.82-.439 2.666-1.136m0 0V3m0 2.364a48.458 48.458 0 01-2.666.475" /></svg>번역</h2>
-                    <div class="widget">
-                        <div class="language-selector">
-                            <select><option>한국어</option><option>영어</option></select>
-                            <span>⇄</span>
-                            <select><option>영어</option><option>한국어</option></select>
-                        </div>
-                        <textarea placeholder="텍스트 입력"></textarea>
-                        <textarea placeholder="번역 결과" readonly></textarea>
-                        <button class="btn btn-primary" style="margin-top: 15px;">번역하기</button>
-                    </div>
+                <div class="digital-balance-card">
+                    <h3>Moa Score 란? 💡</h3>
+                    <p class="insight" id="score-page-explanation">
+                        </p>
                 </div>
 
             </div>
 
-            <nav class="bottom-nav" id="main-nav">
-                </nav>
+            <div id="page-my" class="page-content">
+                
+                <div class="profile-section" onclick="alert('프로필 수정 페이지로 이동합니다.')">
+                    
+                    <div class="profile-pic default-profile">
+                        <i class="fas fa-user"></i>
+                    </div>
 
+                    <div class="profile-info">
+                        <span class="profile-name">사용자 이름</span>
+                        <span class="profile-email">moa-user@example.com</span>
+                    </div>
+                    <i class="fas fa-chevron-right"></i>
+                </div>
+
+                <div class="settings-group">
+                    <a href="#" class="settings-item" onclick="alert('프로필 수정 페이지로 이동합니다.')">
+                        <i class="fas fa-user-edit"></i>
+                        <span>프로필 수정</span>
+                        <i class="fas fa-chevron-right"></i>
+                    </a>
+                    <a href="#" class="settings-item">
+                        <i class="fas fa-bell"></i>
+                        <span>알림 설정</span>
+                        <i class="fas fa-chevron-right"></i>
+                    </a>
+                    <a href="#" class="settings-item">
+                        <i class="fas fa-lock"></i>
+                        <span>계정 및 보안</span>
+                        <i class="fas fa-chevron-right"></i>
+                    </a>
+                </div>
+
+                <div class="settings-group">
+                    <a href="#" class="settings-item">
+                        <i class="fas fa-palette"></i>
+                        <span>테마/화면 설정</span>
+                        <i class="fas fa-chevron-right"></i>
+                    </a>
+                    <a href="#" class="settings-item">
+                        <i class="fas fa-link"></i>
+                        <span>연동된 서비스</span>
+                        <i class="fas fa-chevron-right"></i>
+                    </a>
+                </div>
+
+                <div class="settings-group">
+                    <a href="#" class="settings-item">
+                        <i class="fas fa-info-circle"></i>
+                        <span>정보</span>
+                        <i class="fas fa-chevron-right"></i>
+                    </a>
+                    <a href="#" class="settings-item">
+                        <i class="fas fa-question-circle"></i>
+                        <span>고객센터</span>
+                        <i class="fas fa-chevron-right"></i>
+                    </a>
+                    <a href="#" class="settings-item logout" onclick="alert('로그아웃합니다.')">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>로그아웃</span>
+                        <i class="fas fa-chevron-right"></i>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="navbar">
+            <a href="#" class="nav-item active" data-target="page-now">
+                <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8h5z"/></svg>
+                <span>홈</span>
+            </a>
+            <a href="#" class="nav-item" data-target="page-report">
+                <svg viewBox="0 0 24 24"><path d="M10 20h4V4h-4v16zm-6 0h4v-8H4v8zM16 9v11h4V9h-4z"/></svg>
+                <span>스크린 타임</span>
+            </a>
+            <a href="#" class="nav-item" data-target="page-score">
+                <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 .81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                <span>스코어</span>
+            </a>
+            <a href="#" class="nav-item" data-target="page-my">
+                <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                <span>MY</span>
+            </a>
         </div>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // --- DOM Elements ---
-            const loginFrame = document.getElementById('login-frame');
-            const mainAppFrame = document.getElementById('main-app-frame');
-            const themeToggle = document.getElementById('theme-toggle'); // 테마 토글 추가
+        // --------------------------------------------------
+        // 1. 스크린 타임 데이터 정의
+        // --------------------------------------------------
+        const screenTimeData = {
+            todayTotalMinutes: (4 * 60) + 28, // 268분 (일요일 데이터와 일치시킴)
+            categories: [
+                { id: 'social', name: '소셜 💬', time: 105 }, 
+                { id: 'entertainment', name: '엔터테인먼트 🎬', time: 70 },
+                { id: 'productivity', name: '생산성 📈', time: 45 },
+                { id: 'other', name: '기타 📁', time: 48 }
+            ],
+            topApps: [
+                { name: 'Instagram', icon: 'fab fa-instagram', time: 70 },
+                { name: 'YouTube', icon: 'fab fa-youtube', time: 60 },
+                { name: '생산성 앱', icon: 'fas fa-book', time: 45 }
+            ],
+            insight: "이번 주 인스타그램 사용 시간이 10% 감소했어요. 잘하고 있어요! 👍"
+        };
 
-            if (loginFrame) {
-                const loginButtons = loginFrame.querySelectorAll('.social-login-btn, .email-login-link');
-                loginButtons.forEach(button => {
-                    button.addEventListener('click', () => {
-                        loginFrame.style.display = 'none';
-                        mainAppFrame.style.display = 'flex';
-                    });
+        // --------------------------------------------------
+        // 2. Moa Score 데이터 정의
+        // --------------------------------------------------
+        const moaScoreData = {
+            score: 64,
+            details: [
+                { label: '수면 😴', value: '7시간', status: 'good', icon: '✅' },
+                { label: '공부 📚', value: '1.3시간', status: 'neutral', icon: '😐' },
+                { label: 'SNS 📱', value: '2.8시간', status: 'bad', icon: '⚠️' }
+            ],
+            explanation: "Moa Score는 수면, 생산적 활동, 휴식의 균형을 바탕으로 계산된 오늘의 종합 라이프 스코어입니다. 100점에 가까울수록 균형 잡힌 하루를 보냈다는 의미입니다. 💯"
+        };
+
+        // --------------------------------------------------
+        // 3. 주간 차트 데이터 정의 (색상 클래스 추가)
+        // --------------------------------------------------
+        const weeklyChartData = [
+            { day: '월', time: 240, height: 60, colorClass: 'bar-mon' },
+            { day: '화', time: 320, height: 80, colorClass: 'bar-tue' },
+            { day: '수', time: 200, height: 50, colorClass: 'bar-wed' },
+            { day: '목', time: 280, height: 70, colorClass: 'bar-thu' },
+            { day: '금', time: 360, height: 90, colorClass: 'bar-fri' },
+            { day: '토', time: 160, height: 40, colorClass: 'bar-sat' },
+            { day: '일', time: 268, height: 75, colorClass: 'bar-sun' } 
+        ];
+
+        // --------------------------------------------------
+        // 4. 헬퍼 함수: 분(minutes)을 "X시간 Y분"으로 변환
+        // --------------------------------------------------
+        function formatMinutes(totalMinutes) {
+            const hours = Math.floor(totalMinutes / 60);
+            const minutes = totalMinutes % 60;
+            
+            let result = "";
+            if (hours > 0) {
+                result += `${hours}<span class="unit">시간</span> `;
+            }
+            if (minutes > 0 || hours === 0) {
+                result += `${minutes}<span class="unit">분</span>`;
+            }
+            return result.trim();
+        }
+
+        // --------------------------------------------------
+        // 5. 헬퍼 함수: 분(minutes)을 "Xh Ym" (짧게) 변환
+        // --------------------------------------------------
+        function formatMinutesShort(totalMinutes) {
+            const hours = Math.floor(totalMinutes / 60);
+            const minutes = totalMinutes % 60;
+            
+            let result = "";
+            if (hours > 0) {
+                result += `${hours}h `;
+            }
+            if (minutes > 0 || (hours === 0 && minutes === 0)) {
+                result += `${minutes}m`;
+            }
+            return result.trim();
+        }
+
+
+        // --------------------------------------------------
+        // 6. 스크린 타임 데이터 렌더링 함수
+        // --------------------------------------------------
+        function renderScreenTimeData() {
+            const data = screenTimeData;
+            
+            // 6-1. 스크린 타임(리포트) 페이지 렌더링
+            const reportTotalEl = document.getElementById('report-total-time');
+            if (reportTotalEl) {
+                const todayData = weeklyChartData.find(d => d.active);
+                const todayMinutes = todayData ? todayData.time : data.todayTotalMinutes;
+                reportTotalEl.innerHTML = formatMinutes(todayMinutes);
+            }
+            
+            const reportCategoryListEl = document.getElementById('report-category-list');
+            if (reportCategoryListEl) {
+                let categoryHtml = '<h3>카테고리별 사용 시간 🎨</h3>';
+                const todayData = weeklyChartData.find(d => d.active);
+                const todayMinutes = todayData ? todayData.time : data.todayTotalMinutes;
+                
+                const total = todayMinutes > 0 ? todayMinutes : 1; 
+
+                data.categories.forEach(cat => {
+                    const progressWidth = (cat.time / total) * 100;
+                    categoryHtml += `
+                        <div class="category-item ${cat.id}">
+                            <div class="category-info">
+                                <i class="category-icon ${cat.id}"></i>
+                                <span class="category-name">${cat.name}</span>
+                            </div>
+                            <span class="category-time">${formatMinutes(cat.time)}</span>
+                            <div class="category-progress-bar">
+                                <div class="progress" style="width: ${progressWidth.toFixed(1)}%;"></div>
+                            </div>
+                        </div>
+                    `;
                 });
+                reportCategoryListEl.innerHTML = categoryHtml;
             }
 
-            const pages = mainAppFrame.querySelectorAll(".app-content .page");
-            const hamburgerButton = mainAppFrame.querySelector("#hamburger-button");
-            const sidebar = mainAppFrame.querySelector("#sidebar");
-            const overlay = mainAppFrame.querySelector("#overlay");
-            const mainNav = mainAppFrame.querySelector("#main-nav");
-            const customizeButton = mainAppFrame.querySelector("#customize-button");
-            const customizeModal = mainAppFrame.querySelector("#customize-modal");
-            const modalSaveButton = mainAppFrame.querySelector("#modal-save-button");
-            const customizeList = mainAppFrame.querySelector("#customize-list");
-            const sidebarMenu = mainAppFrame.querySelector('.sidebar-menu');
-            const customizeHomeButton = mainAppFrame.querySelector("#customize-home-button");
-            const customizeHomeModal = mainAppFrame.querySelector("#customize-home-modal");
-            const homeModalSaveButton = mainAppFrame.querySelector("#home-modal-save-button");
-            const customizeHomeList = mainAppFrame.querySelector("#customize-home-list");
-            const homeWidgetsContainer = mainAppFrame.querySelector("#home-widgets-container");
-
-            // --- Data ---
-            const allNavItems = {
-                home: { name: '홈', iconSVG: '<svg class="icon-svg icon-xs" viewBox="0 0 24 24"><path d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" /></svg>', icon: '<svg class="icon-svg" viewBox="0 0 24 24"><path d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" /></svg>' },
-                messenger: { name: '메신저', iconSVG: '<svg class="icon-svg icon-xs" viewBox="0 0 24 24"><path d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>', icon: '<svg class="icon-svg" viewBox="0 0 24 24"><path d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>' },
-                weather: { name: '날씨', iconSVG: '<svg class="icon-svg icon-xs" viewBox="0 0 24 24"><path d="M2.25 15a4.5 4.5 0 004.5 4.5H18a3.75 3.75 0 001.332-7.257 3 3 0 00-3.758-3.758A3.75 3.75 0 0013.5 4.5h-2.25A3.75 3.75 0 007.5 8.25v.75" /></svg>', icon: '<svg class="icon-svg" viewBox="0 0 24 24"><path d="M2.25 15a4.5 4.5 0 004.5 4.5H18a3.75 3.75 0 001.332-7.257 3 3 0 00-3.758-3.758A3.75 3.75 0 0013.5 4.5h-2.25A3.75 3.75 0 007.5 8.25v.75" /></svg>' },
-                calendar: { name: '캘린더', iconSVG: '<svg class="icon-svg icon-xs" viewBox="0 0 24 24"><path d="M6.75 3v2.25m10.5-2.25v2.25M6.75 21V5.25h10.5V21M3 10.5h18M3 5.25a2.25 2.25 0 012.25-2.25h13.5a2.25 2.25 0 012.25 2.25v13.5a2.25 2.25 0 01-2.25 2.25H5.25a2.25 2.25 0 01-2.25-2.25V5.25z" /></svg>', icon: '<svg class="icon-svg" viewBox="0 0 24 24"><path d="M6.75 3v2.25m10.5-2.25v2.25M6.75 21V5.25h10.5V21M3 10.5h18M3 5.25a2.25 2.25 0 012.25-2.25h13.5a2.25 2.25 0 012.25 2.25v13.5a2.25 2.25 0 01-2.25 2.25H5.25a2.25 2.25 0 01-2.25-2.25V5.25z" /></svg>' },
-                map: { name: '지도', iconSVG: '<svg class="icon-svg icon-xs" viewBox="0 0 24 24"><path d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" /><path d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" /></svg>', icon: '<svg class="icon-svg" viewBox="0 0 24 24"><path d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" /><path d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" /></svg>' },
-                life: { name: '생활', iconSVG: '<svg class="icon-svg icon-xs" viewBox="0 0 24 24"><path d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0012 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75l.008-.008H12v.008z" /></svg>', icon: '<svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0012 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75l.008-.008H12v.008z" /></svg>' },
-                shopping: { name: '쇼핑', iconSVG: '<svg class="icon-svg icon-xs" viewBox="0 0 24 24"><path d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c.51 0 .962-.328 1.087-.835l1.823-6.423a.75.75 0 00-.67-1.038H6.75a.75.75 0 00-.75.75v10.5a.75.75 0 00.75.75z" /></svg>', icon: '<svg class="icon-svg" viewBox="0 0 24 24"><path d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c.51 0 .962-.328 1.087-.835l1.823-6.423a.75.75 0 00-.67-1.038H6.75a.75.75 0 00-.75.75v10.5a.75.75 0 00.75.75z" /></svg>'},
-                news: { name: '뉴스', iconSVG: '<svg class="icon-svg icon-xs" viewBox="0 0 24 24"><path d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 01-2.25 2.25M16.5 7.5V18a2.25 2.25 0 002.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 002.25 2.25h13.5M6 7.5h3v3H6v-3z" /></svg>', icon: '<svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 01-2.25 2.25M16.5 7.5V18a2.25 2.25 0 002.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 002.25 2.25h13.5M6 7.5h3v3H6v-3z" /></svg>'},
-                sports: { name: '스포츠', iconSVG: '<svg class="icon-svg icon-xs" viewBox="0 0 24 24"><path d="M11.25 4.5l7.5 7.5-7.5 7.5M11.25 4.5l-7.5 7.5 7.5 7.5" /></svg>', icon: '<svg class="icon-svg" viewBox="0 0 24 24"><path d="M11.25 4.5l7.5 7.5-7.5 7.5M11.25 4.5l-7.5 7.5 7.5 7.5" /></svg>'},
-                bank: { name: '은행', iconSVG: '<svg class="icon-svg icon-xs" viewBox="0 0 24 24"><path d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3.375m-3.375 2.25h13.5m0-13.5V21A2.25 2.25 0 0118 23.25H6a2.25 2.25 0 01-2.25-2.25V7.5A2.25 2.25 0 016 5.25h12A2.25 2.25 0 0120.25 7.5v0-1.5z" /></svg>', icon: '<svg class="icon-svg" viewBox="0 0 24 24"><path d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3.375m-3.375 2.25h13.5m0-13.5V21A2.25 2.25 0 0118 23.25H6a2.25 2.25 0 01-2.25-2.25V7.5A2.25 2.25 0 016 5.25h12A2.25 2.25 0 0120.25 7.5v0-1.5z" /></svg>'},
-                stocks: { name: '증권', iconSVG: '<svg class="icon-svg icon-xs" viewBox="0 0 24 24"><path d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-3.976 5.197M21 18H2.25" /></svg>', icon: '<svg class="icon-svg" viewBox="0 0 24 24"><path d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-3.976 5.197M21 18H2.25" /></svg>'},
-                translate: { name: '번역', iconSVG: '<svg class="icon-svg icon-xs" viewBox="0 0 24 24"><path d="M10.5 21l5.25-11.25L21 21m-9-3h7.5M3 5.621a48.474 48.474 0 016-.371m0 0c1.12 0 2.233.038 3.334.114M9 5.25V3m3.334 2.364C13.18 7.061 14.122 7.5 15 7.5h0c.878 0 1.82-.439 2.666-1.136m0 0V3m0 2.364a48.458 48.458 0 01-2.666.475" /></svg>', icon: '<svg class="icon-svg" viewBox="0 0 24 24"><path d="M10.5 21l5.25-11.25L21 21m-9-3h7.5M3 5.621a48.474 48.474 0 016-.371m0 0c1.12 0 2.233.038 3.334.114M9 5.25V3m3.334 2.364C13.18 7.061 14.122 7.5 15 7.5h0c.878 0 1.82-.439 2.666-1.136m0 0V3m0 2.364a48.458 48.458 0 01-2.666.475" /></svg>'},
-                settings: { name: '설정', iconSVG: '<svg class="icon-svg icon-xs" viewBox="0 0 24 24"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>', icon: '<svg class="icon-svg" viewBox="0 0 24 24"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>' }
-            };
-             const allHomeWidgets = {
-                weather: { name: '날씨', iconSVG: allNavItems.weather.iconSVG, content: `<div class="widget" data-widget-id="weather"><div class="widget-title"><svg class="icon-svg icon-sm" viewBox="0 0 24 24"><path d="M2.25 15a4.5 4.5 0 004.5 4.5H18a3.75 3.75 0 001.332-7.257 3 3 0 00-3.758-3.758A3.75 3.75 0 0013.5 4.5h-2.25A3.75 3.75 0 007.5 8.25v.75" /></svg>날씨</div><p>원주시 흥업면 흥업리 | 23°C 맑음 (미세먼지: 좋음)</p></div>` },
-                calendar: { name: '일정', iconSVG: allNavItems.calendar.iconSVG, content: `<div class="widget" data-widget-id="calendar"><div class="widget-title"><svg class="icon-svg icon-sm" viewBox="0 0 24 24"><path d="M6.75 3v2.25m10.5-2.25v2.25M6.75 21V5.25h10.5V21M3 10.5h18M3 5.25a2.25 2.25 0 012.25-2.25h13.5a2.25 2.25 0 012.25 2.25v13.5a2.25 2.25 0 01-2.25 2.25H5.25a2.25 2.25 0 01-2.25-2.25V5.25z" /></svg>오늘 일정</div><p>(14:30) ⚪️ (은행) 송금 알림</p><p>(18:00) 🔵 친구와 저녁 약속</p></div>` },
-                news: { name: '뉴스', iconSVG: allNavItems.news.iconSVG, content: `<div class="widget" data-widget-id="news"><div class="widget-title"><svg class="icon-svg icon-sm" viewBox="0 0 24 24"><path d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 01-2.25 2.25M16.5 7.5V18a2.25 2.25 0 002.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 002.25 2.25h13.5M6 7.5h3v3H6v-3z" /></svg>주요 뉴스</div><p style="font-size: 14px; margin-bottom: 5px;">• [속보] 코스피 장중 2700선 돌파</p><p style="font-size: 14px; margin-bottom: 0;">• 가을 단풍 절정, 주말 나들이객 '북적'</p></div>` },
-                stocks: { name: '증권', iconSVG: allNavItems.stocks.iconSVG, content: `<div class="widget" data-widget-id="stocks"><div class="widget-title"><svg class="icon-svg icon-sm" viewBox="0 0 24 24"><path d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-3.976 5.197M21 18H2.25" /></svg>내 주식</div><div style="display: flex; justify-content: space-between; font-size: 14px;"><span style="font-weight: 500;">삼성전자</span> <span class="stock-change up">+1.5%</span></div><div style="display: flex; justify-content: space-between; font-size: 14px; margin-top: 5px;"><span style="font-weight: 500;">카카오</span> <span class="stock-change down">-0.8%</span></div></div>` },
-                map: { name: '지도', iconSVG: allNavItems.map.iconSVG, content: `<div class="widget" data-widget-id="map"><div class="widget-title"><svg class="icon-svg icon-sm" viewBox="0 0 24 24"><path d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" /><path d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" /></svg>지도 바로가기</div><button class="btn btn-secondary btn-sm" data-page="map">지도로 이동</button></div>`},
-                life: { name: '만보기', iconSVG: allNavItems.life.iconSVG, content: `<div class="widget" data-widget-id="life"><div class="widget-title">👟 만보기</div><h3 style="font-size: 28px; text-align: center; margin: 5px 0;">8,123<span style="font-size: 14px; font-weight: 500; color: var(--text-secondary);"> 걸음</span></h3><div class="progress-bar"><div class="progress-bar-inner" style="width: 81%;"></div></div></div>`},
-                shopping: { name: '쇼핑', iconSVG: allNavItems.shopping.iconSVG, content: `<div class="widget" data-widget-id="shopping"><div class="widget-title"><svg class="icon-svg icon-sm" viewBox="0 0 24 24"><path d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c.51 0 .962-.328 1.087-.835l1.823-6.423a.75.75 0 00-.67-1.038H6.75a.75.75 0 00-.75.75v10.5a.75.75 0 00.75.75z" /></svg>추천 상품</div><p style="font-size: 14px; margin-bottom: 5px;">• 편안한 스니커즈 특가!</p><p style="font-size: 14px; margin-bottom: 0;">• 가을맞이 니트 할인</p></div>`},
-                sports: { name: '스포츠', iconSVG: allNavItems.sports.iconSVG, content: `<div class="widget" data-widget-id="sports"><div class="widget-title"><svg class="icon-svg icon-sm" viewBox="0 0 24 24"><path d="M11.25 4.5l7.5 7.5-7.5 7.5M11.25 4.5l-7.5 7.5 7.5 7.5" /></svg>스포츠 결과</div><p style="font-size: 14px; margin-bottom: 5px;">• ⚽ 맨유 1 : 1 리버풀 (종료)</p><p style="font-size: 14px; margin-bottom: 0;">• ⚾ 두산 5 : 3 LG (7회초)</p></div>`},
-                bank: { name: '금융', iconSVG: allNavItems.bank.iconSVG, content: `<div class="widget" data-widget-id="bank"><div class="widget-title"><svg class="icon-svg icon-sm" viewBox="0 0 24 24"><path d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3.375m-3.375 2.25h13.5m0-13.5V21A2.25 2.25 0 0118 23.25H6a2.25 2.25 0 01-2.25-2.25V7.5A2.25 2.25 0 016 5.25h12A2.25 2.25 0 0120.25 7.5v0-1.5z" /></svg>내 계좌</div><p style="font-size: 14px; margin-bottom: 5px;">• 하나은행: 1,500,000 원</p><p style="font-size: 14px; margin-bottom: 0;">• 카카오뱅크: 3,620,000 원</p></div>`},
-                translate: { name: '빠른 번역', iconSVG: allNavItems.translate.iconSVG, content: `<div class="widget" data-widget-id="translate"><div class="widget-title"><svg class="icon-svg icon-sm" viewBox="0 0 24 24"><path d="M10.5 21l5.25-11.25L21 21m-9-3h7.5M3 5.621a48.474 48.474 0 016-.371m0 0c1.12 0 2.233.038 3.334.114M9 5.25V3m3.334 2.364C13.18 7.061 14.122 7.5 15 7.5h0c.878 0 1.82-.439 2.666-1.136m0 0V3m0 2.364a48.458 48.458 0 01-2.666.475" /></svg>빠른 번역</div><textarea placeholder="번역할 내용 입력..." rows="2" style="min-height: 40px; margin-bottom: 10px;"></textarea><button class="btn btn-secondary btn-sm">번역하기</button></div>`}
-            };
-
-            let currentNavIds = ['home', 'messenger', 'weather', 'calendar', 'settings'];
-            let currentHomeWidgetIds = ['weather', 'calendar', 'news', 'stocks'];
-
-            // --- 테마 설정 ---
-            function applyTheme(theme) {
-                if (theme === 'dark') {
-                    document.body.classList.add('dark-mode');
-                    themeToggle.checked = true;
-                } else {
-                    document.body.classList.remove('dark-mode');
-                    themeToggle.checked = false;
-                }
+            // 6-2. 홈(NOW) 페이지 렌더링
+            const nowAppListEl = document.getElementById('now-app-usage-list');
+            if (nowAppListEl) {
+                let appHtml = '';
+                data.topApps.forEach(app => {
+                    appHtml += `
+                        <div class="app-usage-item">
+                            <span class="app-name"><i class="${app.icon}"></i> ${app.name}</span>
+                            <span class="usage-time">${formatMinutes(app.time)}</span>
+                        </div>
+                    `;
+                });
+                nowAppListEl.innerHTML = appHtml;
             }
 
-            // 페이지 로드 시 저장된 테마 적용
-            const savedTheme = localStorage.getItem('theme') || 'light'; // 기본은 라이트
-            applyTheme(savedTheme);
+            const nowInsightEl = document.getElementById('now-insight');
+            if (nowInsightEl) {
+                nowInsightEl.textContent = data.insight;
+            }
+        }
 
-            // 테마 토글 리스너
-            themeToggle.addEventListener('change', function() {
-                if (this.checked) {
-                    applyTheme('dark');
-                    localStorage.setItem('theme', 'dark');
-                } else {
-                    applyTheme('light');
-                    localStorage.setItem('theme', 'light');
+        // --------------------------------------------------
+        // 7. Moa Score 렌더링 함수
+        // --------------------------------------------------
+        function renderMoaScoreData() {
+            const data = moaScoreData;
+
+            // 7-1. 홈(NOW) 페이지 렌더링
+            const nowScoreValueEl = document.getElementById('now-score-value');
+            if (nowScoreValueEl) {
+                nowScoreValueEl.textContent = data.score;
+                // (참고) '점' 텍스트는 이제 HTML에 직접 추가했으므로 JS 수정 불필요
+            }
+            
+            const nowScoreDetailEl = document.getElementById('now-score-detail');
+            if (nowScoreDetailEl) {
+                let detailHtml = '';
+                data.details.forEach(item => {
+                    detailHtml += `
+                        <div>
+                            <span>${item.label}</span>
+                            <span>${item.value} <span class="status-icon ${item.status}">${item.icon}</span></span>
+                        </div>
+                    `;
+                });
+                nowScoreDetailEl.innerHTML = detailHtml;
+            }
+
+            // 7-2. 스코어(Score) 페이지 렌더링
+            const scorePageValueEl = document.getElementById('score-page-value');
+            if (scorePageValueEl) {
+                scorePageValueEl.innerHTML = `${data.score}<span class="unit">점</span>`;
+            }
+            
+            const scorePageDetailListEl = document.getElementById('score-page-detail-list');
+            if (scorePageDetailListEl) {
+                 let detailHtml = '';
+                data.details.forEach(item => {
+                    detailHtml += `
+                        <div>
+                            <span>${item.label}</span>
+                            <span>${item.value} <span class="status-icon ${item.status}">${item.icon}</span></span>
+                        </div>
+                    `;
+                });
+                scorePageDetailListEl.innerHTML = detailHtml;
+            }
+            
+            const scorePageExplanationEl = document.getElementById('score-page-explanation');
+            if (scorePageExplanationEl) {
+                scorePageExplanationEl.textContent = data.explanation;
+            }
+        }
+
+        // --------------------------------------------------
+        // 8. 주간 차트 렌더링 함수 (Chart.js)
+        // --------------------------------------------------
+        function renderWeeklyChart() {
+            const labels = weeklyChartData.map(item => item.day);
+            const dataPoints = weeklyChartData.map(item => item.time); 
+            
+            const backgroundColors = weeklyChartData.map(item => {
+                switch(item.colorClass) {
+                    case 'bar-mon': return '#FF6B6B';
+                    case 'bar-tue': return '#FFD166';
+                    case 'bar-wed': return '#06D6A0';
+                    case 'bar-thu': return '#118AB2';
+                    case 'bar-fri': return '#F780FF';
+                    case 'bar-sat': return '#7A66FF';
+                    case 'bar-sun': return '#FF9671';
+                    default: return '#ccc';
                 }
             });
 
+            const borderColors = weeklyChartData.map(item => 
+                item.active ? '#4A00E0' : 'rgba(0,0,0,0)'
+            );
+            const borderWidths = weeklyChartData.map(item => 
+                item.active ? 3 : 0
+            );
 
-            // --- 페이지 및 네비게이션 ---
-            function showPage(targetPageId) {
-                pages.forEach(page => page.classList.remove("active"));
-                const targetPage = mainAppFrame.querySelector(`#page-${targetPageId}`);
-                if(targetPage) {
-                    targetPage.classList.add("active");
-                    // 페이지 전환 시 스크롤 맨 위로
-                    targetPage.scrollTop = 0;
-                }
-                mainAppFrame.querySelectorAll("#main-nav .nav-button").forEach(btn => {
-                    btn.classList.toggle("active", btn.dataset.target === targetPageId);
-                });
-            }
+            const ctx = document.getElementById('myBarChart');
+            if (!ctx) return; 
 
-            function rebindNavButtons() {
-                // 기존 이벤트 리스너 제거 방식보다 복제 후 재할당이 간단
-                const navButtons = mainAppFrame.querySelectorAll("#main-nav .nav-button");
-                navButtons.forEach(button => {
-                    const newButton = button.cloneNode(true); // 이벤트 리스너 없이 복제
-                    button.parentNode.replaceChild(newButton, button); // 새 버튼으로 교체
-                    newButton.addEventListener("click", () => { // 새 버튼에만 리스너 추가
-                        showPage(newButton.dataset.target);
-                    });
-                });
-            }
-
-            function buildNavBar(ids) {
-                mainNav.innerHTML = ids.map(id => {
-                    const item = allNavItems[id];
-                    if (!item) return '';
-                    return `
-                        <button class="nav-button" data-target="${id}">
-                            <span class="icon">${item.icon}</span>
-                            <span>${item.name}</span>
-                        </button>
-                    `;
-                }).join('');
-                rebindNavButtons(); // 이벤트 리스너 재설정
-                const currentPage = mainAppFrame.querySelector(".page.active")?.id.replace('page-', '');
-                 if (currentPage && ids.includes(currentPage)) {
-                     showPage(currentPage); // 현재 페이지 유지 시도
-                 } else {
-                     showPage(ids.includes('home') ? 'home' : ids[0]); // 아니면 홈 또는 첫번째로 이동
-                 }
-            }
-
-             function buildHomeWidgets(widgetIds) {
-                 homeWidgetsContainer.innerHTML = widgetIds
-                     .map(id => allHomeWidgets[id]?.content || '')
-                     .join('');
-                 const mapButton = homeWidgetsContainer.querySelector('[data-page="map"]');
-                 if (mapButton) {
-                     mapButton.addEventListener('click', () => showPage('map'));
-                 }
-                 // 빠른 번역 위젯 이벤트 리스너 (위젯이 추가될 때마다 바인딩 필요)
-                 const translateWidget = homeWidgetsContainer.querySelector('[data-widget-id="translate"]');
-                 if (translateWidget) {
-                     const translateButton = translateWidget.querySelector('.btn-secondary');
-                     if (translateButton) {
-                         translateButton.addEventListener('click', () => showPage('translate'));
-                     }
-                 }
-             }
-
-            function buildSidebar() {
-                sidebarMenu.innerHTML = `
-                    <div class="sidebar-menu-category">주요 기능</div>
-                    <div class="sidebar-menu-item" data-page="map">${allNavItems.map.icon.replace('icon-svg', 'icon-svg icon-sm')}<span>지도</span></div>
-                    <div class="sidebar-menu-item" data-page="life">${allNavItems.life.icon.replace('icon-svg', 'icon-svg icon-sm')}<span>생활</span></div>
-                    <div class="sidebar-menu-category">엔터테인먼트</div>
-                    <div class="sidebar-menu-item" data-page="shopping">${allNavItems.shopping.icon.replace('icon-svg', 'icon-svg icon-sm')}<span>쇼핑</span></div>
-                    <div class="sidebar-menu-item" data-page="news">${allNavItems.news.icon.replace('icon-svg', 'icon-svg icon-sm')}<span>뉴스</span></div>
-                    <div class="sidebar-menu-item" data-page="sports">${allNavItems.sports.icon.replace('icon-svg', 'icon-svg icon-sm')}<span>스포츠</span></div>
-                    <div class="sidebar-menu-category">금융</div>
-                    <div class="sidebar-menu-item" data-page="bank">${allNavItems.bank.icon.replace('icon-svg', 'icon-svg icon-sm')}<span>은행</span></div>
-                    <div class="sidebar-menu-item" data-page="stocks">${allNavItems.stocks.icon.replace('icon-svg', 'icon-svg icon-sm')}<span>증권</span></div>
-                    <div class="sidebar-menu-category">도구</div>
-                    <div class="sidebar-menu-item" data-page="translate">${allNavItems.translate.icon.replace('icon-svg', 'icon-svg icon-sm')}<span>번역</span></div>
-                `;
-                 mainAppFrame.querySelectorAll(".sidebar-menu-item").forEach(item => {
-                    item.addEventListener("click", () => {
-                        const pageId = item.dataset.page;
-                        if(pageId) {
-                            showPage(pageId);
-                            closeSidebar();
+            new Chart(ctx, {
+                type: 'bar', 
+                data: {
+                    labels: labels, 
+                    datasets: [{
+                        label: '스크린타임', 
+                        data: dataPoints, 
+                        backgroundColor: backgroundColors, 
+                        borderColor: borderColors,     
+                        borderWidth: borderWidths,   
+                        borderRadius: 5, 
+                    }]
+                },
+                options: {
+                    responsive: true, 
+                    maintainAspectRatio: false, 
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: { color: '#555' },
+                            grid: { color: 'rgba(0,0,0,0.05)' }
+                        },
+                        x: {
+                            ticks: { color: '#555' },
+                            grid: { display: false }
                         }
-                    });
-                });
-            }
-
-            function closeSidebar() {
-                sidebar.classList.remove("active");
-                overlay.classList.remove("active");
-            }
-
-            // --- Event Listeners ---
-            hamburgerButton.addEventListener("click", () => {
-                sidebar.classList.add("active");
-                overlay.classList.add("active");
-            });
-
-            overlay.addEventListener("click", () => {
-                closeSidebar();
-                customizeModal.classList.remove("active");
-                customizeHomeModal.classList.remove("active");
-            });
-
-            // 하단 바 편집 버튼
-            customizeButton.addEventListener("click", () => {
-                overlay.classList.add("active");
-                customizeModal.classList.add("active");
-
-                customizeList.innerHTML = Object.keys(allNavItems).filter(id => id !== 'home' && id !== 'settings').map(id => {
-                    const item = allNavItems[id];
-                    const isChecked = currentNavIds.includes(id);
-                    return `
-                        <label>
-                            <input type="checkbox" value="${id}" ${isChecked ? 'checked' : ''}>
-                            <span class="item-icon">${item.iconSVG || ''}</span>
-                            <span>${item.name}</span>
-                        </label>
-                    `;
-                }).join('');
-            });
-
-            // 하단 바 저장 버튼
-            modalSaveButton.addEventListener("click", () => {
-                const selectedItems = [];
-                customizeList.querySelectorAll('input:checked').forEach(input => {
-                    selectedItems.push(input.value);
-                });
-
-                if (selectedItems.length > 3 || selectedItems.length < 1) {
-                    alert('홈과 설정을 제외하고 1개 이상, 3개 이하의 메뉴를 선택해주세요.');
-                    return;
+                    },
+                    plugins: {
+                        legend: {
+                            display: false 
+                        },
+                        tooltip: { 
+                            callbacks: {
+                                label: function(context) {
+                                    return ` ${formatMinutes(context.parsed.y).replace(/<span class="unit">/g, ' ').replace(/<\/span>/g, '')}`;
+                                }
+                            }
+                        }
+                    }
                 }
-
-                currentNavIds = ['home', ...selectedItems, 'settings'];
-                buildNavBar(currentNavIds);
-                overlay.classList.remove("active");
-                customizeModal.classList.remove("active");
             });
+        }
 
-            // 홈 화면 위젯 편집 버튼
-            customizeHomeButton.addEventListener("click", () => {
-                 overlay.classList.add("active");
-                 customizeHomeModal.classList.add("active");
 
-                 // 현재 순서를 반영하여 모달 리스트 생성
-                 const currentWidgetOrder = currentHomeWidgetIds.slice(); // 복사본 사용
-                 const allWidgetKeys = Object.keys(allHomeWidgets);
-                 const modalListHtml = allWidgetKeys.map(id => {
-                     const item = allHomeWidgets[id];
-                     const isChecked = currentWidgetOrder.includes(id);
-                     const orderStyle = isChecked ? `style="order: ${currentWidgetOrder.indexOf(id)}"` : ''; // 현재 순서 반영
-                     return `
-                         <label draggable="true" data-widget-id="${id}" ${orderStyle}>
-                             <input type="checkbox" value="${id}" ${isChecked ? 'checked' : ''}>
-                             <span class="item-icon">${item.iconSVG || ''}</span>
-                             <span>${item.name}</span>
-                         </label>
-                     `;
-                 }).sort((a, b) => { // 순서대로 정렬 (체크된 것 먼저)
-                     const orderA = parseInt(a.match(/order: (\d+)/)?.[1] ?? '9999');
-                     const orderB = parseInt(b.match(/order: (\d+)/)?.[1] ?? '9999');
-                     return orderA - orderB;
-                 }).join('');
+        // --------------------------------------------------
+        // 9. 이벤트 리스너 (페이지 로드 시)
+        // --------------------------------------------------
+        document.addEventListener('DOMContentLoaded', function() {
+            let chartRendered = false; 
+            
+            const navItems = document.querySelectorAll('.nav-item');
+            const contentPages = document.querySelectorAll('.page-content');
+            
+            // 9-1. 네비게이션바 페이지 전환
+            navItems.forEach(item => {
+                item.addEventListener('click', function(event) {
+                    event.preventDefault(); 
+                    const targetId = this.getAttribute('data-target');
 
-                 customizeHomeList.innerHTML = modalListHtml;
-                 customizeHomeList.style.display = 'flex'; // Flexbox 정렬 활성화
-                 customizeHomeList.style.flexDirection = 'column';
+                    navItems.forEach(nav => nav.classList.remove('active'));
+                    this.classList.add('active');
 
-                 // 드래그 앤 드롭 로직
-                let draggedItem = null;
-                customizeHomeList.querySelectorAll('label').forEach(item => {
-                    item.addEventListener('dragstart', (e) => {
-                        draggedItem = item;
-                        setTimeout(() => item.style.opacity = '0.5', 0);
-                        // 드래그 데이터 설정 (선택사항, 필요시)
-                        // e.dataTransfer.setData('text/plain', item.dataset.widgetId);
-                    });
-                    item.addEventListener('dragend', () => {
-                         setTimeout(() => {
-                             if (draggedItem) { // Check if draggedItem exists
-                                draggedItem.style.opacity = '1';
-                             }
-                             draggedItem = null;
-                         }, 0);
-                    });
-                    item.addEventListener('dragover', (e) => {
-                        e.preventDefault(); // 필수: drop 이벤트가 발생하도록 함
-                    });
-                    item.addEventListener('dragenter', (e) => {
-                         e.preventDefault();
-                         if (draggedItem && draggedItem !== item) {
-                             const containerRect = customizeHomeList.getBoundingClientRect();
-                             const itemRect = item.getBoundingClientRect();
-                             // 컨테이너 내에서의 Y 좌표 계산
-                             const relativeY = e.clientY - containerRect.top;
-                             const itemMiddleY = itemRect.top - containerRect.top + itemRect.height / 2;
+                    contentPages.forEach(page => page.classList.remove('active'));
+                    document.getElementById(targetId).classList.add('active');
 
-                             // 스크롤 위치 고려
-                             const scrollTop = customizeHomeList.scrollTop;
-                             const adjustedMiddleY = itemMiddleY - scrollTop;
-
-                             if (relativeY > adjustedMiddleY) { // 드롭 대상의 중간 아래로 들어왔을 때
-                                 item.after(draggedItem);
-                             } else { // 드롭 대상의 중간 위로 들어왔을 때
-                                 item.before(draggedItem);
-                             }
-                         }
-                    });
-                    item.addEventListener('drop', (e) => {
-                         e.preventDefault(); // 기본 동작 방지
-                         // 드롭 시 특별한 동작이 필요하면 여기에 추가
-                    });
-
+                    if (targetId === 'page-report' && !chartRendered) {
+                        renderWeeklyChart();
+                        chartRendered = true; 
+                    }
                 });
             });
 
-            // 홈 화면 위젯 저장 버튼
-            homeModalSaveButton.addEventListener("click", () => {
-                const orderedWidgets = [];
-                 customizeHomeList.querySelectorAll('label').forEach(label => {
-                     const checkbox = label.querySelector('input');
-                     if (checkbox.checked) {
-                         orderedWidgets.push(checkbox.value);
-                     }
-                 });
+            // 9-2. 데이터 렌더링 함수 실행 (차트 제외)
+            renderScreenTimeData();
+            renderMoaScoreData(); 
+            
+            // 9-3. '디지털 밸런스' 카드 클릭 이벤트
+            const digitalBalanceCard = document.querySelector('#page-now .digital-balance-card');
+            const reportNavItem = document.querySelector('.nav-item[data-target="page-report"]');
 
-                currentHomeWidgetIds = orderedWidgets;
-                buildHomeWidgets(currentHomeWidgetIds);
-                overlay.classList.remove("active");
-                customizeHomeModal.classList.remove("active");
-            });
+            if (digitalBalanceCard && reportNavItem) {
+                digitalBalanceCard.addEventListener('click', function() {
+                    reportNavItem.click(); 
+                });
+            }
 
-            // --- Initial Build ---
-            buildNavBar(currentNavIds);
-            buildSidebar();
-            buildHomeWidgets(currentHomeWidgetIds);
+            // 9-4. 'Moa Score' 카드 클릭 시 '스코어' 페이지로 이동
+            const nowScoreCard = document.getElementById('now-score-section');
+            const scoreNavItem = document.querySelector('.nav-item[data-target="page-score"]');
+
+            if (nowScoreCard && scoreNavItem) {
+                nowScoreCard.addEventListener('click', function() {
+                    scoreNavItem.click();
+                });
+            }
+
+            const activePage = document.querySelector('.page-content.active');
+            if (activePage && activePage.id === 'page-report' && !chartRendered) {
+                renderWeeklyChart();
+                chartRendered = true;
+            }
         });
     </script>
 </body>
