@@ -142,16 +142,16 @@
         .score-section h3 { font-size: 18px; font-weight: 700; color: #333; margin-top: 0; margin-bottom: 15px; }
         .moa-score { display: flex; align-items: center; margin-bottom: 20px; }
         .moa-score .score-value { font-size: 48px; font-weight: 700; color: #4A00E0; margin-right: 15px; }
-        .moa-score .score-icon { font-size: 36px; color: #FFC107; } /* (참고) 이 스타일은 이제 사용되지 않음 */
+        .moa-score .score-icon { font-size: 36px; color: #FFC107; } 
         
-        /* [수정] 홈 화면의 '점' 텍스트 스타일 (스코어 페이지와 유사하게) */
+        /* 홈 화면의 '점' 텍스트 스타일 (스코어 페이지와 유사하게) */
         .moa-score .unit {
-            font-size: 20px; /* 스코어 페이지의 '점'과 동일한 크기 */
+            font-size: 20px; 
             font-weight: 500; 
             color: #555; 
-            margin-left: -10px; /* 숫자와 '점' 사이 간격 조절 */
-            align-self: flex-end; /* 점을 숫자 하단에 맞춤 */
-            margin-bottom: 8px; /* 하단 정렬을 위한 미세조정 */
+            margin-left: -10px; 
+            align-self: flex-end; 
+            margin-bottom: 8px; 
         }
         
         .score-detail { margin-bottom: 15px; }
@@ -166,6 +166,19 @@
         .score-detail .status-icon.good { color: #28A745; }
         .score-detail .status-icon.neutral { color: #FFC107; }
         .score-detail .status-icon.bad { color: #DC3545; }
+        
+        /* 완료 메시지 스타일 */
+        .score-section .completion-message {
+            font-size: 16px;
+            font-weight: 600;
+            color: #28A745;
+            text-align: center;
+            padding: 10px 0;
+            background-color: #f6ffed;
+            border-radius: 10px;
+            margin-top: 10px;
+            display: none; /* 초기에는 숨김 */
+        }
 
         #now-score-section {
             cursor: pointer;
@@ -195,6 +208,64 @@
             cursor: pointer;
         }
 
+        /* 모달 스타일 */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+        .modal-overlay.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        .modal-content {
+            background: #fff;
+            padding: 30px;
+            border-radius: 20px;
+            width: 300px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            transform: scale(0.9);
+            transition: transform 0.3s ease-out;
+        }
+        .modal-overlay.visible .modal-content {
+            transform: scale(1);
+        }
+        .modal-content h3 {
+            color: #4A00E0;
+            font-size: 22px;
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+        .modal-content p {
+            color: #555;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+        .modal-content button {
+            background-color: #4A00E0;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .modal-content button:hover {
+            background-color: #6a1ce0;
+        }
+        
         /* ----- 리포트(스크린 타임) 페이지 스타일 ----- */
         .report-header { margin-bottom: 20px; }
         .report-header h2 { font-size: 18px; font-weight: 600; color: #555; margin: 0 0 5px 0; }
@@ -363,7 +434,8 @@
 
         <div class="app-header">
             <h1>Moa Now</h1>
-            <i class="fas fa-cog settings-icon"></i>
+            <!-- alert() 대신 커스텀 모달 사용 예정 -->
+            <i class="fas fa-cog settings-icon" onclick="showModal('설정', '설정 페이지로 이동하는 로직을 구현해야 합니다.')"></i>
         </div>
 
         <div class="main-content">
@@ -373,7 +445,8 @@
                     <div class="time-info">오전 10:42 | 강의 30분 후 시작</div>
                     <div class="focus-score">오늘 집중도 78% <span>👍</span></div>
                     <div class="recommendation">"10분 복습 노트 보기" 📖</div>
-                    <a href="#" class="action-button">지금 하기</a>
+                    <!-- '지금 하기' 버튼에 이벤트 리스너를 위한 ID를 추가하고 onclick 제거 -->
+                    <a href="#" class="action-button" id="do-it-now-button">지금 하기</a>
                 </div>
 
                 <div class="score-section" id="now-score-section">
@@ -383,7 +456,11 @@
                         <span class="unit">점</span> 
                     </div>
                     <div class="score-detail" id="now-score-detail">
-                        </div>
+                    </div>
+                    <!-- 활동 완료 메시지 영역 추가 -->
+                    <div class="completion-message" id="completion-message">
+                        ✅ 복습 완료! 수고하셨어요.
+                    </div>
                 </div>
 
                 <h3 class="section-title">Micro Reminder</h3>
@@ -398,9 +475,9 @@
                 <div class="digital-balance-card">
                     <h3>스크린 타임 분석</h3>
                     <div id="now-app-usage-list">
-                        </div>
+                    </div>
                     <p class="insight" id="now-insight">
-                        </p>
+                    </p>
                 </div>
             </div>
 
@@ -409,7 +486,7 @@
                 <div class="report-header">
                     <h2>오늘의 총 사용 시간 📊</h2>
                     <div class="total-time-display" id="report-total-time">
-                        </div>
+                    </div>
                 </div>
 
                 <div class="chart-container">
@@ -417,7 +494,7 @@
                 </div>
 
                 <div class="category-list-container" id="report-category-list">
-                    </div>
+                </div>
 
             </div>
 
@@ -426,26 +503,27 @@
                 <div class="report-header">
                     <h2>나의 Moa Score 🏆</h2>
                     <div class="total-time-display" id="score-page-value">
-                        </div>
+                    </div>
                 </div>
                 
                 <div class="score-section" id="score-page-details">
                     <h3>상세 내역 🔍</h3>
                     <div class="score-detail" id="score-page-detail-list">
-                        </div>
+                    </div>
                 </div>
 
                 <div class="digital-balance-card">
                     <h3>Moa Score 란? 💡</h3>
                     <p class="insight" id="score-page-explanation">
-                        </p>
+                    </p>
                 </div>
 
             </div>
 
             <div id="page-my" class="page-content">
                 
-                <div class="profile-section" onclick="alert('프로필 수정 페이지로 이동합니다.')">
+                <!-- alert() 대신 showModal() 사용 -->
+                <div class="profile-section" onclick="showModal('프로필 수정', '프로필 수정 페이지로 이동하는 로직을 구현해야 합니다.')">
                     
                     <div class="profile-pic default-profile">
                         <i class="fas fa-user"></i>
@@ -459,17 +537,17 @@
                 </div>
 
                 <div class="settings-group">
-                    <a href="#" class="settings-item" onclick="alert('프로필 수정 페이지로 이동합니다.')">
+                    <a href="#" class="settings-item" onclick="showModal('프로필 수정', '프로필 수정 페이지로 이동하는 로직을 구현해야 합니다.')">
                         <i class="fas fa-user-edit"></i>
                         <span>프로필 수정</span>
                         <i class="fas fa-chevron-right"></i>
                     </a>
-                    <a href="#" class="settings-item">
+                    <a href="#" class="settings-item" onclick="showModal('알림 설정', '알림 설정 페이지로 이동하는 로직을 구현해야 합니다.')">
                         <i class="fas fa-bell"></i>
                         <span>알림 설정</span>
                         <i class="fas fa-chevron-right"></i>
                     </a>
-                    <a href="#" class="settings-item">
+                    <a href="#" class="settings-item" onclick="showModal('계정 및 보안', '계정 및 보안 페이지로 이동하는 로직을 구현해야 합니다.')">
                         <i class="fas fa-lock"></i>
                         <span>계정 및 보안</span>
                         <i class="fas fa-chevron-right"></i>
@@ -477,12 +555,12 @@
                 </div>
 
                 <div class="settings-group">
-                    <a href="#" class="settings-item">
+                    <a href="#" class="settings-item" onclick="showModal('테마/화면 설정', '테마/화면 설정 페이지로 이동하는 로직을 구현해야 합니다.')">
                         <i class="fas fa-palette"></i>
                         <span>테마/화면 설정</span>
                         <i class="fas fa-chevron-right"></i>
                     </a>
-                    <a href="#" class="settings-item">
+                    <a href="#" class="settings-item" onclick="showModal('연동된 서비스', '연동된 서비스 페이지로 이동하는 로직을 구현해야 합니다.')">
                         <i class="fas fa-link"></i>
                         <span>연동된 서비스</span>
                         <i class="fas fa-chevron-right"></i>
@@ -490,17 +568,18 @@
                 </div>
 
                 <div class="settings-group">
-                    <a href="#" class="settings-item">
+                    <a href="#" class="settings-item" onclick="showModal('정보', '정보 페이지로 이동하는 로직을 구현해야 합니다.')">
                         <i class="fas fa-info-circle"></i>
                         <span>정보</span>
                         <i class="fas fa-chevron-right"></i>
                     </a>
-                    <a href="#" class="settings-item">
+                    <a href="#" class="settings-item" onclick="showModal('고객센터', '고객센터 페이지로 이동하는 로직을 구현해야 합니다.')">
                         <i class="fas fa-question-circle"></i>
                         <span>고객센터</span>
                         <i class="fas fa-chevron-right"></i>
                     </a>
-                    <a href="#" class="settings-item logout" onclick="alert('로그아웃합니다.')">
+                    <!-- alert() 대신 showModal() 사용 -->
+                    <a href="#" class="settings-item logout" onclick="showModal('로그아웃', '정말로 로그아웃하시겠습니까?', true, function() { console.log('로그아웃 처리됨'); })">
                         <i class="fas fa-sign-out-alt"></i>
                         <span>로그아웃</span>
                         <i class="fas fa-chevron-right"></i>
@@ -529,8 +608,61 @@
             </a>
         </div>
     </div>
+    
+    <!-- 커스텀 모달 구조 -->
+    <div id="custom-modal-overlay" class="modal-overlay">
+        <div class="modal-content">
+            <h3 id="modal-title"></h3>
+            <p id="modal-message"></p>
+            <button id="modal-confirm-button">확인</button>
+        </div>
+    </div>
 
     <script>
+        // 활동 상태를 추적하는 전역 변수
+        let isActivityActive = false; 
+
+        // --------------------------------------------------
+        // 0. 커스텀 모달 함수 (alert() 대체)
+        // --------------------------------------------------
+        function showModal(title, message, isConfirm = false, onConfirm = null) {
+            const overlay = document.getElementById('custom-modal-overlay');
+            const modalTitle = document.getElementById('modal-title');
+            const modalMessage = document.getElementById('modal-message');
+            const confirmButton = document.getElementById('modal-confirm-button');
+
+            modalTitle.textContent = title;
+            modalMessage.textContent = message;
+
+            // 기존 이벤트 리스너 제거
+            confirmButton.onclick = null; 
+
+            // 확인 버튼 텍스트와 동작 설정
+            if (isConfirm) {
+                confirmButton.textContent = '확인';
+                confirmButton.onclick = function() {
+                    overlay.classList.remove('visible');
+                    // 확인 버튼을 눌렀을 때만 onConfirm 콜백 실행
+                    if (onConfirm) onConfirm();
+                };
+            } else {
+                confirmButton.textContent = '닫기';
+                confirmButton.onclick = function() {
+                    overlay.classList.remove('visible');
+                };
+            }
+            
+            overlay.classList.add('visible');
+        }
+        
+        // 오버레이 클릭 시 닫기
+        document.getElementById('custom-modal-overlay').addEventListener('click', function(e) {
+            if (e.target.id === 'custom-modal-overlay') {
+                e.currentTarget.classList.remove('visible');
+            }
+        });
+
+
         // --------------------------------------------------
         // 1. 스크린 타임 데이터 정의
         // --------------------------------------------------
@@ -620,16 +752,15 @@
             // 6-1. 스크린 타임(리포트) 페이지 렌더링
             const reportTotalEl = document.getElementById('report-total-time');
             if (reportTotalEl) {
-                const todayData = weeklyChartData.find(d => d.active);
-                const todayMinutes = todayData ? todayData.time : data.todayTotalMinutes;
+                // 현재는 일요일 데이터에 맞춰 268분으로 표시
+                const todayMinutes = data.todayTotalMinutes; 
                 reportTotalEl.innerHTML = formatMinutes(todayMinutes);
             }
             
             const reportCategoryListEl = document.getElementById('report-category-list');
             if (reportCategoryListEl) {
                 let categoryHtml = '<h3>카테고리별 사용 시간 🎨</h3>';
-                const todayData = weeklyChartData.find(d => d.active);
-                const todayMinutes = todayData ? todayData.time : data.todayTotalMinutes;
+                const todayMinutes = data.todayTotalMinutes;
                 
                 const total = todayMinutes > 0 ? todayMinutes : 1; 
 
@@ -682,7 +813,6 @@
             const nowScoreValueEl = document.getElementById('now-score-value');
             if (nowScoreValueEl) {
                 nowScoreValueEl.textContent = data.score;
-                // (참고) '점' 텍스트는 이제 HTML에 직접 추가했으므로 JS 수정 불필요
             }
             
             const nowScoreDetailEl = document.getElementById('now-score-detail');
@@ -732,6 +862,9 @@
             const labels = weeklyChartData.map(item => item.day);
             const dataPoints = weeklyChartData.map(item => item.time); 
             
+            // 일요일 데이터(오늘) 활성화를 위한 설정
+            weeklyChartData.forEach(item => item.active = (item.day === '일')); 
+
             const backgroundColors = weeklyChartData.map(item => {
                 switch(item.colorClass) {
                     case 'bar-mon': return '#FF6B6B';
@@ -797,10 +930,76 @@
                 }
             });
         }
+        
+        // --------------------------------------------------
+        // 9. 활동 완료 처리 함수
+        // --------------------------------------------------
+        function handleActivityCompletion() {
+            const nowFeedCard = document.querySelector('.now-feed-card');
+            const actionButton = nowFeedCard.querySelector('.action-button');
+            const completionMessage = document.getElementById('completion-message');
+
+            // 9-1. 상태 및 UI 초기화
+            isActivityActive = false;
+            // 복습이 완료되었으므로 추천 문구는 다시 '지금 하기'로 돌아갑니다.
+            nowFeedCard.querySelector('.recommendation').innerHTML = '"10분 복습 노트 보기" 📖';
+            actionButton.textContent = '지금 하기';
+            
+            // 9-2. 가상 스코어 업데이트
+            moaScoreData.score = 68; // 64 -> 68로 업데이트
+            renderMoaScoreData(); 
+
+            // 9-3. 완료 모달 및 메시지 표시 (메시지는 사라지지 않음)
+            showModal('활동 완료', '10분 복습을 마쳤어요. Moa Score에 반영됩니다! ✨');
+            
+            // 요청 사항: 메시지는 사라지지 않음
+            completionMessage.style.display = 'block';
+
+            // (이전 코드: 3초 후 완료 메시지 숨김 - 이 부분을 제거합니다.)
+            /*
+            setTimeout(() => {
+                completionMessage.style.display = 'none';
+            }, 3000); 
+            */
+        }
+
+        // --------------------------------------------------
+        // 10. '지금 하기' / '복습 완료' 버튼 클릭 핸들러
+        // --------------------------------------------------
+        function handleDoItNowClick(event) {
+            event.preventDefault(); 
+            const nowFeedCard = document.querySelector('.now-feed-card');
+            const actionButton = nowFeedCard.querySelector('.action-button');
+            
+            if (isActivityActive) {
+                // Active State ("복습 완료" 버튼이 눌렸을 때)
+                // 요청 사항: "지금 하기랑 같은 팝업" (즉, 활동 시작 모달)을 띄움
+                showModal('복습 노트 보기', '아직 복습 시간 중입니다. 활동을 계속 진행해주세요.');
+                return; 
+            }
+
+            // Initial State ("지금 하기" 버튼이 눌렸을 때)
+            // isConfirm=true를 사용하여 사용자가 '확인'을 누를 때만 onConfirm 실행
+            showModal('복습 노트 보기', '10분 동안 복습 노트를 확인합니다. 학습을 시작할까요?', true, () => {
+                // 사용자가 '확인'을 누름
+                isActivityActive = true;
+                
+                // UI를 Active State로 변경
+                nowFeedCard.querySelector('.recommendation').innerHTML = '복습 시간 중입니다. 집중! 🎧';
+                actionButton.textContent = '복습 완료';
+
+                // 활동 완료 메시지는 활동이 끝난 후에 표시되어야 하므로, 이 시점에서는 숨깁니다.
+                document.getElementById('completion-message').style.display = 'none';
+
+
+                // 가상 타이머 시작 (5초 후 완료 처리)
+                setTimeout(handleActivityCompletion, 5000); 
+            });
+        }
 
 
         // --------------------------------------------------
-        // 9. 이벤트 리스너 (페이지 로드 시)
+        // 11. 이벤트 리스너 (페이지 로드 시)
         // --------------------------------------------------
         document.addEventListener('DOMContentLoaded', function() {
             let chartRendered = false; 
@@ -808,7 +1007,7 @@
             const navItems = document.querySelectorAll('.nav-item');
             const contentPages = document.querySelectorAll('.page-content');
             
-            // 9-1. 네비게이션바 페이지 전환
+            // 11-1. 네비게이션바 페이지 전환
             navItems.forEach(item => {
                 item.addEventListener('click', function(event) {
                     event.preventDefault(); 
@@ -827,11 +1026,17 @@
                 });
             });
 
-            // 9-2. 데이터 렌더링 함수 실행 (차트 제외)
+            // 11-2. 데이터 렌더링 함수 실행 (차트 제외)
             renderScreenTimeData();
             renderMoaScoreData(); 
             
-            // 9-3. '디지털 밸런스' 카드 클릭 이벤트
+            // 11-3. '지금 하기' 버튼 이벤트 연결
+            const doItNowButton = document.getElementById('do-it-now-button');
+            if (doItNowButton) {
+                doItNowButton.addEventListener('click', handleDoItNowClick);
+            }
+            
+            // 11-4. '디지털 밸런스' 카드 클릭 이벤트
             const digitalBalanceCard = document.querySelector('#page-now .digital-balance-card');
             const reportNavItem = document.querySelector('.nav-item[data-target="page-report"]');
 
@@ -841,7 +1046,7 @@
                 });
             }
 
-            // 9-4. 'Moa Score' 카드 클릭 시 '스코어' 페이지로 이동
+            // 11-5. 'Moa Score' 카드 클릭 시 '스코어' 페이지로 이동
             const nowScoreCard = document.getElementById('now-score-section');
             const scoreNavItem = document.querySelector('.nav-item[data-target="page-score"]');
 
@@ -851,6 +1056,7 @@
                 });
             }
 
+            // 11-6. 초기 로드 시 차트 렌더링 (홈 화면이 아니더라도)
             const activePage = document.querySelector('.page-content.active');
             if (activePage && activePage.id === 'page-report' && !chartRendered) {
                 renderWeeklyChart();
