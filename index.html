@@ -14,6 +14,7 @@
             --white: #FFFFFF;
             --card-shadow: 0 8px 20px rgba(0,0,0,0.04);
             --danger: #FF5252;
+            --modal-bg: rgba(0, 0, 0, 0.6);
             
             /* Score Page Colors */
             --color-sleep: #4e8cff;
@@ -62,6 +63,31 @@
         .noti-item { padding: 15px 0; border-bottom: 1px solid #f0f0f0; display: flex; gap: 12px; align-items: flex-start; }
         .noti-icon-box { width: 36px; height: 36px; background: #F0F2F5; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 
+        /* [NEW] Modal Popup Styles */
+        .modal-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--modal-bg); z-index: 200;
+            display: none; justify-content: center; align-items: center;
+            animation: fadeIn 0.2s ease;
+        }
+        .modal-box {
+            background: white; width: 80%; padding: 25px; border-radius: 24px;
+            text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transform: scale(0.9); animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+        @keyframes popIn { to { transform: scale(1); } }
+        .modal-title { font-size: 18px; font-weight: 700; margin-bottom: 10px; }
+        .modal-desc { font-size: 14px; color: #666; margin-bottom: 20px; line-height: 1.4; }
+        .modal-btns { display: flex; gap: 10px; justify-content: center; }
+        .modal-btn { flex: 1; padding: 12px; border-radius: 14px; border: none; font-weight: 700; cursor: pointer; font-size: 14px; }
+        .btn-cancel { background: #f0f0f0; color: #666; }
+        .btn-confirm { background: var(--primary-lime); color: var(--text-main); }
+        
+        /* Success Animation in Modal */
+        .checkmark-circle { width: 50px; height: 50px; border-radius: 50%; background: var(--primary-lime); display: flex; align-items: center; justify-content: center; margin: 0 auto 15px; }
+        .checkmark { color: var(--text-main); font-size: 24px; }
+
+
         /* [HOME Styles] */
         .home-score-card { 
             background: var(--white); border-radius: 24px; padding: 25px; margin-bottom: 20px; 
@@ -71,7 +97,6 @@
         .home-score-text h3 { font-size: 14px; color: var(--text-sub); margin-bottom: 5px; font-weight: 500; }
         .home-score-text .value { font-size: 42px; font-weight: 800; color: var(--text-main); line-height: 1; }
         .score-trend { font-size: 12px; color: #4CAF50; margin-top: 5px; display: flex; align-items: center; gap: 4px; font-weight: 600; }
-        
         .home-chart-container { position: relative; width: 80px; height: 80px; display: flex; justify-content: center; align-items: center; }
         .home-circular-chart { display: block; margin: 0 auto; max-width: 100%; max-height: 100%; transform: rotate(-90deg); }
         .home-circle-bg { fill: none; stroke: #eee; stroke-width: 3.8; }
@@ -96,7 +121,7 @@
         .list-item-card.checked-state .content-text { text-decoration: line-through; color: #aaa; }
         .content-text { font-size: 15px; font-weight: 500; transition: color 0.2s; }
 
-        /* [TODO Styles] Calendar & Timeline */
+        /* [TODO Styles] */
         .calendar-container { background: white; border-radius: 24px; padding: 20px; box-shadow: var(--card-shadow); margin-bottom: 20px; }
         .cal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
         .cal-nav-btn { width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; cursor: pointer; border-radius: 50%; background: #f5f5f5; font-weight: bold; }
@@ -110,8 +135,6 @@
         .cal-date.empty { cursor: default; }
 
         .date-display-header { font-size: 14px; color: #666; font-weight: 600; margin-bottom: 10px; }
-        
-        /* [수정됨] 입력 박스 (시간 + 이름) */
         .add-box { background: white; padding: 10px; border-radius: 16px; display: flex; gap: 8px; margin-bottom: 20px; box-shadow: var(--card-shadow); }
         .add-time-input { width: 35%; border: none; background: #f5f5f5; padding: 12px 10px; border-radius: 10px; outline: none; font-size: 13px; font-family: inherit; text-align: center; }
         .add-text-input { flex: 1; border: none; background: #f5f5f5; padding: 12px 10px; border-radius: 10px; outline: none; font-size: 14px; }
@@ -188,7 +211,7 @@
         .ai-icon-new { width: 40px; height: 40px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #2E7D32; flex-shrink: 0; }
         .ai-text-new { font-size: 14px; color: #1B5E20; line-height: 1.5; }
 
-        /* [MY PAGE Styles] */
+        /* [MY PAGE Styles - SVG Icons] */
         .profile-header { display: flex; align-items: center; padding: 10px 0 30px; }
         .profile-img { width: 64px; height: 64px; background: #ddd; border-radius: 50%; margin-right: 15px; background-image: url('https://api.dicebear.com/7.x/avataaars/svg?seed=Felix'); background-size: cover; border: 3px solid var(--white); box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
         .menu-list { background: var(--white); border-radius: 24px; padding: 10px 20px; box-shadow: var(--card-shadow); margin-bottom: 20px; }
@@ -225,6 +248,26 @@
                 <div><h4>물 마시기</h4><p>수분 섭취 시간입니다.</p></div>
             </div>
         </div>
+
+        <div id="confirmModal" class="modal-overlay">
+            <div class="modal-box">
+                <div class="modal-title">지금 실천하시겠습니까?</div>
+                <div class="modal-desc">오늘의 실천 기록에 추가됩니다.</div>
+                <div class="modal-btns">
+                    <button class="modal-btn btn-cancel" onclick="closeModals()">취소</button>
+                    <button class="modal-btn btn-confirm" onclick="processAction()">실천</button>
+                </div>
+            </div>
+        </div>
+        
+        <div id="successModal" class="modal-overlay">
+            <div class="modal-box">
+                <div class="checkmark-circle"><span class="checkmark">✔</span></div>
+                <div class="modal-title">실천 완료!</div>
+                <div class="modal-desc">멋진 시작입니다!<br>점수가 적립되었습니다.</div>
+            </div>
+        </div>
+
 
         <div class="status-bar">
             <span>11:55</span>
@@ -265,7 +308,7 @@
             <div class="now-card">
                 <div class="now-badge">NOW FEED</div>
                 <div class="now-title">점심 식사 후,<br><span style="color:var(--primary-lime)">가벼운 산책</span> 어때요? 🏃‍♂️</div>
-                <button class="action-btn" onclick="alert('실천 완료!')">지금 실천하기</button>
+                <button class="action-btn" onclick="openConfirmModal()">지금 실천하기</button>
             </div>
 
             <div class="section-title">Micro Reminder</div>
@@ -410,14 +453,60 @@
                 <div class="profile-info"><h2>사용자</h2><p style="font-size:13px; color:#777;">moa-user@example.com</p></div>
             </div>
             <div class="menu-list">
-                <div class="menu-item"><div class="menu-left"><div class="menu-icon-box">👤</div>프로필 수정</div></div>
-                <div class="menu-item"><div class="menu-left"><div class="menu-icon-box">🔔</div>알림 설정</div></div>
-                <div class="menu-item"><div class="menu-left"><div class="menu-icon-box">🔒</div>계정 및 보안</div></div>
-                <div class="menu-item"><div class="menu-left"><div class="menu-icon-box">🎨</div>테마 설정</div></div>
+                <div class="menu-item">
+                    <div class="menu-left">
+                        <div class="menu-icon-box">
+                            <svg class="icon-svg icon-sm" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                        </div>
+                        프로필 수정
+                    </div>
+                    <svg class="icon-svg icon-sm" style="color:#ccc;" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-left">
+                        <div class="menu-icon-box">
+                            <svg class="icon-svg icon-sm" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+                        </div>
+                        알림 설정
+                    </div>
+                    <svg class="icon-svg icon-sm" style="color:#ccc;" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-left">
+                        <div class="menu-icon-box">
+                            <svg class="icon-svg icon-sm" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                        </div>
+                        계정 및 보안
+                    </div>
+                    <svg class="icon-svg icon-sm" style="color:#ccc;" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-left">
+                        <div class="menu-icon-box">
+                            <svg class="icon-svg icon-sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M8 14s1.5 2 4 2 4-2 4-2"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line></svg>
+                        </div>
+                        테마 설정
+                    </div>
+                    <svg class="icon-svg icon-sm" style="color:#ccc;" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                </div>
             </div>
             <div class="menu-list">
-                <div class="menu-item"><div class="menu-left"><div class="menu-icon-box">ℹ️</div>앱 정보</div></div>
-                <div class="menu-item"><div class="menu-left" style="color:#FF5252;"><div class="menu-icon-box" style="background:#ffebee; color:#FF5252;">🚪</div>로그아웃</div></div>
+                <div class="menu-item">
+                    <div class="menu-left">
+                        <div class="menu-icon-box">
+                            <svg class="icon-svg icon-sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                        </div>
+                        앱 정보
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-left" style="color:#FF5252;">
+                        <div class="menu-icon-box" style="background:#ffebee; color:#FF5252;">
+                            <svg class="icon-svg icon-sm" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                        </div>
+                        로그아웃
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -471,6 +560,11 @@
             document.getElementById(tabId).classList.add('active');
             document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
             if(navElement) navElement.classList.add('active');
+
+            // [NEW] Routine Tab: Auto-select today
+            if(tabId === 'routine') {
+                initRoutineSelection();
+            }
         }
 
         function toggleSidebar() {
@@ -480,6 +574,23 @@
 
         function toggleMicroItem(element) { element.classList.toggle('checked-state'); }
         function togglePlay(btn) { btn.innerText = btn.innerText === '▶' ? '■' : '▶'; }
+
+        // --- [NEW] Modal Logic ---
+        function openConfirmModal() {
+            document.getElementById('confirmModal').style.display = 'flex';
+        }
+        function closeModals() {
+            document.querySelectorAll('.modal-overlay').forEach(m => m.style.display = 'none');
+        }
+        function processAction() {
+            closeModals();
+            const successModal = document.getElementById('successModal');
+            successModal.style.display = 'flex';
+            // Auto close after 2 seconds
+            setTimeout(() => {
+                successModal.style.display = 'none';
+            }, 2000);
+        }
 
         // --- Calendar Logic ---
         function renderCalendar(year, month) {
@@ -532,7 +643,7 @@
             document.getElementById('selectedDateDisplay').innerText = str;
         }
 
-        // --- To-Do Logic (Time Split) ---
+        // --- To-Do Logic ---
         function renderTodos() {
             const homeList = document.getElementById('homeScheduleList');
             const todoPageList = document.getElementById('todoPageList');
@@ -542,13 +653,11 @@
             const selectedDateStr = getFormattedDate(selectedDate);
             const todayStr = getFormattedDate(new Date());
 
-            // Render To-Do Page List
             const pageTasks = todoData.filter(t => t.date === selectedDateStr);
             pageTasks.forEach(item => {
                 todoPageList.innerHTML += createTodoHTML(item, true);
             });
 
-            // Render Home List
             const homeTasks = todoData.filter(t => t.date === todayStr);
             if(homeTasks.length === 0) homeList.innerHTML = '<div style="color:#aaa; font-size:13px; text-align:center; padding:10px;">오늘의 일정이 없습니다.</div>';
             homeTasks.forEach(item => {
@@ -581,11 +690,10 @@
         }
 
         function addTodo() {
-            const timeInput = document.getElementById('timeInput').value; // "14:30"
+            const timeInput = document.getElementById('timeInput').value;
             const textInput = document.getElementById('todoInput').value.trim();
             
             if(textInput) {
-                // Parse Time
                 let displayTime = "12:00";
                 let displayAmpm = "PM";
                 
@@ -593,7 +701,7 @@
                     const [h, m] = timeInput.split(':');
                     let hour = parseInt(h);
                     displayAmpm = hour >= 12 ? 'PM' : 'AM';
-                    hour = hour % 12 || 12; // 0 -> 12
+                    hour = hour % 12 || 12;
                     displayTime = `${String(hour).padStart(2,'0')}:${m}`;
                 }
 
@@ -625,6 +733,20 @@
                 renderTodos();
                 renderCalendar(currentYear, currentMonth);
             }
+        }
+
+        // --- [NEW] Routine Auto-Selection ---
+        function initRoutineSelection() {
+            // 0(Sun) -> 6(Sun) in UI
+            // 1(Mon) -> 0(Mon) in UI
+            const dayIndex = new Date().getDay(); // Sun=0, Mon=1...
+            let uiIndex = dayIndex - 1;
+            if (uiIndex < 0) uiIndex = 6; // Handle Sunday
+
+            // Select the element
+            const cols = document.querySelectorAll('.week-day-col');
+            cols.forEach(c => c.classList.remove('selected'));
+            if(cols[uiIndex]) cols[uiIndex].classList.add('selected');
         }
 
         function selectRoutineDay(el, index) {
