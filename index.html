@@ -63,7 +63,7 @@
         .noti-item { padding: 15px 0; border-bottom: 1px solid #f0f0f0; display: flex; gap: 12px; align-items: flex-start; }
         .noti-icon-box { width: 36px; height: 36px; background: #F0F2F5; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 
-        /* [NEW] Modal Popup Styles */
+        /* Modal Popup Styles */
         .modal-overlay {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background: var(--modal-bg); z-index: 200;
@@ -82,11 +82,8 @@
         .modal-btn { flex: 1; padding: 12px; border-radius: 14px; border: none; font-weight: 700; cursor: pointer; font-size: 14px; }
         .btn-cancel { background: #f0f0f0; color: #666; }
         .btn-confirm { background: var(--primary-lime); color: var(--text-main); }
-        
-        /* Success Animation in Modal */
         .checkmark-circle { width: 50px; height: 50px; border-radius: 50%; background: var(--primary-lime); display: flex; align-items: center; justify-content: center; margin: 0 auto 15px; }
         .checkmark { color: var(--text-main); font-size: 24px; }
-
 
         /* [HOME Styles] */
         .home-score-card { 
@@ -135,14 +132,35 @@
         .cal-date.empty { cursor: default; }
 
         .date-display-header { font-size: 14px; color: #666; font-weight: 600; margin-bottom: 10px; }
+        
+        /* [수정됨] 입력 박스 & 버튼 확대 */
         .add-box { background: white; padding: 10px; border-radius: 16px; display: flex; gap: 8px; margin-bottom: 20px; box-shadow: var(--card-shadow); }
         .add-time-input { width: 35%; border: none; background: #f5f5f5; padding: 12px 10px; border-radius: 10px; outline: none; font-size: 13px; font-family: inherit; text-align: center; }
         .add-text-input { flex: 1; border: none; background: #f5f5f5; padding: 12px 10px; border-radius: 10px; outline: none; font-size: 14px; }
-        .add-btn { width: 44px; background: var(--primary-lime); border: none; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--text-main); font-size: 20px; }
+        
+        /* 추가 버튼 스타일 수정 (더 크게) */
+        .add-btn { 
+            width: 60px; /* 44px -> 60px 확대 */
+            background: var(--primary-lime); 
+            border: none; border-radius: 10px; 
+            cursor: pointer; display: flex; 
+            align-items: center; justify-content: center; 
+            color: var(--text-main); 
+            font-size: 28px; /* 아이콘 폰트 크기 확대 */
+            font-weight: 300; /* + 기호 두께 조정 */
+        }
         
         .schedule-card { background: white; border-radius: 20px; padding: 18px; margin-bottom: 12px; display: flex; align-items: center; box-shadow: var(--card-shadow); border-left: 5px solid transparent; transition: all 0.2s; cursor: pointer; }
         .schedule-card.active-border { border-left-color: var(--primary-lime); }
-        .time-col { width: 60px; display: flex; flex-direction: column; gap: 4px; font-weight: 700; color: #333; font-size: 15px; }
+        
+        /* [수정됨] 시간 영역 너비 확대 (잘림 방지) */
+        .time-col { 
+            width: 75px; /* 60px -> 75px 확대 */
+            flex-shrink: 0; /* 줄어듦 방지 */
+            display: flex; flex-direction: column; 
+            gap: 4px; font-weight: 700; color: #333; font-size: 15px; 
+        }
+        
         .time-ampm { font-size: 11px; color: #999; font-weight: 500; }
         .task-col { flex: 1; }
         .task-title { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
@@ -211,7 +229,7 @@
         .ai-icon-new { width: 40px; height: 40px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #2E7D32; flex-shrink: 0; }
         .ai-text-new { font-size: 14px; color: #1B5E20; line-height: 1.5; }
 
-        /* [MY PAGE Styles - SVG Icons] */
+        /* [MY PAGE Styles] */
         .profile-header { display: flex; align-items: center; padding: 10px 0 30px; }
         .profile-img { width: 64px; height: 64px; background: #ddd; border-radius: 50%; margin-right: 15px; background-image: url('https://api.dicebear.com/7.x/avataaars/svg?seed=Felix'); background-size: cover; border: 3px solid var(--white); box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
         .menu-list { background: var(--white); border-radius: 24px; padding: 10px 20px; box-shadow: var(--card-shadow); margin-bottom: 20px; }
@@ -268,7 +286,6 @@
             </div>
         </div>
 
-
         <div class="status-bar">
             <span>11:55</span>
             <span>LTE</span>
@@ -309,14 +326,6 @@
                 <div class="now-badge">NOW FEED</div>
                 <div class="now-title">점심 식사 후,<br><span style="color:var(--primary-lime)">가벼운 산책</span> 어때요? 🏃‍♂️</div>
                 <button class="action-btn" onclick="openConfirmModal()">지금 실천하기</button>
-            </div>
-
-            <div class="section-title">Micro Reminder</div>
-            <div class="list-item-card" onclick="toggleMicroItem(this)">
-                <div class="list-content">
-                    <div class="check-box"><svg class="icon-svg icon-sm check-icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
-                    <div class="content-text">물 한 잔 마시기 💧</div>
-                </div>
             </div>
 
             <div class="section-title">오늘의 일정 (Today)</div>
@@ -432,8 +441,8 @@
                 <div class="box-header"><div class="box-title">주간 트렌드</div></div>
                 <div class="graph-area">
                     <div class="graph-col"><div class="bar-bg"><div class="bar-fill" style="--h:40%;"></div></div><div class="day-label">월</div></div>
-                    <div class="graph-col"><div class="bar-bg"><div class="bar-fill" style="--h:55%;"></div></div><div class="day-label">화</div></div>
-                    <div class="graph-col"><div class="bar-bg"><div class="bar-fill" style="--h:64%; background:var(--text-main);"></div></div><div class="day-label" style="color:var(--text-main); font-weight:700;">수</div></div>
+                    <div class="graph-col"><div class="bar-bg"><div class="bar-fill" style="--h:55%; background:var(--text-main);"></div></div><div class="day-label" style="color:var(--text-main); font-weight:700;">화</div></div>
+                    <div class="graph-col"><div class="bar-bg"><div class="bar-fill" style="--h:64%;"></div> </div><div class="day-label">수</div></div>
                     <div class="graph-col"><div class="bar-bg"><div class="bar-fill" style="--h:50%;"></div></div><div class="day-label">목</div></div>
                     <div class="graph-col"><div class="bar-bg"><div class="bar-fill" style="--h:70%;"></div></div><div class="day-label">금</div></div>
                     <div class="graph-col"><div class="bar-bg"><div class="bar-fill" style="--h:85%;"></div></div><div class="day-label">토</div></div>
@@ -454,58 +463,28 @@
             </div>
             <div class="menu-list">
                 <div class="menu-item">
-                    <div class="menu-left">
-                        <div class="menu-icon-box">
-                            <svg class="icon-svg icon-sm" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                        </div>
-                        프로필 수정
-                    </div>
+                    <div class="menu-left"><div class="menu-icon-box"><svg class="icon-svg icon-sm" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg></div>프로필 수정</div>
                     <svg class="icon-svg icon-sm" style="color:#ccc;" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
                 </div>
                 <div class="menu-item">
-                    <div class="menu-left">
-                        <div class="menu-icon-box">
-                            <svg class="icon-svg icon-sm" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
-                        </div>
-                        알림 설정
-                    </div>
+                    <div class="menu-left"><div class="menu-icon-box"><svg class="icon-svg icon-sm" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg></div>알림 설정</div>
                     <svg class="icon-svg icon-sm" style="color:#ccc;" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
                 </div>
                 <div class="menu-item">
-                    <div class="menu-left">
-                        <div class="menu-icon-box">
-                            <svg class="icon-svg icon-sm" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-                        </div>
-                        계정 및 보안
-                    </div>
+                    <div class="menu-left"><div class="menu-icon-box"><svg class="icon-svg icon-sm" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg></div>계정 및 보안</div>
                     <svg class="icon-svg icon-sm" style="color:#ccc;" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
                 </div>
                 <div class="menu-item">
-                    <div class="menu-left">
-                        <div class="menu-icon-box">
-                            <svg class="icon-svg icon-sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M8 14s1.5 2 4 2 4-2 4-2"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line></svg>
-                        </div>
-                        테마 설정
-                    </div>
+                    <div class="menu-left"><div class="menu-icon-box"><svg class="icon-svg icon-sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M8 14s1.5 2 4 2 4-2 4-2"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line></svg></div>테마 설정</div>
                     <svg class="icon-svg icon-sm" style="color:#ccc;" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
                 </div>
             </div>
             <div class="menu-list">
                 <div class="menu-item">
-                    <div class="menu-left">
-                        <div class="menu-icon-box">
-                            <svg class="icon-svg icon-sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
-                        </div>
-                        앱 정보
-                    </div>
+                    <div class="menu-left"><div class="menu-icon-box"><svg class="icon-svg icon-sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></div>앱 정보</div>
                 </div>
                 <div class="menu-item">
-                    <div class="menu-left" style="color:#FF5252;">
-                        <div class="menu-icon-box" style="background:#ffebee; color:#FF5252;">
-                            <svg class="icon-svg icon-sm" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
-                        </div>
-                        로그아웃
-                    </div>
+                    <div class="menu-left" style="color:#FF5252;"><div class="menu-icon-box" style="background:#ffebee; color:#FF5252;"><svg class="icon-svg icon-sm" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg></div>로그아웃</div>
                 </div>
             </div>
         </div>
