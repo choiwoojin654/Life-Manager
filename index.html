@@ -43,41 +43,7 @@
         .tab-content.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* [LOGIN SCREEN STYLES] - 복구됨 */
-        #login-screen {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background-color: var(--white);
-            z-index: 3000; /* 최상위 레이어 */
-            display: flex; flex-direction: column;
-            align-items: center; justify-content: center;
-            padding: 40px;
-            transition: opacity 0.5s ease, transform 0.5s ease;
-        }
-        #login-screen.hidden { opacity: 0; pointer-events: none; transform: scale(1.1); }
-        
-        .login-logo-area { position: relative; margin-bottom: 60px; text-align: center; }
-        .login-logo-text { font-size: 36px; font-weight: 900; letter-spacing: -1px; position: relative; z-index: 2; }
-        
-        .login-btn-group { width: 100%; display: flex; flex-direction: column; gap: 12px; margin-bottom: 30px; }
-        .login-btn {
-            width: 100%; padding: 16px; border-radius: 16px; border: none;
-            font-weight: 600; font-size: 15px; cursor: pointer;
-            display: flex; align-items: center; justify-content: center; gap: 10px;
-            position: relative; transition: transform 0.1s;
-        }
-        .login-btn:active { transform: scale(0.98); }
-        
-        .btn-kakao { background-color: #FEE500; color: #000000; }
-        .btn-google { background-color: #FFFFFF; color: #000000; border: 1px solid #eee; }
-        .btn-apple { background-color: #000000; color: #FFFFFF; }
-        .btn-email { background-color: var(--primary-lime); color: var(--text-main); }
-        
-        .guest-login { font-size: 13px; color: #888; text-decoration: underline; cursor: pointer; margin-bottom: 30px; }
-        
-        .policy-check { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #555; }
-        .policy-checkbox { width: 18px; height: 18px; accent-color: var(--primary-lime); cursor: pointer; }
-
-        /* Header Elements */
+        /* Header & Logo */
         .header-row { display: flex; justify-content: space-between; align-items: center; margin: 10px 0 20px; position: relative; z-index: 2; }
         .logo-container { position: relative; display: inline-block; }
         h1.page-title { font-size: 26px; font-weight: 800; letter-spacing: -0.5px; position: relative; z-index: 2; margin: 0; }
@@ -108,16 +74,31 @@
         .btn-confirm { background: var(--primary-lime); color: var(--text-main); }
         .checkmark-circle { width: 50px; height: 50px; border-radius: 50%; background: var(--primary-lime); display: flex; align-items: center; justify-content: center; margin: 0 auto 15px; }
         .checkmark { color: var(--text-main); font-size: 24px; }
-
-        /* Now Feed List Modal */
+        
+        /* History List Modal */
         .quick-action-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 10px; max-height: 300px; overflow-y: auto; }
-        .quick-action-item { background: #f9f9f9; padding: 15px; border-radius: 16px; display: flex; align-items: center; gap: 15px; border: 1px solid transparent; transition: all 0.2s; }
+        .quick-action-item { background: #f9f9f9; padding: 15px; border-radius: 16px; display: flex; align-items: center; gap: 15px; border: 1px solid transparent; transition: all 0.2s; cursor: default; }
         .qa-icon { font-size: 24px; }
         .qa-text { font-weight: 600; font-size: 15px; }
 
         /* FAB */
         .fab-btn { position: absolute; bottom: 110px; right: 25px; width: 60px; height: 60px; background: var(--primary-lime); color: var(--text-main); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 32px; font-weight: 300; box-shadow: 0 4px 15px rgba(0,0,0,0.2); z-index: 50; cursor: pointer; transition: transform 0.2s; }
         .fab-btn:active { transform: scale(0.9); }
+
+        /* Login Screen */
+        #login-screen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: var(--white); z-index: 3000; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px; transition: opacity 0.5s ease, transform 0.5s ease; }
+        .login-logo-area { position: relative; margin-bottom: 60px; text-align: center; }
+        .login-logo-text { font-size: 36px; font-weight: 900; letter-spacing: -1px; position: relative; z-index: 2; }
+        .login-btn-group { width: 100%; display: flex; flex-direction: column; gap: 12px; margin-bottom: 30px; }
+        .login-btn { width: 100%; padding: 16px; border-radius: 16px; border: none; font-weight: 600; font-size: 15px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; position: relative; transition: transform 0.1s; }
+        .login-btn:active { transform: scale(0.98); }
+        .btn-kakao { background-color: #FEE500; color: #000000; }
+        .btn-google { background-color: #FFFFFF; color: #000000; border: 1px solid #eee; }
+        .btn-apple { background-color: #000000; color: #FFFFFF; }
+        .btn-email { background-color: var(--primary-lime); color: var(--text-main); }
+        .guest-login { font-size: 13px; color: #888; text-decoration: underline; cursor: pointer; margin-bottom: 30px; }
+        .policy-check { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #555; }
+        .policy-checkbox { width: 18px; height: 18px; accent-color: var(--primary-lime); cursor: pointer; }
 
         /* [HOME Styles] */
         .main-score-card-new { background: var(--white); border-radius: 24px; padding: 30px 20px; margin-bottom: 25px; box-shadow: var(--card-shadow); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
@@ -137,15 +118,16 @@
         .now-title { font-size: 18px; font-weight: 700; line-height: 1.4; margin-bottom: 20px; }
         .action-btn { background: var(--primary-lime); color: var(--text-main); width: 100%; padding: 14px; border-radius: 14px; border: none; font-weight: 700; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: transform 0.1s; }
         
+        /* Now Feed Done State */
+        .now-card.done-state { background-color: #E8F5E9; color: #2E7D32; border: 2px solid var(--primary-lime); }
+        .now-card.done-state .now-badge { background-color: #2E7D32; color: white; }
+        .now-card.done-state .action-btn { background-color: #2E7D32; color: white; cursor: default; }
+
         .section-title { margin: 30px 0 15px; font-size: 18px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
         .list-item-card { background: white; padding: 16px 20px; border-radius: 18px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.02); cursor: pointer; transition: transform 0.1s; }
         .list-content { display: flex; align-items: center; gap: 12px; flex: 1; }
-        .check-box { width: 24px; height: 24px; border: 2px solid #ddd; border-radius: 8px; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease; background: white; flex-shrink: 0; }
-        .check-icon { display: none; stroke: var(--text-main); stroke-width: 3; }
-        .list-item-card.checked-state .check-box { background-color: var(--primary-lime); border-color: var(--primary-lime); }
-        .list-item-card.checked-state .check-icon { display: block; }
-        .list-item-card.checked-state .content-text { text-decoration: line-through; color: #aaa; }
-        .content-text { font-size: 15px; font-weight: 500; transition: color 0.2s; }
+        .delete-btn { color: #ff5252; opacity: 0.4; padding: 8px; cursor: pointer; transition: opacity 0.2s; }
+        .delete-btn:hover { opacity: 1; }
 
         /* [ROUTINE Styles] */
         .routine-week-tracker { background: white; border-radius: 20px; padding: 15px; margin-bottom: 20px; box-shadow: var(--card-shadow); display: flex; justify-content: space-between; }
@@ -166,16 +148,17 @@
         .routine-info { flex: 1; }
         .routine-name { font-size: 15px; font-weight: 600; margin-bottom: 2px; transition: color 0.2s; }
         .routine-time { font-size: 12px; color: #888; }
+        
+        /* Play/Stop Button */
         .play-btn { width: 34px; height: 34px; border-radius: 50%; background: #f0f0f0; color: #ccc; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s; flex-shrink: 0; margin-left:10px; }
-        .play-btn.playing { background: var(--primary-lime); color: var(--text-main); }
+        .play-btn.completed { background: var(--primary-lime); color: var(--text-main); } 
         .routine-list-item.done .routine-name { text-decoration: line-through; color: #aaa; }
-        .delete-btn { color: #ff5252; opacity: 0.4; padding: 8px; cursor: pointer; transition: opacity 0.2s; }
-        .delete-btn:hover { opacity: 1; }
 
         /* Add Routine Input */
         .add-box { background: white; padding: 10px; border-radius: 16px; display: flex; gap: 8px; margin-bottom: 20px; box-shadow: var(--card-shadow); }
         .add-time-input { width: 35%; border: none; background: #f5f5f5; padding: 12px 10px; border-radius: 10px; outline: none; font-size: 13px; font-family: inherit; text-align: center; }
         .add-text-input { flex: 1; border: none; background: #f5f5f5; padding: 12px 10px; border-radius: 10px; outline: none; font-size: 14px; }
+        .add-select { width: 100%; border: none; background: #f5f5f5; padding: 12px 10px; border-radius: 10px; outline: none; font-size: 14px; margin-bottom: 10px; }
         .add-btn { width: 60px; background: var(--primary-lime); border: none; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--text-main); font-size: 28px; font-weight: 300; }
 
         /* [SCORE Styles] */
@@ -214,7 +197,6 @@
         .ai-icon-new { width: 40px; height: 40px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #2E7D32; flex-shrink: 0; }
         .ai-text-new { font-size: 14px; color: #1B5E20; line-height: 1.5; }
 
-        /* AI Report Banner (Moved) */
         .ai-report-banner { background: linear-gradient(135deg, #222 0%, #333 100%); color: white; padding: 20px; border-radius: 20px; display: flex; align-items: center; gap: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); margin-top: 30px; cursor: pointer; margin-bottom: 20px; }
         .ai-report-icon { font-size: 24px; }
         .ai-report-text h4 { font-size: 15px; margin-bottom: 4px; font-weight: 700; color: var(--primary-lime); }
@@ -227,18 +209,14 @@
         .menu-item { display: flex; justify-content: space-between; align-items: center; padding: 18px 0; border-bottom: 1px solid #f0f0f0; cursor: pointer; }
         .menu-left { display: flex; align-items: center; gap: 12px; font-size: 15px; font-weight: 500; }
         .menu-icon-box { width: 32px; height: 32px; background: #f9f9f9; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #555; }
-
-        /* Sub-pages */
         .my-sub-page { display: none; animation: fadeIn 0.2s; }
         .my-sub-page.active { display: block; }
         .header-back-btn { display: none; cursor: pointer; margin-right: 10px; }
-        
         .setting-group { margin-bottom: 25px; }
         .setting-label { font-size: 13px; color: #888; margin-bottom: 8px; display: block; }
         .setting-input { width: 100%; padding: 15px; background: #f5f5f5; border: none; border-radius: 14px; font-size: 15px; outline: none; }
         .setting-btn { width: 100%; padding: 15px; background: var(--text-main); color: white; border: none; border-radius: 14px; font-weight: 700; cursor: pointer; margin-top: 10px; }
         .setting-btn.danger { background: #ffebee; color: var(--danger); }
-        
         .toggle-row { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid #f0f0f0; }
         .toggle-switch { position: relative; width: 44px; height: 24px; }
         .toggle-input { opacity: 0; width: 0; height: 0; }
@@ -333,6 +311,13 @@
             <div class="modal-box">
                 <div class="modal-title">새 루틴 추가</div>
                 <div class="add-box" style="flex-direction:column; gap:10px; box-shadow:none; background:none; padding:0; margin-bottom:20px;">
+                    <select id="categorySelect" class="add-select" onchange="checkNewCategory(this)">
+                        <option value="morning">☀️ Morning Routine</option>
+                        <option value="night">🌙 Night Routine</option>
+                        <option value="new">+ 새 카테고리 추가</option>
+                    </select>
+                    <input type="text" id="newCategoryInput" class="add-text-input" style="display:none; margin-bottom:10px;" placeholder="카테고리 이름 입력">
+                    
                     <input type="time" id="routineTimeInput" class="add-time-input" style="width:100%;">
                     <input type="text" id="routineNameInput" class="add-text-input" placeholder="루틴 이름 (예: 아침 스트레칭)">
                 </div>
@@ -343,10 +328,10 @@
             </div>
         </div>
 
-        <div id="nowFeedModal" class="modal-overlay">
+        <div id="historyModal" class="modal-overlay">
             <div class="modal-box" style="text-align:left;">
-                <div class="modal-title" style="text-align:center; margin-bottom:15px;">오늘의 완료 루틴</div>
-                <div id="nowFeedContent" class="quick-action-list" style="display:flex; flex-direction:column; gap:10px; max-height:300px; overflow-y:auto;">
+                <div class="modal-title" style="text-align:center; margin-bottom:15px;">오늘의 실천 기록</div>
+                <div id="historyList" class="quick-action-list" style="display:flex; flex-direction:column; gap:10px; max-height:300px; overflow-y:auto;">
                     </div>
                 <div class="modal-btns" style="margin-top:20px;">
                     <button class="modal-btn btn-cancel" onclick="closeModals()">닫기</button>
@@ -390,14 +375,15 @@
                 </div>
             </div>
 
-            <div class="now-card">
+            <div class="now-card" id="homeNowFeedCard">
                 <div class="now-badge">NOW FEED</div>
-                <div class="now-title">점심 식사 후,<br><span style="color:var(--primary-lime)">가벼운 산책</span> 어때요? 🏃‍♂️</div>
+                <div class="now-title" id="homeNowFeedTitle">점심 식사 후,<br><span style="color:var(--primary-lime)">가벼운 산책</span> 어때요? 🏃‍♂️</div>
                 <button class="action-btn" onclick="openConfirmModal()">지금 실천하기</button>
             </div>
 
             <div class="section-title">오늘의 루틴</div>
-            <div id="homeRoutineList"></div>
+            <div id="homeRoutineList">
+                </div>
         </div>
 
         <div id="routine" class="content-area tab-content">
@@ -419,16 +405,12 @@
                 <div style="font-size:24px; font-weight:800; color:var(--primary-lime);">75%</div>
             </div>
 
-            <div class="section-title"><span>☀️</span> Morning Routine</div>
-            <div id="morningList"></div>
+            <div id="routineContainer"></div>
 
-            <div class="section-title"><span>🌙</span> Night Routine</div>
-            <div id="nightList"></div>
-
-            <div class="now-card" style="margin-top: 30px;" onclick="openNowFeedModal()">
+            <div class="now-card" style="margin-top: 30px;" id="routineNowFeedCard">
                 <div class="now-badge">NOW FEED</div>
-                <div class="now-title" style="font-size:16px;">오늘의 <span style="color:var(--primary-lime)">실천 기록</span>을 확인해보세요!</div>
-                <div style="font-size:12px; opacity:0.8; margin-top:-10px;">터치하여 확인하기 ›</div>
+                <div class="now-title" id="routineNowFeedTitle">오늘의 <span style="color:var(--primary-lime)">실천 기록</span>을 확인해보세요!</div>
+                <button class="action-btn" onclick="openHistoryModal()">기록 확인하기 ›</button>
             </div>
 
             <div class="fab-btn" onclick="openAddRoutineModal()">+</div>
@@ -450,37 +432,17 @@
                 </div>
             </div>
             <div class="score-grid">
-                <div class="stat-card">
-                    <div class="stat-icon" style="background:#e3f2fd; color:var(--color-sleep);">😴</div>
-                    <div class="stat-name">수면 Quality</div>
-                    <div class="stat-val-row"><div class="stat-val">72점</div></div>
-                    <div class="stat-bar-bg"><div class="stat-bar-fill" style="width:72%; background:var(--color-sleep);"></div></div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon" style="background:#fff3e0; color:var(--color-focus);">🔥</div>
-                    <div class="stat-name">집중도</div>
-                    <div class="stat-val-row"><div class="stat-val">85점</div></div>
-                    <div class="stat-bar-bg"><div class="stat-bar-fill" style="width:85%; background:var(--color-focus);"></div></div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon" style="background:#f3e5f5; color:var(--color-routine);">📅</div>
-                    <div class="stat-name">루틴 달성</div>
-                    <div class="stat-val-row"><div class="stat-val">55점</div></div>
-                    <div class="stat-bar-bg"><div class="stat-bar-fill" style="width:55%; background:var(--color-routine);"></div></div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon" style="background:#e8f5e9; color:var(--color-detox);">📱</div>
-                    <div class="stat-name">디지털 디톡스</div>
-                    <div class="stat-val-row"><div class="stat-val">40점</div></div>
-                    <div class="stat-bar-bg"><div class="stat-bar-fill" style="width:40%; background:var(--color-detox);"></div></div>
-                </div>
+                <div class="stat-card"><div class="stat-icon" style="background:#e3f2fd; color:var(--color-sleep);">😴</div><div class="stat-name">수면</div><div class="stat-val-row"><div class="stat-val">72점</div></div><div class="stat-bar-bg"><div class="stat-bar-fill" style="width:72%; background:var(--color-sleep);"></div></div></div>
+                <div class="stat-card"><div class="stat-icon" style="background:#fff3e0; color:var(--color-focus);">🔥</div><div class="stat-name">Now Feed</div><div class="stat-val-row"><div class="stat-val">85점</div></div><div class="stat-bar-bg"><div class="stat-bar-fill" style="width:85%; background:var(--color-focus);"></div></div></div>
+                <div class="stat-card"><div class="stat-icon" style="background:#f3e5f5; color:var(--color-routine);">📅</div><div class="stat-name">끈기</div><div class="stat-val-row"><div class="stat-val">55점</div></div><div class="stat-bar-bg"><div class="stat-bar-fill" style="width:55%; background:var(--color-routine);"></div></div></div>
+                <div class="stat-card"><div class="stat-icon" style="background:#e8f5e9; color:var(--color-detox);">✔</div><div class="stat-name">루틴</div><div class="stat-val-row"><div class="stat-val">40점</div></div><div class="stat-bar-bg"><div class="stat-bar-fill" style="width:40%; background:var(--color-detox);"></div></div></div>
             </div>
             <div class="trend-box">
                 <div class="box-header"><div class="box-title">주간 트렌드</div></div>
                 <div class="graph-area">
                     <div class="graph-col"><div class="bar-bg"><div class="bar-fill" style="--h:40%;"></div></div><div class="day-label">월</div></div>
-                    <div class="graph-col"><div class="bar-bg"><div class="bar-fill" style="--h:55%;"></div></div><div class="day-label">화</div></div>
-                    <div class="graph-col"><div class="bar-bg"><div class="bar-fill" style="--h:64%; background:var(--text-main);"></div></div><div class="day-label" style="color:var(--text-main); font-weight:700;">수</div></div>
+                    <div class="graph-col"><div class="bar-bg"><div class="bar-fill" style="--h:55%;background:var(--text-main);"></div></div><div class="day-label" style="color:var(--text-main); font-weight:700;">화</div></div>
+                    <div class="graph-col"><div class="bar-bg"><div class="bar-fill" style="--h:64%; "></div></div><div class="day-label">수</div></div>
                     <div class="graph-col"><div class="bar-bg"><div class="bar-fill" style="--h:50%;"></div></div><div class="day-label">목</div></div>
                     <div class="graph-col"><div class="bar-bg"><div class="bar-fill" style="--h:70%;"></div></div><div class="day-label">금</div></div>
                     <div class="graph-col"><div class="bar-bg"><div class="bar-fill" style="--h:85%;"></div></div><div class="day-label">토</div></div>
@@ -491,13 +453,7 @@
                 <div class="ai-icon-new"><svg class="icon-svg" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></div>
                 <div class="ai-text-new">"수면 점수가 낮아 <strong>디지털 디톡스</strong> 점수에도 영향을 주고 있어요. 오늘은 SNS 사용을 30분 줄여보세요."</div>
             </div>
-            <div class="ai-report-banner">
-                <div class="ai-report-icon">📈</div>
-                <div class="ai-report-text">
-                    <h4>AI 주간 리포트가 도착했습니다!</h4>
-                    <p>지난주 루틴 분석 결과를 확인해보세요.</p>
-                </div>
-            </div>
+            <div class="ai-report-banner"><div class="ai-report-icon">📈</div><div class="ai-report-text"><h4>AI 주간 리포트가 도착했습니다!</h4><p>지난주 루틴 분석 결과를 확인해보세요.</p></div></div>
         </div>
 
         <div id="my" class="content-area tab-content">
@@ -518,146 +474,36 @@
                     <div class="profile-info"><h2>사용자</h2><p style="font-size:13px; color:#777;">moa-user@example.com</p></div>
                 </div>
                 <div class="menu-list">
-                    <div class="menu-item" onclick="openSubPage('profile-edit', '프로필 수정')">
-                        <div class="menu-left">
-                            <div class="menu-icon-box"><svg class="icon-svg icon-sm" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg></div>
-                            프로필 수정
-                        </div>
-                        <svg class="icon-svg icon-sm" style="color:#ccc;" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
-                    </div>
-                    <div class="menu-item" onclick="openSubPage('noti-settings', '알림 설정')">
-                        <div class="menu-left">
-                            <div class="menu-icon-box"><svg class="icon-svg icon-sm" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg></div>
-                            알림 설정
-                        </div>
-                        <svg class="icon-svg icon-sm" style="color:#ccc;" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
-                    </div>
-                    <div class="menu-item" onclick="openSubPage('security', '계정 및 보안')">
-                        <div class="menu-left">
-                            <div class="menu-icon-box"><svg class="icon-svg icon-sm" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg></div>
-                            계정 및 보안
-                        </div>
-                        <svg class="icon-svg icon-sm" style="color:#ccc;" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
-                    </div>
-                    <div class="menu-item" onclick="openSubPage('theme', '테마 설정')">
-                        <div class="menu-left">
-                            <div class="menu-icon-box"><svg class="icon-svg icon-sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M8 14s1.5 2 4 2 4-2 4-2"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line></svg></div>
-                            테마 설정
-                        </div>
-                        <svg class="icon-svg icon-sm" style="color:#ccc;" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
-                    </div>
+                    <div class="menu-item" onclick="openSubPage('profile-edit', '프로필 수정')"><div class="menu-left"><div class="menu-icon-box"><svg class="icon-svg icon-sm" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg></div>프로필 수정</div></div>
+                    <div class="menu-item" onclick="openSubPage('noti-settings', '알림 설정')"><div class="menu-left"><div class="menu-icon-box"><svg class="icon-svg icon-sm" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg></div>알림 설정</div></div>
+                    <div class="menu-item" onclick="openSubPage('security', '계정 및 보안')"><div class="menu-left"><div class="menu-icon-box"><svg class="icon-svg icon-sm" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg></div>계정 및 보안</div></div>
+                    <div class="menu-item" onclick="openSubPage('theme', '테마 설정')"><div class="menu-left"><div class="menu-icon-box"><svg class="icon-svg icon-sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M8 14s1.5 2 4 2 4-2 4-2"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line></svg></div>테마 설정</div></div>
                 </div>
                 <div class="menu-list">
-                    <div class="menu-item" onclick="openSubPage('app-info', '앱 정보')">
-                        <div class="menu-left">
-                            <div class="menu-icon-box"><svg class="icon-svg icon-sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></div>
-                            앱 정보
-                        </div>
-                        <svg class="icon-svg icon-sm" style="color:#ccc;" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
-                    </div>
-                    <div class="menu-item">
-                        <div class="menu-left" style="color:#FF5252;">
-                            <div class="menu-icon-box" style="background:#ffebee; color:#FF5252;"><svg class="icon-svg icon-sm" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg></div>
-                            로그아웃
-                        </div>
-                    </div>
+                    <div class="menu-item" onclick="openSubPage('app-info', '앱 정보')"><div class="menu-left"><div class="menu-icon-box"><svg class="icon-svg icon-sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></div>앱 정보</div></div>
+                    <div class="menu-item"><div class="menu-left" style="color:#FF5252;"><div class="menu-icon-box" style="background:#ffebee; color:#FF5252;"><svg class="icon-svg icon-sm" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg></div>로그아웃</div></div>
                 </div>
             </div>
 
             <div id="my-sub-view" style="display:none;">
                 <div id="profile-edit" class="my-sub-page">
-                    <div style="text-align:center; margin-bottom:30px;">
-                        <div class="profile-img" style="width:100px; height:100px; margin:0 auto 15px;">
-                            <svg class="icon-svg" style="width:50px; height:50px;" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                        </div>
-                        <div style="color:var(--primary-lime-dark); font-weight:600; font-size:14px;">사진 변경</div>
-                    </div>
-                    <div class="setting-group">
-                        <label class="setting-label">이름</label>
-                        <input type="text" class="setting-input" value="사용자">
-                    </div>
-                    <div class="setting-group">
-                        <label class="setting-label">상태 메시지</label>
-                        <input type="text" class="setting-input" value="오늘도 화이팅! 💪">
-                    </div>
+                    <div style="text-align:center; margin-bottom:30px;"><div class="profile-img" style="width:100px; height:100px; margin:0 auto 15px;"><svg class="icon-svg" style="width:50px; height:50px;" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg></div><div style="color:var(--primary-lime-dark); font-weight:600; font-size:14px;">사진 변경</div></div>
+                    <div class="setting-group"><label class="setting-label">이름</label><input type="text" class="setting-input" value="사용자"></div>
+                    <div class="setting-group"><label class="setting-label">상태 메시지</label><input type="text" class="setting-input" value="오늘도 화이팅! 💪"></div>
                     <button class="setting-btn" onclick="closeSubPage()">저장하기</button>
                 </div>
-
-                <div id="noti-settings" class="my-sub-page">
-                    <div class="menu-list">
-                        <div class="toggle-row" style="padding:15px 20px;">
-                            <span>전체 알림</span>
-                            <label class="toggle-switch"><input type="checkbox" class="toggle-input" checked><span class="toggle-slider"></span></label>
-                        </div>
-                        <div class="toggle-row" style="padding:15px 20px;">
-                            <span>루틴 알림</span>
-                            <label class="toggle-switch"><input type="checkbox" class="toggle-input" checked><span class="toggle-slider"></span></label>
-                        </div>
-                        <div class="toggle-row" style="padding:15px 20px;">
-                            <span>Micro Reminder</span>
-                            <label class="toggle-switch"><input type="checkbox" class="toggle-input"><span class="toggle-slider"></span></label>
-                        </div>
-                        <div class="toggle-row" style="padding:15px 20px; border:none;">
-                            <span>소리 및 진동</span>
-                            <label class="toggle-switch"><input type="checkbox" class="toggle-input" checked><span class="toggle-slider"></span></label>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="security" class="my-sub-page">
-                    <div class="menu-list">
-                        <div class="menu-item" style="padding:15px 20px;"><div>비밀번호 변경</div></div>
-                        <div class="menu-item" style="padding:15px 20px; border:none;"><div>2단계 인증 설정</div></div>
-                    </div>
-                    <button class="setting-btn danger">회원 탈퇴</button>
-                </div>
-
-                <div id="theme" class="my-sub-page">
-                    <div class="menu-list">
-                        <div class="toggle-row" style="padding:15px 20px;">
-                            <span>다크 모드</span>
-                            <label class="toggle-switch"><input type="checkbox" class="toggle-input"><span class="toggle-slider"></span></label>
-                        </div>
-                    </div>
-                    <div style="font-size:14px; color:#888; margin-bottom:10px;">강조 컬러</div>
-                    <div style="display:flex; gap:10px;">
-                        <div style="width:40px; height:40px; background:#D0FF46; border-radius:50%; border:3px solid #333;"></div>
-                        <div style="width:40px; height:40px; background:#FF5252; border-radius:50%;"></div>
-                        <div style="width:40px; height:40px; background:#4e8cff; border-radius:50%;"></div>
-                    </div>
-                </div>
-
-                <div id="app-info" class="my-sub-page">
-                    <div class="menu-list" style="text-align:center; padding:30px;">
-                        <div class="logo-container" style="margin-bottom:10px;"><h1 style="font-size:24px;">Moa Now</h1></div>
-                        <div style="color:#888; margin-bottom:20px;">Version 1.0.0</div>
-                        <div style="border-top:1px solid #eee; padding-top:20px; text-align:left;">
-                            <div style="padding:10px 0;">이용약관</div>
-                            <div style="padding:10px 0;">개인정보 처리방침</div>
-                            <div style="padding:10px 0;">오픈소스 라이선스</div>
-                        </div>
-                    </div>
-                </div>
+                <div id="noti-settings" class="my-sub-page"><div class="menu-list"><div class="toggle-row" style="padding:15px 20px;"><span>전체 알림</span><label class="toggle-switch"><input type="checkbox" class="toggle-input" checked><span class="toggle-slider"></span></label></div></div></div>
+                <div id="security" class="my-sub-page"><div class="menu-list"><div class="menu-item" style="padding:15px 20px;"><div>비밀번호 변경</div></div></div></div>
+                <div id="theme" class="my-sub-page"><div class="menu-list"><div class="toggle-row" style="padding:15px 20px;"><span>다크 모드</span><label class="toggle-switch"><input type="checkbox" class="toggle-input"><span class="toggle-slider"></span></label></div></div></div>
+                <div id="app-info" class="my-sub-page"><div class="menu-list" style="text-align:center; padding:30px;"><div style="color:#888; margin-bottom:20px;">Version 1.0.0</div></div></div>
             </div>
         </div>
 
         <nav>
-            <div class="nav-item active" onclick="switchTab('home', this)">
-                <svg class="icon-svg" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-                <span class="nav-text">홈</span>
-            </div>
-            <div class="nav-item" onclick="switchTab('routine', this)">
-                <svg class="icon-svg" viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
-                <span class="nav-text">루틴</span>
-            </div>
-            <div class="nav-item" id="nav-score" onclick="switchTab('score', this)">
-                <svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
-                <span class="nav-text">스코어</span>
-            </div>
-            <div class="nav-item" onclick="switchTab('my', this)">
-                <svg class="icon-svg" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                <span class="nav-text">MY</span>
-            </div>
+            <div class="nav-item active" onclick="switchTab('home', this)"><svg class="icon-svg" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg><span class="nav-text">홈</span></div>
+            <div class="nav-item" onclick="switchTab('routine', this)"><svg class="icon-svg" viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg><span class="nav-text">루틴</span></div>
+            <div class="nav-item" id="nav-score" onclick="switchTab('score', this)"><svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg><span class="nav-text">스코어</span></div>
+            <div class="nav-item" onclick="switchTab('my', this)"><svg class="icon-svg" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg><span class="nav-text">MY</span></div>
         </nav>
     </div>
 
@@ -676,27 +522,38 @@
             }, 500);
         }
 
+        let categories = [
+            { id: 'morning', title: '☀️ Morning Routine' },
+            { id: 'night', title: '🌙 Night Routine' }
+        ];
+
+        // Data Model: Playing state is removed, only 'completed'
         let routineData = [
             { id: 1, text: "이불 정리하기", time: "기상 직후", category: "morning", completed: false, icon: "🛏️" },
             { id: 2, text: "영양제 섭취", time: "08:00 AM", category: "morning", completed: false, icon: "🥗" },
             { id: 3, text: "독서 10분", time: "자기 전", category: "night", completed: false, icon: "📖" },
             { id: 4, text: "내일 계획 세우기", time: "23:00 PM", category: "night", completed: false, icon: "📝" }
         ];
+        
+        let isNowFeedDone = false;
+        let nowFeedHistory = [];
 
         function renderRoutines() {
             const homeList = document.getElementById('homeRoutineList');
-            const morningList = document.getElementById('morningList');
-            const nightList = document.getElementById('nightList');
+            const routineContainer = document.getElementById('routineContainer');
             
-            homeList.innerHTML = '';
-            morningList.innerHTML = '';
-            nightList.innerHTML = '';
+            if(homeList) homeList.innerHTML = '';
+            if(routineContainer) routineContainer.innerHTML = '';
 
+            // 1. Home List (Mirrored)
             routineData.forEach(item => {
                 const checkedClass = item.completed ? 'done' : '';
-                const playClass = item.completed ? 'playing' : '';
+                const playClass = item.completed ? 'completed' : '';
+                
+                // Icon: Play(▶) -> Check(✔)
+                // [FIXED] Use Polyline for Check Mark
                 const playIcon = item.completed ? 
-                    '<svg class="icon-svg icon-sm" style="fill:currentColor; stroke:none;" viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>' : 
+                    '<svg class="icon-svg icon-sm" style="fill:none; stroke:currentColor; stroke-width:3; stroke-linecap:round; stroke-linejoin:round;" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>' : 
                     '<svg class="icon-svg icon-sm" style="fill:currentColor; stroke:none;" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>';
 
                 const homeHtml = `
@@ -708,34 +565,86 @@
                         <div class="play-btn ${playClass}" style="margin-left:auto;">${playIcon}</div>
                     </div>
                 `;
-                homeList.insertAdjacentHTML('beforeend', homeHtml);
-
-                const routineHtml = `
-                    <div class="routine-list-item ${checkedClass}">
-                        <div class="routine-icon">${item.icon}</div>
-                        <div class="routine-info">
-                            <div class="routine-name">${item.text}</div>
-                            <div class="routine-time">${item.time}</div>
-                        </div>
-                        <div class="delete-btn" onclick="deleteRoutine(${item.id})">
-                            <svg class="icon-svg icon-sm" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
-                        </div>
-                        <div class="play-btn ${playClass}" onclick="toggleRoutine(${item.id})">${playIcon}</div>
-                    </div>
-                `;
-                
-                if(item.category === 'morning') morningList.insertAdjacentHTML('beforeend', routineHtml);
-                else nightList.insertAdjacentHTML('beforeend', routineHtml);
+                if(homeList) homeList.insertAdjacentHTML('beforeend', homeHtml);
             });
+
+            // 2. Routine Page List (Categorized)
+            categories.forEach(cat => {
+                const catItems = routineData.filter(r => r.category === cat.id);
+                let itemsHtml = '';
+                catItems.forEach(item => {
+                    const checkedClass = item.completed ? 'done' : '';
+                    const playClass = item.completed ? 'completed' : '';
+                    
+                    // [FIXED] Use Polyline for Check Mark
+                    const playIcon = item.completed ? 
+                        '<svg class="icon-svg icon-sm" style="fill:none; stroke:currentColor; stroke-width:3; stroke-linecap:round; stroke-linejoin:round;" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>' : 
+                        '<svg class="icon-svg icon-sm" style="fill:currentColor; stroke:none;" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>';
+
+                    itemsHtml += `
+                        <div class="routine-list-item ${checkedClass}">
+                            <div class="routine-icon">${item.icon}</div>
+                            <div class="routine-info">
+                                <div class="routine-name">${item.text}</div>
+                                <div class="routine-time">${item.time}</div>
+                            </div>
+                            <div class="delete-btn" onclick="deleteRoutine(${item.id})">
+                                <svg class="icon-svg icon-sm" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                            </div>
+                            <div class="play-btn ${playClass}" onclick="toggleRoutine(${item.id})">${playIcon}</div>
+                        </div>
+                    `;
+                });
+
+                const sectionHtml = `
+                    <div class="section-title">
+                        <span id="cat-title-${cat.id}">${cat.title}</span>
+                        <span class="edit-category-btn" onclick="editCategory('${cat.id}')">✏️</span>
+                    </div>
+                    <div id="list-${cat.id}">${itemsHtml}</div>
+                `;
+                if(routineContainer) routineContainer.insertAdjacentHTML('beforeend', sectionHtml);
+            });
+            
+            const select = document.getElementById('categorySelect');
+            if(select) {
+                select.innerHTML = '';
+                categories.forEach(c => {
+                    select.innerHTML += `<option value="${c.id}">${c.title}</option>`;
+                });
+                select.innerHTML += `<option value="new">+ 새 카테고리 추가</option>`;
+            }
+
+            updateNowFeedUI();
+        }
+
+        /* --- ROUTINE TOGGLE LOGIC (Direct Toggle) --- */
+        function toggleRoutine(id) {
+            if(event.target.closest('.delete-btn')) return;
+            const item = routineData.find(r => r.id === id);
+            if(item) {
+                item.completed = !item.completed; // Toggle state directly
+                renderRoutines();
+            }
         }
 
         function addRoutine() {
             const nameInput = document.getElementById('routineNameInput');
             const timeInput = document.getElementById('routineTimeInput');
+            const catSelect = document.getElementById('categorySelect');
+            const newCatInput = document.getElementById('newCategoryInput');
+            
             const name = nameInput.value.trim();
             const timeVal = timeInput.value;
+            let categoryId = catSelect.value;
 
-            if(name) {
+            if (name) {
+                if (categoryId === 'new') {
+                    const newCatName = newCatInput.value.trim() || "새 카테고리";
+                    categoryId = 'cat_' + Date.now();
+                    categories.push({ id: categoryId, title: newCatName });
+                }
+
                 let displayTime = "시간 미정";
                 let category = "morning"; 
 
@@ -752,12 +661,13 @@
                     id: newId,
                     text: name,
                     time: displayTime,
-                    category: category,
+                    category: categoryId,
                     completed: false,
                     icon: "✨"
                 });
 
                 nameInput.value = '';
+                newCatInput.value = '';
                 closeModals();
                 renderRoutines();
             }
@@ -770,24 +680,92 @@
             }
         }
 
-        function toggleRoutine(id) {
-            if(event.target.closest('.delete-btn')) return;
-            const item = routineData.find(r => r.id === id);
-            if(item) {
-                item.completed = !item.completed;
+        function checkNewCategory(select) {
+            const input = document.getElementById('newCategoryInput');
+            input.style.display = select.value === 'new' ? 'block' : 'none';
+            if(select.value === 'new') input.focus();
+        }
+
+        function editCategory(id) {
+            const cat = categories.find(c => c.id === id);
+            const newName = prompt("카테고리 이름을 수정하세요:", cat.title);
+            if(newName) {
+                cat.title = newName;
                 renderRoutines();
             }
         }
 
+        /* --- NOW FEED LOGIC --- */
+        function openConfirmModal() {
+            if(!isNowFeedDone) {
+                document.getElementById('confirmModal').style.display = 'flex';
+            }
+        }
+
+        function processAction() {
+            closeModals();
+            isNowFeedDone = true;
+            
+            // Just log recommended action
+            const now = new Date();
+            const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            nowFeedHistory.unshift({ name: "가벼운 산책", time: timeString });
+
+            updateNowFeedUI();
+
+            const successModal = document.getElementById('successModal');
+            successModal.style.display = 'flex';
+            setTimeout(() => { successModal.style.display = 'none'; }, 2000);
+        }
+
+        function updateNowFeedUI() {
+            const homeCard = document.getElementById('homeNowFeedCard');
+            // Routine card ID is 'routineNowFeedCard' but we don't change its style based on Home state anymore.
+            
+            // Only update Home Card
+            if(homeCard) {
+                if(isNowFeedDone) {
+                    homeCard.classList.add('done-state');
+                    homeCard.querySelector('.now-title').innerHTML = "오늘의 실천을 <span style='color:white'>완료</span>했습니다!";
+                    homeCard.querySelector('.action-btn').innerText = "완료됨 ✔";
+                } else {
+                    homeCard.classList.remove('done-state');
+                    homeCard.querySelector('.now-title').innerHTML = "점심 식사 후,<br><span style='color:var(--primary-lime)'>가벼운 산책</span> 어때요? 🏃‍♂️";
+                    homeCard.querySelector('.action-btn').innerText = "지금 실천하기";
+                }
+            }
+        }
+
+        function openHistoryModal() {
+            const container = document.getElementById('historyList');
+            if (nowFeedHistory.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align:center; padding:30px 0; color:#888;">
+                        <div style="font-size:40px; margin-bottom:10px;">📝</div>
+                        <div>아직 기록이 없습니다.</div>
+                    </div>
+                `;
+            } else {
+                container.innerHTML = nowFeedHistory.map(item => `
+                    <div class="quick-action-item" style="cursor:default;">
+                        <span class="qa-icon">✅</span>
+                        <div style="display:flex; flex-direction:column;">
+                            <span class="qa-text">${item.name}</span>
+                            <span style="font-size:12px; color:#888;">${item.time}</span>
+                        </div>
+                    </div>
+                `).join('');
+            }
+            document.getElementById('historyModal').style.display = 'flex';
+        }
+
+        /* --- UI Helpers --- */
         function switchTab(tabId, navElement) {
             document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
             document.getElementById(tabId).classList.add('active');
             document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
             if(navElement) navElement.classList.add('active');
-
-            if(tabId === 'routine') {
-                initRoutineSelection();
-            }
+            if(tabId === 'routine') initRoutineSelection();
         }
 
         function openSubPage(pageId, title) {
@@ -811,41 +789,9 @@
             document.querySelector('.sidebar-overlay').classList.toggle('active');
         }
 
-        function openNowFeedModal() {
-            const completedItems = routineData.filter(r => r.completed);
-            const container = document.getElementById('nowFeedContent');
-            
-            if (completedItems.length === 0) {
-                container.innerHTML = `
-                    <div style="text-align:center; padding:30px 0; color:#888;">
-                        <div style="font-size:40px; margin-bottom:10px;">😢</div>
-                        <div>오늘은 완료한 루틴이 없습니다 ㅠ</div>
-                    </div>
-                `;
-            } else {
-                container.innerHTML = completedItems.map(item => `
-                    <div class="quick-action-item" style="cursor:default;">
-                        <span class="qa-icon">${item.icon}</span>
-                        <span class="qa-text" style="text-decoration:line-through; color:#aaa;">${item.text}</span>
-                        <span style="margin-left:auto; color:var(--primary-lime);">✔</span>
-                    </div>
-                `).join('');
-            }
-            
-            document.getElementById('nowFeedModal').style.display = 'flex';
-        }
-
-        function openConfirmModal() { document.getElementById('confirmModal').style.display = 'flex'; }
         function openAddRoutineModal() { document.getElementById('addRoutineModal').style.display = 'flex'; }
         function closeModals() { document.querySelectorAll('.modal-overlay').forEach(m => m.style.display = 'none'); }
         
-        function processAction() {
-            closeModals();
-            const successModal = document.getElementById('successModal');
-            successModal.style.display = 'flex';
-            setTimeout(() => { successModal.style.display = 'none'; }, 2000);
-        }
-
         function initRoutineSelection() {
             const dayIndex = new Date().getDay(); 
             let uiIndex = dayIndex - 1;
