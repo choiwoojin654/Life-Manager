@@ -16,7 +16,7 @@
             --danger: #FF5252;
             --modal-bg: rgba(0, 0, 0, 0.6);
             
-            /* Score Page Colors */
+            /* Score Colors */
             --color-sleep: #4e8cff;
             --color-focus: #ff8e3c;
             --color-routine: #9c67ff;
@@ -26,11 +26,11 @@
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif; -webkit-font-smoothing: antialiased; }
         body { background-color: #e5e5e5; display: flex; justify-content: center; align-items: center; min-height: 100vh; color: var(--text-main); }
 
-        /* SVG 아이콘 */
+        /* SVG Icon Utility */
         .icon-svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
         .icon-sm { width: 18px; height: 18px; }
 
-        /* 모바일 프레임 */
+        /* Mobile Frame */
         .mobile-frame {
             width: 375px; height: 812px; background-color: var(--bg-gray); border-radius: 40px;
             box-shadow: 0 30px 60px rgba(0,0,0,0.12); overflow: hidden; position: relative;
@@ -43,14 +43,47 @@
         .tab-content.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Header & Logo */
-        .header-row { display: flex; justify-content: space-between; align-items: center; margin: 10px 0 20px; position: relative; z-index: 2; height: 40px; }
+        /* [LOGIN SCREEN STYLES] - 복구됨 */
+        #login-screen {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: var(--white);
+            z-index: 3000; /* 최상위 레이어 */
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            padding: 40px;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        #login-screen.hidden { opacity: 0; pointer-events: none; transform: scale(1.1); }
+        
+        .login-logo-area { position: relative; margin-bottom: 60px; text-align: center; }
+        .login-logo-text { font-size: 36px; font-weight: 900; letter-spacing: -1px; position: relative; z-index: 2; }
+        
+        .login-btn-group { width: 100%; display: flex; flex-direction: column; gap: 12px; margin-bottom: 30px; }
+        .login-btn {
+            width: 100%; padding: 16px; border-radius: 16px; border: none;
+            font-weight: 600; font-size: 15px; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+            position: relative; transition: transform 0.1s;
+        }
+        .login-btn:active { transform: scale(0.98); }
+        
+        .btn-kakao { background-color: #FEE500; color: #000000; }
+        .btn-google { background-color: #FFFFFF; color: #000000; border: 1px solid #eee; }
+        .btn-apple { background-color: #000000; color: #FFFFFF; }
+        .btn-email { background-color: var(--primary-lime); color: var(--text-main); }
+        
+        .guest-login { font-size: 13px; color: #888; text-decoration: underline; cursor: pointer; margin-bottom: 30px; }
+        
+        .policy-check { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #555; }
+        .policy-checkbox { width: 18px; height: 18px; accent-color: var(--primary-lime); cursor: pointer; }
+
+        /* Header Elements */
+        .header-row { display: flex; justify-content: space-between; align-items: center; margin: 10px 0 20px; position: relative; z-index: 2; }
         .logo-container { position: relative; display: inline-block; }
         h1.page-title { font-size: 26px; font-weight: 800; letter-spacing: -0.5px; position: relative; z-index: 2; margin: 0; }
         .blob-line { position: absolute; bottom: 2px; left: 0; width: 100%; height: 8px; background-color: var(--primary-lime); opacity: 0.5; z-index: -1; transform: skewX(-10deg); }
         .deco-blob { position: absolute; background-color: var(--primary-lime); border-radius: 50%; z-index: -1; }
         .blob-1 { width: 30px; height: 30px; top: -8px; right: -12px; opacity: 0.8; }
-        
         .noti-btn { cursor: pointer; padding: 5px; position: relative; }
         .noti-dot { position: absolute; top: 5px; right: 5px; width: 8px; height: 8px; background: var(--danger); border-radius: 50%; border: 1px solid var(--bg-gray); }
 
@@ -63,18 +96,9 @@
         .noti-item { padding: 15px 0; border-bottom: 1px solid #f0f0f0; display: flex; gap: 12px; align-items: flex-start; }
         .noti-icon-box { width: 36px; height: 36px; background: #F0F2F5; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 
-        /* Modal Popup Styles */
-        .modal-overlay {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--modal-bg); z-index: 200;
-            display: none; justify-content: center; align-items: center;
-            animation: fadeIn 0.2s ease;
-        }
-        .modal-box {
-            background: white; width: 80%; padding: 25px; border-radius: 24px;
-            text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            transform: scale(0.9); animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-        }
+        /* Modal Styles */
+        .modal-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: var(--modal-bg); z-index: 200; display: none; justify-content: center; align-items: center; animation: fadeIn 0.2s ease; }
+        .modal-box { background: white; width: 85%; padding: 25px; border-radius: 24px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.2); transform: scale(0.9); animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
         @keyframes popIn { to { transform: scale(1); } }
         .modal-title { font-size: 18px; font-weight: 700; margin-bottom: 10px; }
         .modal-desc { font-size: 14px; color: #666; margin-bottom: 20px; line-height: 1.4; }
@@ -85,23 +109,28 @@
         .checkmark-circle { width: 50px; height: 50px; border-radius: 50%; background: var(--primary-lime); display: flex; align-items: center; justify-content: center; margin: 0 auto 15px; }
         .checkmark { color: var(--text-main); font-size: 24px; }
 
+        /* Now Feed List Modal */
+        .quick-action-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 10px; max-height: 300px; overflow-y: auto; }
+        .quick-action-item { background: #f9f9f9; padding: 15px; border-radius: 16px; display: flex; align-items: center; gap: 15px; border: 1px solid transparent; transition: all 0.2s; }
+        .qa-icon { font-size: 24px; }
+        .qa-text { font-weight: 600; font-size: 15px; }
+
+        /* FAB */
+        .fab-btn { position: absolute; bottom: 110px; right: 25px; width: 60px; height: 60px; background: var(--primary-lime); color: var(--text-main); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 32px; font-weight: 300; box-shadow: 0 4px 15px rgba(0,0,0,0.2); z-index: 50; cursor: pointer; transition: transform 0.2s; }
+        .fab-btn:active { transform: scale(0.9); }
+
         /* [HOME Styles] */
-        .home-score-card { 
-            background: var(--white); border-radius: 24px; padding: 25px; margin-bottom: 20px; 
-            box-shadow: var(--card-shadow); display: flex; justify-content: space-between; align-items: center; 
-            position: relative; overflow: hidden;
-        }
-        .home-score-text h3 { font-size: 14px; color: var(--text-sub); margin-bottom: 5px; font-weight: 500; }
-        .home-score-text .value { font-size: 42px; font-weight: 800; color: var(--text-main); line-height: 1; }
-        .score-trend { font-size: 12px; color: #4CAF50; margin-top: 5px; display: flex; align-items: center; gap: 4px; font-weight: 600; }
-        .home-chart-container { position: relative; width: 80px; height: 80px; display: flex; justify-content: center; align-items: center; }
-        .home-circular-chart { display: block; margin: 0 auto; max-width: 100%; max-height: 100%; transform: rotate(-90deg); }
-        .home-circle-bg { fill: none; stroke: #eee; stroke-width: 3.8; }
-        .home-circle { 
-            fill: none; stroke-width: 3.8; stroke-linecap: round; stroke: var(--primary-lime); 
-            stroke-dasharray: 226; stroke-dashoffset: 226; animation: homeProgress 1.5s ease-out forwards; 
-        }
-        @keyframes homeProgress { to { stroke-dashoffset: 80; } }
+        .main-score-card-new { background: var(--white); border-radius: 24px; padding: 30px 20px; margin-bottom: 25px; box-shadow: var(--card-shadow); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+        .main-score-title { font-size: 16px; color: var(--text-sub); margin-bottom: 20px; font-weight: 600; }
+        .main-gauge-container { position: relative; width: 160px; height: 160px; display: flex; align-items: center; justify-content: center; margin-bottom: 10px; }
+        .main-gauge-svg { transform: rotate(-90deg); width: 100%; height: 100%; }
+        .main-gauge-bg { fill: none; stroke: #eee; stroke-width: 10; }
+        .main-gauge-fill { fill: none; stroke: var(--primary-lime); stroke-width: 10; stroke-linecap: round; stroke-dasharray: 440; stroke-dashoffset: 440; animation: fillMainGauge 1.5s ease-out forwards; }
+        @keyframes fillMainGauge { to { stroke-dashoffset: 158; } }
+        .main-score-value { position: absolute; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .score-num-big { font-size: 48px; font-weight: 800; color: var(--text-main); line-height: 1; }
+        .score-unit-text { font-size: 16px; font-weight: 600; color: var(--text-sub); margin-top: -5px; }
+        .score-trend-text { font-size: 13px; color: #4CAF50; margin-top: 15px; display: flex; align-items: center; gap: 4px; font-weight: 600; }
 
         .now-card { background-color: var(--text-main); color: var(--white); border-radius: 24px; padding: 25px; margin-bottom: 25px; box-shadow: 0 10px 20px rgba(0,0,0,0.15); }
         .now-badge { background: var(--primary-lime); color: var(--text-main); padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; display: inline-block; margin-bottom: 15px; }
@@ -117,39 +146,6 @@
         .list-item-card.checked-state .check-icon { display: block; }
         .list-item-card.checked-state .content-text { text-decoration: line-through; color: #aaa; }
         .content-text { font-size: 15px; font-weight: 500; transition: color 0.2s; }
-
-        /* [TODO Styles] */
-        .calendar-container { background: white; border-radius: 24px; padding: 20px; box-shadow: var(--card-shadow); margin-bottom: 20px; }
-        .cal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .cal-nav-btn { width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; cursor: pointer; border-radius: 50%; background: #f5f5f5; font-weight: bold; }
-        .cal-title { font-size: 16px; font-weight: 700; }
-        .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; text-align: center; }
-        .cal-day-name { font-size: 12px; color: #999; margin-bottom: 10px; font-weight: 600; }
-        .cal-date { height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-size: 14px; cursor: pointer; position: relative; }
-        .cal-date.today { border: 1px solid var(--primary-lime); color: #555; font-weight: 700; }
-        .cal-date.selected { background: var(--text-main); color: var(--primary-lime); font-weight: 700; }
-        .cal-date.has-todo::after { content: ''; width: 4px; height: 4px; background: var(--danger); border-radius: 50%; position: absolute; bottom: 4px; }
-        .cal-date.empty { cursor: default; }
-
-        .date-display-header { font-size: 14px; color: #666; font-weight: 600; margin-bottom: 10px; }
-        
-        .add-box { background: white; padding: 10px; border-radius: 16px; display: flex; gap: 8px; margin-bottom: 20px; box-shadow: var(--card-shadow); }
-        .add-time-input { width: 35%; border: none; background: #f5f5f5; padding: 12px 10px; border-radius: 10px; outline: none; font-size: 13px; font-family: inherit; text-align: center; }
-        .add-text-input { flex: 1; border: none; background: #f5f5f5; padding: 12px 10px; border-radius: 10px; outline: none; font-size: 14px; }
-        .add-btn { width: 60px; background: var(--primary-lime); border: none; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--text-main); font-size: 28px; font-weight: 300; }
-        
-        .schedule-card { background: white; border-radius: 20px; padding: 18px; margin-bottom: 12px; display: flex; align-items: center; box-shadow: var(--card-shadow); border-left: 5px solid transparent; transition: all 0.2s; cursor: pointer; }
-        .schedule-card.active-border { border-left-color: var(--primary-lime); }
-        .time-col { width: 75px; flex-shrink: 0; display: flex; flex-direction: column; gap: 4px; font-weight: 700; color: #333; font-size: 15px; }
-        .time-ampm { font-size: 11px; color: #999; font-weight: 500; }
-        .task-col { flex: 1; }
-        .task-title { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
-        .task-tag { font-size: 11px; padding: 3px 8px; background: #f0f0f0; border-radius: 6px; color: #666; display: inline-block; }
-        .schedule-check-circle { width: 24px; height: 24px; border: 2px solid #ddd; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
-        .schedule-card.done .schedule-check-circle { background: var(--primary-lime); border-color: var(--primary-lime); }
-        .schedule-card.done .schedule-check-circle svg { opacity: 1; color: white; }
-        .schedule-card.done .task-title { text-decoration: line-through; color: #aaa; }
-        .delete-btn-sm { padding: 5px; color: #ff5252; opacity: 0.5; margin-left: 8px; }
 
         /* [ROUTINE Styles] */
         .routine-week-tracker { background: white; border-radius: 20px; padding: 15px; margin-bottom: 20px; box-shadow: var(--card-shadow); display: flex; justify-content: space-between; }
@@ -168,10 +164,19 @@
         .routine-list-item { background: white; padding: 15px 20px; border-radius: 18px; display: flex; align-items: center; margin-bottom: 12px; box-shadow: var(--card-shadow); }
         .routine-icon { width: 44px; height: 44px; background: #F0F2F5; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 20px; margin-right: 15px; }
         .routine-info { flex: 1; }
-        .routine-name { font-size: 15px; font-weight: 600; margin-bottom: 2px; }
+        .routine-name { font-size: 15px; font-weight: 600; margin-bottom: 2px; transition: color 0.2s; }
         .routine-time { font-size: 12px; color: #888; }
-        .play-btn { width: 34px; height: 34px; border-radius: 50%; background: #f0f0f0; color: #ccc; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s; }
+        .play-btn { width: 34px; height: 34px; border-radius: 50%; background: #f0f0f0; color: #ccc; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s; flex-shrink: 0; margin-left:10px; }
         .play-btn.playing { background: var(--primary-lime); color: var(--text-main); }
+        .routine-list-item.done .routine-name { text-decoration: line-through; color: #aaa; }
+        .delete-btn { color: #ff5252; opacity: 0.4; padding: 8px; cursor: pointer; transition: opacity 0.2s; }
+        .delete-btn:hover { opacity: 1; }
+
+        /* Add Routine Input */
+        .add-box { background: white; padding: 10px; border-radius: 16px; display: flex; gap: 8px; margin-bottom: 20px; box-shadow: var(--card-shadow); }
+        .add-time-input { width: 35%; border: none; background: #f5f5f5; padding: 12px 10px; border-radius: 10px; outline: none; font-size: 13px; font-family: inherit; text-align: center; }
+        .add-text-input { flex: 1; border: none; background: #f5f5f5; padding: 12px 10px; border-radius: 10px; outline: none; font-size: 14px; }
+        .add-btn { width: 60px; background: var(--primary-lime); border: none; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--text-main); font-size: 28px; font-weight: 300; }
 
         /* [SCORE Styles] */
         .score-hero-dark { background: #222; border-radius: 28px; padding: 30px 25px; color: white; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 15px 40px rgba(0,0,0,0.2); position: relative; overflow: hidden; margin-bottom: 25px; }
@@ -209,45 +214,31 @@
         .ai-icon-new { width: 40px; height: 40px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #2E7D32; flex-shrink: 0; }
         .ai-text-new { font-size: 14px; color: #1B5E20; line-height: 1.5; }
 
+        /* AI Report Banner (Moved) */
+        .ai-report-banner { background: linear-gradient(135deg, #222 0%, #333 100%); color: white; padding: 20px; border-radius: 20px; display: flex; align-items: center; gap: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); margin-top: 30px; cursor: pointer; margin-bottom: 20px; }
+        .ai-report-icon { font-size: 24px; }
+        .ai-report-text h4 { font-size: 15px; margin-bottom: 4px; font-weight: 700; color: var(--primary-lime); }
+        .ai-report-text p { font-size: 12px; opacity: 0.8; margin: 0; }
+
         /* [MY PAGE Styles] */
         .profile-header { display: flex; align-items: center; padding: 10px 0 30px; }
-        .profile-img {
-            width: 64px;
-            height: 64px;
-            background-color: #393939; /* 회색 배경 */
-            border-radius: 50%;
-            margin-right: 15px;
-            border: 3px solid var(--white);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            /* 아이콘 중앙 정렬 */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #000000; /* 아이콘 색상 */
-        }
-        
-        /* Main Menu & Sub-Pages Views */
+        .profile-img { width: 64px; height: 64px; background-color: #e0e0e0; border-radius: 50%; margin-right: 15px; border: 3px solid var(--white); box-shadow: 0 4px 10px rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: center; color: #757575; }
         .menu-list { background: var(--white); border-radius: 24px; padding: 10px 20px; box-shadow: var(--card-shadow); margin-bottom: 20px; }
         .menu-item { display: flex; justify-content: space-between; align-items: center; padding: 18px 0; border-bottom: 1px solid #f0f0f0; cursor: pointer; }
         .menu-left { display: flex; align-items: center; gap: 12px; font-size: 15px; font-weight: 500; }
         .menu-icon-box { width: 32px; height: 32px; background: #f9f9f9; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #555; }
 
-        /* Sub-pages container */
+        /* Sub-pages */
         .my-sub-page { display: none; animation: fadeIn 0.2s; }
         .my-sub-page.active { display: block; }
-        .sub-page-title { font-size: 18px; font-weight: 700; margin-bottom: 20px; }
-        
-        /* Back Button in Header */
         .header-back-btn { display: none; cursor: pointer; margin-right: 10px; }
         
-        /* Form Elements for Sub-pages */
         .setting-group { margin-bottom: 25px; }
         .setting-label { font-size: 13px; color: #888; margin-bottom: 8px; display: block; }
         .setting-input { width: 100%; padding: 15px; background: #f5f5f5; border: none; border-radius: 14px; font-size: 15px; outline: none; }
         .setting-btn { width: 100%; padding: 15px; background: var(--text-main); color: white; border: none; border-radius: 14px; font-weight: 700; cursor: pointer; margin-top: 10px; }
         .setting-btn.danger { background: #ffebee; color: var(--danger); }
         
-        /* Toggle Switch */
         .toggle-row { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid #f0f0f0; }
         .toggle-switch { position: relative; width: 44px; height: 24px; }
         .toggle-input { opacity: 0; width: 0; height: 0; }
@@ -258,7 +249,7 @@
 
         /* Navigation */
         nav { height: 90px; background: var(--white); display: flex; justify-content: space-around; padding-top: 12px; border-top: 1px solid #eee; border-radius: 30px 30px 0 0; position: absolute; bottom: 0; width: 100%; z-index: 100; box-shadow: 0 -5px 20px rgba(0,0,0,0.02); }
-        .nav-item { display: flex; flex-direction: column; align-items: center; gap: 5px; cursor: pointer; width: 20%; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; gap: 5px; cursor: pointer; width: 25%; }
         .nav-text { font-size: 10px; color: #ccc; font-weight: 600; transition: color 0.2s; }
         .nav-item.active .icon-svg { stroke: var(--text-main); fill: var(--primary-lime); stroke-width: 1.5; }
         .nav-item.active .nav-text { color: var(--text-main); }
@@ -270,6 +261,39 @@
 
     <div class="mobile-frame">
         
+        <div id="login-screen">
+            <div class="login-logo-area">
+                <div class="logo-container">
+                    <div class="deco-blob blob-1" style="right:-20px;"></div>
+                    <div class="blob-line"></div>
+                    <h1 class="login-logo-text">Moa Now</h1>
+                </div>
+            </div>
+            <div class="login-btn-group">
+                <button class="login-btn btn-kakao" onclick="handleLogin()">
+                    <svg class="icon-svg icon-sm" viewBox="0 0 24 24" style="fill:currentColor; stroke:none;"><path d="M12 3C5.373 3 0 7.03 0 12c0 2.93 1.874 5.53 4.824 7.22-.21.77-.767 2.82-.875 3.23-.138.52.192.51.4.34.265-.22 2.73-1.85 3.823-2.6.91.13 1.85.21 2.828.21 6.627 0 12-4.03 12-9s-5.373-9-12-9z"/></svg>
+                    카카오로 시작하기
+                </button>
+                <button class="login-btn btn-google" onclick="handleLogin()">
+                    <svg class="icon-svg icon-sm" viewBox="0 0 24 24" style="fill:none; stroke:currentColor;"><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" /><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" /><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" /><path d="M23 12c0-.82-.07-1.6-.2-2.36H12v4.73h6.18c-.27 1.44-1.08 2.66-2.3 3.48v2.86h3.73c2.18-2.01 3.43-4.97 3.39-8.71z" /></svg>
+                    Google로 계속하기
+                </button>
+                <button class="login-btn btn-apple" onclick="handleLogin()">
+                    <svg class="icon-svg icon-sm" viewBox="0 0 24 24" style="fill:currentColor; stroke:none;"><path d="M17.05 19.33c-.6.89-1.24 1.75-2.23 1.77-.98.02-1.29-.58-2.42-.58-1.12 0-1.47.57-2.41.6-1.04.03-1.84-1.05-2.5-2.02-1.35-1.95-2.38-5.54-.95-8.02.71-1.23 1.97-2.01 3.33-2.03 1.05-.02 2.04.71 2.69.71.64 0 1.84-.88 3.1-.75 1.05.08 2 .71 2.64 1.64-2.32 1.12-1.94 4.39.46 5.36-.2.52-.46 1.04-.71 1.53zM15.27 6.47c.57-1.25.27-2.99-.97-4.08-1.13-.92-2.9-.73-3.5.61-.54 1.22-.21 3.03.96 4.07 1.18 1.06 2.96.72 3.51-.6z"/></svg>
+                    Apple로 계속하기
+                </button>
+                <button class="login-btn btn-email" onclick="handleLogin()">
+                    <svg class="icon-svg icon-sm" viewBox="0 0 24 24" style="fill:none; stroke:currentColor;"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                    이메일로 계속하기
+                </button>
+            </div>
+            <div class="guest-login" onclick="handleLogin()">게스트로 둘러보기</div>
+            <div class="policy-check">
+                <input type="checkbox" id="policyAgree" class="policy-checkbox">
+                <label for="policyAgree">서비스 이용약관 및 개인정보 처리방침에 동의합니다.</label>
+            </div>
+        </div>
+
         <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
         <div class="sidebar" id="notificationSidebar">
             <div class="sidebar-header">
@@ -281,8 +305,8 @@
                 <div><h4>점수 상승!</h4><p>어제보다 점수가 3점 올랐습니다.</p></div>
             </div>
             <div class="noti-item">
-                <div class="noti-icon-box" style="color:var(--primary-lime); background:#2ecc71;">📈</div>
-                <div><h4>오늘의 라이프 점수!</h4><p>라이프 점수는 64점입니다 !</p></div>
+                <div class="noti-icon-box" style="color:#2196F3;">💧</div>
+                <div><h4>물 마시기</h4><p>수분 섭취 시간입니다.</p></div>
             </div>
         </div>
 
@@ -305,6 +329,31 @@
             </div>
         </div>
 
+        <div id="addRoutineModal" class="modal-overlay">
+            <div class="modal-box">
+                <div class="modal-title">새 루틴 추가</div>
+                <div class="add-box" style="flex-direction:column; gap:10px; box-shadow:none; background:none; padding:0; margin-bottom:20px;">
+                    <input type="time" id="routineTimeInput" class="add-time-input" style="width:100%;">
+                    <input type="text" id="routineNameInput" class="add-text-input" placeholder="루틴 이름 (예: 아침 스트레칭)">
+                </div>
+                <div class="modal-btns">
+                    <button class="modal-btn btn-cancel" onclick="closeModals()">취소</button>
+                    <button class="modal-btn btn-confirm" onclick="addRoutine()">추가</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="nowFeedModal" class="modal-overlay">
+            <div class="modal-box" style="text-align:left;">
+                <div class="modal-title" style="text-align:center; margin-bottom:15px;">오늘의 완료 루틴</div>
+                <div id="nowFeedContent" class="quick-action-list" style="display:flex; flex-direction:column; gap:10px; max-height:300px; overflow-y:auto;">
+                    </div>
+                <div class="modal-btns" style="margin-top:20px;">
+                    <button class="modal-btn btn-cancel" onclick="closeModals()">닫기</button>
+                </div>
+            </div>
+        </div>
+
         <div class="status-bar">
             <span>11:55</span>
             <span>LTE</span>
@@ -323,21 +372,21 @@
                 </div>
             </div>
 
-            <div class="home-score-card" onclick="switchTab('score', document.getElementById('nav-score'))">
-                <div class="home-score-text">
-                    <h3>오늘의 라이프 점수</h3>
-                    <div class="value">64<span style="font-size:18px; font-weight:600;">점</span></div>
-                    <div class="score-trend">
-                        <svg class="icon-svg icon-sm" viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
-                        상승중
+            <div class="main-score-card-new" onclick="switchTab('score', document.getElementById('nav-score'))">
+                <div class="main-score-title">오늘의 라이프 점수</div>
+                <div class="main-gauge-container">
+                    <svg class="main-gauge-svg" viewBox="0 0 160 160">
+                        <circle class="main-gauge-bg" cx="80" cy="80" r="70"></circle>
+                        <circle class="main-gauge-fill" cx="80" cy="80" r="70"></circle>
+                    </svg>
+                    <div class="main-score-value">
+                        <div class="score-num-big">64</div>
+                        <div class="score-unit-text">점</div>
                     </div>
                 </div>
-                <div class="home-chart-container">
-                    <svg viewBox="0 0 80 80" class="home-circular-chart">
-                        <path class="home-circle-bg" d="M40 4 a 36 36 0 0 1 0 72 a 36 36 0 0 1 0 -72" />
-                        <path class="home-circle" d="M40 4 a 36 36 0 0 1 0 72 a 36 36 0 0 1 0 -72" />
-                    </svg>
-                    <svg class="icon-svg chart-icon" viewBox="0 0 24 24" style="position:absolute; color:var(--primary-lime);"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path><path d="M18 9h1.5a2.5 2.5 0 0 1 0-5H18"></path><path d="M4 22h16"></path><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"></path><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"></path><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path></svg>
+                <div class="score-trend-text">
+                    <svg class="icon-svg icon-sm" viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
+                    상승중
                 </div>
             </div>
 
@@ -347,34 +396,8 @@
                 <button class="action-btn" onclick="openConfirmModal()">지금 실천하기</button>
             </div>
 
-            <div class="section-title">오늘의 일정 (Today)</div>
-            <div id="homeScheduleList"></div>
-        </div>
-
-        <div id="todo" class="content-area tab-content">
-            <div class="header-row"><div class="logo-container"><div class="blob-line"></div><h1 class="page-title">Schedule</h1></div></div>
-            
-            <div class="calendar-container">
-                <div class="cal-header">
-                    <div class="cal-nav-btn" onclick="changeMonth(-1)">‹</div>
-                    <div class="cal-title" id="calTitle">2025년 11월</div>
-                    <div class="cal-nav-btn" onclick="changeMonth(1)">›</div>
-                </div>
-                <div class="cal-grid">
-                    <div class="cal-day-name" style="color:#ff5252">일</div><div class="cal-day-name">월</div><div class="cal-day-name">화</div><div class="cal-day-name">수</div><div class="cal-day-name">목</div><div class="cal-day-name">금</div><div class="cal-day-name">토</div>
-                </div>
-                <div class="cal-grid" id="calendarBody"></div>
-            </div>
-
-            <div class="date-display-header" id="selectedDateDisplay">11월 24일 화요일</div>
-            
-            <div class="add-box">
-                <input type="time" id="timeInput" class="add-time-input">
-                <input type="text" id="todoInput" class="add-text-input" placeholder="일정 이름" onkeypress="if(event.key === 'Enter') addTodo()">
-                <button class="add-btn" onclick="addTodo()">+</button>
-            </div>
-            
-            <div id="todoPageList"></div>
+            <div class="section-title">오늘의 루틴</div>
+            <div id="homeRoutineList"></div>
         </div>
 
         <div id="routine" class="content-area tab-content">
@@ -397,22 +420,18 @@
             </div>
 
             <div class="section-title"><span>☀️</span> Morning Routine</div>
-            <div class="routine-list-item">
-                <div class="routine-icon">🛏️</div>
-                <div class="routine-info"><div class="routine-name">이불 정리하기</div><div class="routine-time">기상 직후</div></div>
-                <div class="play-btn" onclick="togglePlay(this)">▶</div>
-            </div>
-             <div class="routine-list-item">
-                <div class="routine-icon">🥗</div>
-                <div class="routine-info"><div class="routine-name">영양제 섭취</div><div class="routine-time">08:00 AM</div></div>
-                <div class="play-btn" onclick="togglePlay(this)">▶</div>
-            </div>
+            <div id="morningList"></div>
+
             <div class="section-title"><span>🌙</span> Night Routine</div>
-            <div class="routine-list-item">
-                <div class="routine-icon">📖</div>
-                <div class="routine-info"><div class="routine-name">독서 10분</div><div class="routine-time">자기 전</div></div>
-                <div class="play-btn" onclick="togglePlay(this)">▶</div>
+            <div id="nightList"></div>
+
+            <div class="now-card" style="margin-top: 30px;" onclick="openNowFeedModal()">
+                <div class="now-badge">NOW FEED</div>
+                <div class="now-title" style="font-size:16px;">오늘의 <span style="color:var(--primary-lime)">실천 기록</span>을 확인해보세요!</div>
+                <div style="font-size:12px; opacity:0.8; margin-top:-10px;">터치하여 확인하기 ›</div>
             </div>
+
+            <div class="fab-btn" onclick="openAddRoutineModal()">+</div>
         </div>
 
         <div id="score" class="content-area tab-content">
@@ -460,8 +479,8 @@
                 <div class="box-header"><div class="box-title">주간 트렌드</div></div>
                 <div class="graph-area">
                     <div class="graph-col"><div class="bar-bg"><div class="bar-fill" style="--h:40%;"></div></div><div class="day-label">월</div></div>
-                    <div class="graph-col"><div class="bar-bg"><div class="bar-fill" style="--h:55%; background:var(--text-main);"></div></div><div class="day-label" style="color:var(--text-main); font-weight:700;">화</div></div>
-                    <div class="graph-col"><div class="bar-bg"><div class="bar-fill" style="--h:64%;"></div></div><div class="day-label">수</div></div>
+                    <div class="graph-col"><div class="bar-bg"><div class="bar-fill" style="--h:55%;"></div></div><div class="day-label">화</div></div>
+                    <div class="graph-col"><div class="bar-bg"><div class="bar-fill" style="--h:64%; background:var(--text-main);"></div></div><div class="day-label" style="color:var(--text-main); font-weight:700;">수</div></div>
                     <div class="graph-col"><div class="bar-bg"><div class="bar-fill" style="--h:50%;"></div></div><div class="day-label">목</div></div>
                     <div class="graph-col"><div class="bar-bg"><div class="bar-fill" style="--h:70%;"></div></div><div class="day-label">금</div></div>
                     <div class="graph-col"><div class="bar-bg"><div class="bar-fill" style="--h:85%;"></div></div><div class="day-label">토</div></div>
@@ -471,6 +490,13 @@
             <div class="ai-box-new">
                 <div class="ai-icon-new"><svg class="icon-svg" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></div>
                 <div class="ai-text-new">"수면 점수가 낮아 <strong>디지털 디톡스</strong> 점수에도 영향을 주고 있어요. 오늘은 SNS 사용을 30분 줄여보세요."</div>
+            </div>
+            <div class="ai-report-banner">
+                <div class="ai-report-icon">📈</div>
+                <div class="ai-report-text">
+                    <h4>AI 주간 리포트가 도착했습니다!</h4>
+                    <p>지난주 루틴 분석 결과를 확인해보세요.</p>
+                </div>
             </div>
         </div>
 
@@ -486,7 +512,9 @@
 
             <div id="my-main-view">
                 <div class="profile-header">
-                    <div class="profile-img"></div>
+                    <div class="profile-img">
+                        <svg class="icon-svg" style="width:32px; height:32px;" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                    </div>
                     <div class="profile-info"><h2>사용자</h2><p style="font-size:13px; color:#777;">moa-user@example.com</p></div>
                 </div>
                 <div class="menu-list">
@@ -539,7 +567,9 @@
             <div id="my-sub-view" style="display:none;">
                 <div id="profile-edit" class="my-sub-page">
                     <div style="text-align:center; margin-bottom:30px;">
-                        <div class="profile-img" style="width:100px; height:100px; margin:0 auto 15px;"></div>
+                        <div class="profile-img" style="width:100px; height:100px; margin:0 auto 15px;">
+                            <svg class="icon-svg" style="width:50px; height:50px;" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                        </div>
                         <div style="color:var(--primary-lime-dark); font-weight:600; font-size:14px;">사진 변경</div>
                     </div>
                     <div class="setting-group">
@@ -562,6 +592,10 @@
                         <div class="toggle-row" style="padding:15px 20px;">
                             <span>루틴 알림</span>
                             <label class="toggle-switch"><input type="checkbox" class="toggle-input" checked><span class="toggle-slider"></span></label>
+                        </div>
+                        <div class="toggle-row" style="padding:15px 20px;">
+                            <span>Micro Reminder</span>
+                            <label class="toggle-switch"><input type="checkbox" class="toggle-input"><span class="toggle-slider"></span></label>
                         </div>
                         <div class="toggle-row" style="padding:15px 20px; border:none;">
                             <span>소리 및 진동</span>
@@ -612,10 +646,6 @@
                 <svg class="icon-svg" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
                 <span class="nav-text">홈</span>
             </div>
-            <div class="nav-item" onclick="switchTab('todo', this)">
-                <svg class="icon-svg" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-                <span class="nav-text">할 일</span>
-            </div>
             <div class="nav-item" onclick="switchTab('routine', this)">
                 <svg class="icon-svg" viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
                 <span class="nav-text">루틴</span>
@@ -632,24 +662,121 @@
     </div>
 
     <script>
-        // Global State
-        let today = new Date();
-        let currentYear = today.getFullYear();
-        let currentMonth = today.getMonth(); // 0-11
-        let selectedDate = new Date(); // Defaults to today
-        
-        // Data Store
-        let todoData = [
-            { id: 1, date: getFormattedDate(new Date()), time: "09:00", apmp: "AM", text: "알고리즘 수업", tag: "학교", checked: true },
-            { id: 2, date: getFormattedDate(new Date()), time: "13:00", apmp: "PM", text: "팀 회의", tag: "동아리", checked: false },
+        function handleLogin() {
+            const checkbox = document.getElementById('policyAgree');
+            if(!checkbox.checked) {
+                alert('서비스 이용약관에 동의해주세요.');
+                return;
+            }
+            const loginScreen = document.getElementById('login-screen');
+            loginScreen.style.opacity = '0';
+            loginScreen.style.pointerEvents = 'none';
+            setTimeout(() => {
+                loginScreen.style.display = 'none';
+            }, 500);
+        }
+
+        let routineData = [
+            { id: 1, text: "이불 정리하기", time: "기상 직후", category: "morning", completed: false, icon: "🛏️" },
+            { id: 2, text: "영양제 섭취", time: "08:00 AM", category: "morning", completed: false, icon: "🥗" },
+            { id: 3, text: "독서 10분", time: "자기 전", category: "night", completed: false, icon: "📖" },
+            { id: 4, text: "내일 계획 세우기", time: "23:00 PM", category: "night", completed: false, icon: "📝" }
         ];
 
-        // --- Helper Functions ---
-        function getFormattedDate(date) {
-            const y = date.getFullYear();
-            const m = String(date.getMonth() + 1).padStart(2, '0');
-            const d = String(date.getDate()).padStart(2, '0');
-            return `${y}-${m}-${d}`;
+        function renderRoutines() {
+            const homeList = document.getElementById('homeRoutineList');
+            const morningList = document.getElementById('morningList');
+            const nightList = document.getElementById('nightList');
+            
+            homeList.innerHTML = '';
+            morningList.innerHTML = '';
+            nightList.innerHTML = '';
+
+            routineData.forEach(item => {
+                const checkedClass = item.completed ? 'done' : '';
+                const playClass = item.completed ? 'playing' : '';
+                const playIcon = item.completed ? 
+                    '<svg class="icon-svg icon-sm" style="fill:currentColor; stroke:none;" viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>' : 
+                    '<svg class="icon-svg icon-sm" style="fill:currentColor; stroke:none;" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>';
+
+                const homeHtml = `
+                    <div class="list-item-card ${item.completed ? 'checked-state' : ''}" onclick="toggleRoutine(${item.id})">
+                        <div class="list-content">
+                            <div class="routine-icon" style="width:36px; height:36px; font-size:18px;">${item.icon}</div>
+                            <div class="content-text">${item.text}</div>
+                        </div>
+                        <div class="play-btn ${playClass}" style="margin-left:auto;">${playIcon}</div>
+                    </div>
+                `;
+                homeList.insertAdjacentHTML('beforeend', homeHtml);
+
+                const routineHtml = `
+                    <div class="routine-list-item ${checkedClass}">
+                        <div class="routine-icon">${item.icon}</div>
+                        <div class="routine-info">
+                            <div class="routine-name">${item.text}</div>
+                            <div class="routine-time">${item.time}</div>
+                        </div>
+                        <div class="delete-btn" onclick="deleteRoutine(${item.id})">
+                            <svg class="icon-svg icon-sm" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                        </div>
+                        <div class="play-btn ${playClass}" onclick="toggleRoutine(${item.id})">${playIcon}</div>
+                    </div>
+                `;
+                
+                if(item.category === 'morning') morningList.insertAdjacentHTML('beforeend', routineHtml);
+                else nightList.insertAdjacentHTML('beforeend', routineHtml);
+            });
+        }
+
+        function addRoutine() {
+            const nameInput = document.getElementById('routineNameInput');
+            const timeInput = document.getElementById('routineTimeInput');
+            const name = nameInput.value.trim();
+            const timeVal = timeInput.value;
+
+            if(name) {
+                let displayTime = "시간 미정";
+                let category = "morning"; 
+
+                if(timeVal) {
+                    const [h, m] = timeVal.split(':');
+                    const hour = parseInt(h);
+                    category = (hour >= 18 || hour < 5) ? "night" : "morning";
+                    displayTime = `${h}:${m}`;
+                }
+
+                const newId = routineData.length > 0 ? Math.max(...routineData.map(r=>r.id)) + 1 : 1;
+                
+                routineData.push({
+                    id: newId,
+                    text: name,
+                    time: displayTime,
+                    category: category,
+                    completed: false,
+                    icon: "✨"
+                });
+
+                nameInput.value = '';
+                closeModals();
+                renderRoutines();
+            }
+        }
+
+        function deleteRoutine(id) {
+            if(confirm('이 루틴을 삭제하시겠습니까?')) {
+                routineData = routineData.filter(r => r.id !== id);
+                renderRoutines();
+            }
+        }
+
+        function toggleRoutine(id) {
+            if(event.target.closest('.delete-btn')) return;
+            const item = routineData.find(r => r.id === id);
+            if(item) {
+                item.completed = !item.completed;
+                renderRoutines();
+            }
         }
 
         function switchTab(tabId, navElement) {
@@ -658,19 +785,16 @@
             document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
             if(navElement) navElement.classList.add('active');
 
-            // [NEW] Routine Tab: Auto-select today
             if(tabId === 'routine') {
                 initRoutineSelection();
             }
         }
 
-        // --- My Page Sub-navigation ---
         function openSubPage(pageId, title) {
             document.getElementById('my-main-view').style.display = 'none';
             document.getElementById('my-sub-view').style.display = 'block';
             document.querySelectorAll('.my-sub-page').forEach(p => p.classList.remove('active'));
             document.getElementById(pageId).classList.add('active');
-            
             document.getElementById('myPageTitle').innerText = title;
             document.getElementById('myBackBtn').style.display = 'block';
         }
@@ -687,178 +811,45 @@
             document.querySelector('.sidebar-overlay').classList.toggle('active');
         }
 
-        function toggleMicroItem(element) { element.classList.toggle('checked-state'); }
-        function togglePlay(btn) { btn.innerText = btn.innerText === '▶' ? '■' : '▶'; }
+        function openNowFeedModal() {
+            const completedItems = routineData.filter(r => r.completed);
+            const container = document.getElementById('nowFeedContent');
+            
+            if (completedItems.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align:center; padding:30px 0; color:#888;">
+                        <div style="font-size:40px; margin-bottom:10px;">😢</div>
+                        <div>오늘은 완료한 루틴이 없습니다 ㅠ</div>
+                    </div>
+                `;
+            } else {
+                container.innerHTML = completedItems.map(item => `
+                    <div class="quick-action-item" style="cursor:default;">
+                        <span class="qa-icon">${item.icon}</span>
+                        <span class="qa-text" style="text-decoration:line-through; color:#aaa;">${item.text}</span>
+                        <span style="margin-left:auto; color:var(--primary-lime);">✔</span>
+                    </div>
+                `).join('');
+            }
+            
+            document.getElementById('nowFeedModal').style.display = 'flex';
+        }
 
-        // --- [NEW] Modal Logic ---
-        function openConfirmModal() {
-            document.getElementById('confirmModal').style.display = 'flex';
-        }
-        function closeModals() {
-            document.querySelectorAll('.modal-overlay').forEach(m => m.style.display = 'none');
-        }
+        function openConfirmModal() { document.getElementById('confirmModal').style.display = 'flex'; }
+        function openAddRoutineModal() { document.getElementById('addRoutineModal').style.display = 'flex'; }
+        function closeModals() { document.querySelectorAll('.modal-overlay').forEach(m => m.style.display = 'none'); }
+        
         function processAction() {
             closeModals();
             const successModal = document.getElementById('successModal');
             successModal.style.display = 'flex';
-            // Auto close after 2 seconds
-            setTimeout(() => {
-                successModal.style.display = 'none';
-            }, 2000);
+            setTimeout(() => { successModal.style.display = 'none'; }, 2000);
         }
 
-        // --- Calendar Logic ---
-        function renderCalendar(year, month) {
-            const body = document.getElementById('calendarBody');
-            const title = document.getElementById('calTitle');
-            body.innerHTML = '';
-            title.innerText = `${year}년 ${month + 1}월`;
-
-            const firstDay = new Date(year, month, 1).getDay();
-            const lastDate = new Date(year, month + 1, 0).getDate();
-
-            for(let i=0; i<firstDay; i++) body.innerHTML += `<div class="cal-date empty"></div>`;
-
-            for(let d=1; d<=lastDate; d++) {
-                const dateStr = `${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-                const isSelected = dateStr === getFormattedDate(selectedDate);
-                const isToday = dateStr === getFormattedDate(new Date());
-                const hasTodo = todoData.some(t => t.date === dateStr);
-                
-                let classes = 'cal-date';
-                if(isSelected) classes += ' selected';
-                if(isToday) classes += ' today';
-                if(hasTodo) classes += ' has-todo';
-
-                const cell = document.createElement('div');
-                cell.className = classes;
-                cell.innerText = d;
-                cell.onclick = () => selectDate(year, month, d);
-                body.appendChild(cell);
-            }
-        }
-
-        function changeMonth(delta) {
-            currentMonth += delta;
-            if(currentMonth > 11) { currentMonth = 0; currentYear++; }
-            if(currentMonth < 0) { currentMonth = 11; currentYear--; }
-            renderCalendar(currentYear, currentMonth);
-        }
-
-        function selectDate(y, m, d) {
-            selectedDate = new Date(y, m, d);
-            renderCalendar(currentYear, currentMonth);
-            updateDateHeader();
-            renderTodos();
-        }
-
-        function updateDateHeader() {
-            const days = ['일', '월', '화', '수', '목', '금', '토'];
-            const str = `${selectedDate.getMonth()+1}월 ${selectedDate.getDate()}일 ${days[selectedDate.getDay()]}요일`;
-            document.getElementById('selectedDateDisplay').innerText = str;
-        }
-
-        // --- To-Do Logic ---
-        function renderTodos() {
-            const homeList = document.getElementById('homeScheduleList');
-            const todoPageList = document.getElementById('todoPageList');
-            homeList.innerHTML = '';
-            todoPageList.innerHTML = '';
-
-            const selectedDateStr = getFormattedDate(selectedDate);
-            const todayStr = getFormattedDate(new Date());
-
-            const pageTasks = todoData.filter(t => t.date === selectedDateStr);
-            pageTasks.forEach(item => {
-                todoPageList.innerHTML += createTodoHTML(item, true);
-            });
-
-            const homeTasks = todoData.filter(t => t.date === todayStr);
-            if(homeTasks.length === 0) homeList.innerHTML = '<div style="color:#aaa; font-size:13px; text-align:center; padding:10px;">오늘의 일정이 없습니다.</div>';
-            homeTasks.forEach(item => {
-                homeList.innerHTML += createTodoHTML(item, false);
-            });
-        }
-
-        function createTodoHTML(item, showDelete) {
-            const checkedClass = item.checked ? 'done' : '';
-            const activeBorder = !item.checked ? 'active-border' : '';
-            const checkIconOpacity = item.checked ? '1' : '0';
-            const deleteHtml = showDelete ? `<div class="delete-btn-sm" onclick="deleteTodo(event, ${item.id})">🗑</div>` : '';
-
-            return `
-                <div class="schedule-card ${checkedClass} ${activeBorder}" onclick="toggleTodo(${item.id})">
-                    <div class="time-col">
-                        ${item.time}
-                        <span class="time-ampm">${item.apmp}</span>
-                    </div>
-                    <div class="task-col">
-                        <div class="task-title">${item.text}</div>
-                        <span class="task-tag">${item.tag}</span>
-                    </div>
-                    <div class="schedule-check-circle">
-                        <svg class="icon-svg icon-sm" viewBox="0 0 24 24" style="opacity:${checkIconOpacity}; color:white;"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                    </div>
-                    ${deleteHtml}
-                </div>
-            `;
-        }
-
-        function addTodo() {
-            const timeInput = document.getElementById('timeInput').value;
-            const textInput = document.getElementById('todoInput').value.trim();
-            
-            if(textInput) {
-                let displayTime = "12:00";
-                let displayAmpm = "PM";
-                
-                if(timeInput) {
-                    const [h, m] = timeInput.split(':');
-                    let hour = parseInt(h);
-                    displayAmpm = hour >= 12 ? 'PM' : 'AM';
-                    hour = hour % 12 || 12;
-                    displayTime = `${String(hour).padStart(2,'0')}:${m}`;
-                }
-
-                todoData.push({
-                    id: Date.now(),
-                    date: getFormattedDate(selectedDate),
-                    time: displayTime, 
-                    apmp: displayAmpm,
-                    text: textInput, 
-                    tag: "일정", 
-                    checked: false
-                });
-                
-                document.getElementById('todoInput').value = '';
-                renderTodos();
-                renderCalendar(currentYear, currentMonth);
-            }
-        }
-
-        function toggleTodo(id) {
-            const item = todoData.find(i => i.id === id);
-            if(item) { item.checked = !item.checked; renderTodos(); }
-        }
-
-        function deleteTodo(e, id) {
-            e.stopPropagation();
-            if(confirm('삭제하시겠습니까?')) {
-                todoData = todoData.filter(i => i.id !== id);
-                renderTodos();
-                renderCalendar(currentYear, currentMonth);
-            }
-        }
-
-        // --- [NEW] Routine Auto-Selection ---
         function initRoutineSelection() {
-            // 0(Sun) -> 6(Sun) in UI
-            // 1(Mon) -> 0(Mon) in UI
-            const dayIndex = new Date().getDay(); // Sun=0, Mon=1...
+            const dayIndex = new Date().getDay(); 
             let uiIndex = dayIndex - 1;
-            if (uiIndex < 0) uiIndex = 6; // Handle Sunday
-
-            // Select the element
+            if (uiIndex < 0) uiIndex = 6; 
             const cols = document.querySelectorAll('.week-day-col');
             cols.forEach(c => c.classList.remove('selected'));
             if(cols[uiIndex]) cols[uiIndex].classList.add('selected');
@@ -869,9 +860,7 @@
             el.classList.add('selected');
         }
 
-        // Init
-        renderCalendar(currentYear, currentMonth);
-        renderTodos();
+        renderRoutines();
     </script>
 </body>
 </html>
