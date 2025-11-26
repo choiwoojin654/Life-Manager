@@ -101,17 +101,69 @@
         .policy-checkbox { width: 18px; height: 18px; accent-color: var(--primary-lime); cursor: pointer; }
 
         /* [HOME Styles] */
-        .main-score-card-new { background: var(--white); border-radius: 24px; padding: 30px 20px; margin-bottom: 25px; box-shadow: var(--card-shadow); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
-        .main-score-title { font-size: 16px; color: var(--text-sub); margin-bottom: 20px; font-weight: 600; }
-        .main-gauge-container { position: relative; width: 160px; height: 160px; display: flex; align-items: center; justify-content: center; margin-bottom: 10px; }
+        /* [UPDATED] Main Score Card - White with Animated Ring */
+        .main-score-card-new { 
+            background: var(--white); 
+            border-radius: 26px; 
+            padding: 30px 20px; 
+            margin-bottom: 25px; 
+            box-shadow: var(--card-shadow); 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            text-align: center; 
+            position: relative;
+            overflow: hidden;
+        }
+
+        .main-score-title { font-size: 16px; color: var(--text-sub); margin-bottom: 20px; font-weight: 600; letter-spacing: 0.5px; z-index: 2; }
+        
+        .main-gauge-container { position: relative; width: 160px; height: 160px; display: flex; align-items: center; justify-content: center; margin-bottom: 12px; z-index: 2; }
+        
+        /* Animated Ring around gauge */
+        .main-gauge-container::before {
+            content: '';
+            position: absolute;
+            top: -8px; left: -8px; right: -8px; bottom: -8px;
+            border-radius: 50%;
+            background: conic-gradient(from 0deg, transparent 0%, var(--primary-lime) 30%, transparent 60%);
+            -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #fff calc(100% - 2px));
+            mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #fff calc(100% - 2px));
+            animation: rotateAround 4s linear infinite;
+            z-index: -1;
+            opacity: 0.7;
+        }
+        @keyframes rotateAround { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
         .main-gauge-svg { transform: rotate(-90deg); width: 100%; height: 100%; }
-        .main-gauge-bg { fill: none; stroke: #eee; stroke-width: 10; }
-        .main-gauge-fill { fill: none; stroke: var(--primary-lime); stroke-width: 10; stroke-linecap: round; stroke-dasharray: 440; stroke-dashoffset: 440; animation: fillMainGauge 1.5s ease-out forwards; }
+        .main-gauge-bg { fill: none; stroke: #f0f0f0; stroke-width: 10; stroke-linecap: round; }
+        .main-gauge-fill { 
+            fill: none; 
+            stroke: var(--primary-lime); 
+            stroke-width: 10; 
+            stroke-linecap: round; 
+            stroke-dasharray: 440; 
+            stroke-dashoffset: 440; 
+            animation: fillMainGauge 1.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; 
+        }
         @keyframes fillMainGauge { to { stroke-dashoffset: 158; } }
+        
         .main-score-value { position: absolute; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        .score-num-big { font-size: 48px; font-weight: 800; color: var(--text-main); line-height: 1; }
+        .score-num-big { font-size: 52px; font-weight: 800; color: var(--text-main); line-height: 1; }
         .score-unit-text { font-size: 16px; font-weight: 600; color: var(--text-sub); margin-top: -5px; }
-        .score-trend-text { font-size: 13px; color: #4CAF50; margin-top: 15px; display: flex; align-items: center; gap: 4px; font-weight: 600; }
+        
+        /* Trend Badge */
+        .score-trend-badge { 
+            background: rgba(208, 255, 70, 0.15); 
+            color: #7da800; /* Slightly darker lime for readability on white */
+            padding: 6px 14px; 
+            border-radius: 20px; 
+            font-size: 13px; 
+            display: flex; align-items: center; gap: 4px; font-weight: 700; 
+            margin-top: 10px;
+            z-index: 2;
+        }
 
         .now-card { background-color: var(--text-main); color: var(--white); border-radius: 24px; padding: 25px; margin-bottom: 25px; box-shadow: 0 10px 20px rgba(0,0,0,0.15); }
         .now-badge { background: var(--primary-lime); color: var(--text-main); padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; display: inline-block; margin-bottom: 15px; }
@@ -224,6 +276,52 @@
         .toggle-slider:before { position: absolute; content: ""; height: 20px; width: 20px; left: 2px; bottom: 2px; background-color: white; transition: .4s; border-radius: 50%; }
         .toggle-input:checked + .toggle-slider { background-color: var(--primary-lime); }
         .toggle-input:checked + .toggle-slider:before { transform: translateX(20px); }
+
+        /* [NEW] Premium Card Styles */
+        .premium-card {
+            background: linear-gradient(120deg, #1a1a1a 0%, #2c2c2c 100%);
+            border-radius: 24px;
+            padding: 20px 25px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid #333;
+        }
+        .premium-title-row {
+            font-size: 18px;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .pro-badge {
+            background: var(--primary-lime);
+            color: black;
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 6px;
+            font-weight: 800;
+        }
+        .premium-sub { font-size: 13px; color: #888; }
+        .premium-card::before {
+            content: '👑';
+            position: absolute;
+            right: -10px;
+            bottom: -15px;
+            font-size: 80px;
+            opacity: 0.1;
+            transform: rotate(-15deg);
+        }
+
+        /* [NEW] Profile Status */
+        .profile-status { font-size: 14px; color: #555; margin-bottom: 4px; }
 
         /* Navigation */
         nav { height: 90px; background: var(--white); display: flex; justify-content: space-around; padding-top: 12px; border-top: 1px solid #eee; border-radius: 30px 30px 0 0; position: absolute; bottom: 0; width: 100%; z-index: 100; box-shadow: 0 -5px 20px rgba(0,0,0,0.02); }
@@ -369,8 +467,8 @@
                         <div class="score-unit-text">점</div>
                     </div>
                 </div>
-                <div class="score-trend-text">
-                    <svg class="icon-svg icon-sm" viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
+                <div class="score-trend-badge">
+                    <svg class="icon-svg icon-sm" style="width:14px; height:14px;" viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
                     상승중
                 </div>
             </div>
@@ -471,8 +569,26 @@
                     <div class="profile-img">
                         <svg class="icon-svg" style="width:32px; height:32px;" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
                     </div>
-                    <div class="profile-info"><h2>사용자</h2><p style="font-size:13px; color:#777;">moa-user@example.com</p></div>
+                    <div class="profile-info">
+                        <h2>사용자</h2>
+                        <div class="profile-status">오늘도 화이팅! 💪</div>
+                        <p style="font-size:13px; color:#777;">moa-user@example.com</p>
+                    </div>
                 </div>
+
+                <div class="premium-card" onclick="alert('프리미엄 결제 페이지로 이동합니다 (준비중)')">
+                    <div class="premium-left">
+                        <div class="premium-title-row">
+                            <span style="color:var(--primary-lime)">Premium</span> Plan
+                            <span class="pro-badge">PRO</span>
+                        </div>
+                        <div class="premium-sub">AI 정밀 분석 & 무제한 루틴</div>
+                    </div>
+                    <div class="premium-arrow">
+                        <svg class="icon-svg" style="stroke:white;" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                    </div>
+                </div>
+
                 <div class="menu-list">
                     <div class="menu-item" onclick="openSubPage('profile-edit', '프로필 수정')"><div class="menu-left"><div class="menu-icon-box"><svg class="icon-svg icon-sm" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg></div>프로필 수정</div></div>
                     <div class="menu-item" onclick="openSubPage('noti-settings', '알림 설정')"><div class="menu-left"><div class="menu-icon-box"><svg class="icon-svg icon-sm" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg></div>알림 설정</div></div>
@@ -508,6 +624,17 @@
     </div>
 
     <script>
+        // 새로운 제안 문구 목록
+        const feedMessages = [
+            "점심 식사 후,<br><span style='color:var(--primary-lime)'>가벼운 산책</span> 어때요? 🏃‍♂️",
+            "수분 보충을 위해,<br><span style='color:var(--primary-lime)'>물 한 잔 마시기</span> 어때요? 💧",
+            "눈의 피로를 풀게,<br><span style='color:var(--primary-lime)'>휴대폰 잠시 내려놓기</span> 어때요? 📵",
+            "에너지 충전을 위해,<br><span style='color:var(--primary-lime)'>낮잠 15분 자기</span> 어때요? 😴"
+        ];
+        
+        // 현재 보여줄 문구 (초기값: 산책)
+        let currentFeedMessage = feedMessages[0];
+
         function handleLogin() {
             const checkbox = document.getElementById('policyAgree');
             if(!checkbox.checked) {
@@ -527,7 +654,6 @@
             { id: 'night', title: '🌙 Night Routine' }
         ];
 
-        // Data Model: Playing state is removed, only 'completed'
         let routineData = [
             { id: 1, text: "이불 정리하기", time: "기상 직후", category: "morning", completed: false, icon: "🛏️" },
             { id: 2, text: "영양제 섭취", time: "08:00 AM", category: "morning", completed: false, icon: "🥗" },
@@ -545,13 +671,11 @@
             if(homeList) homeList.innerHTML = '';
             if(routineContainer) routineContainer.innerHTML = '';
 
-            // 1. Home List (Mirrored)
+            // 1. Home List
             routineData.forEach(item => {
                 const checkedClass = item.completed ? 'done' : '';
                 const playClass = item.completed ? 'completed' : '';
                 
-                // Icon: Play(▶) -> Check(✔)
-                // [FIXED] Use Polyline for Check Mark
                 const playIcon = item.completed ? 
                     '<svg class="icon-svg icon-sm" style="fill:none; stroke:currentColor; stroke-width:3; stroke-linecap:round; stroke-linejoin:round;" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>' : 
                     '<svg class="icon-svg icon-sm" style="fill:currentColor; stroke:none;" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>';
@@ -568,15 +692,13 @@
                 if(homeList) homeList.insertAdjacentHTML('beforeend', homeHtml);
             });
 
-            // 2. Routine Page List (Categorized)
+            // 2. Routine Page List
             categories.forEach(cat => {
                 const catItems = routineData.filter(r => r.category === cat.id);
                 let itemsHtml = '';
                 catItems.forEach(item => {
                     const checkedClass = item.completed ? 'done' : '';
                     const playClass = item.completed ? 'completed' : '';
-                    
-                    // [FIXED] Use Polyline for Check Mark
                     const playIcon = item.completed ? 
                         '<svg class="icon-svg icon-sm" style="fill:none; stroke:currentColor; stroke-width:3; stroke-linecap:round; stroke-linejoin:round;" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>' : 
                         '<svg class="icon-svg icon-sm" style="fill:currentColor; stroke:none;" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>';
@@ -618,12 +740,11 @@
             updateNowFeedUI();
         }
 
-        /* --- ROUTINE TOGGLE LOGIC (Direct Toggle) --- */
         function toggleRoutine(id) {
             if(event.target.closest('.delete-btn')) return;
             const item = routineData.find(r => r.id === id);
             if(item) {
-                item.completed = !item.completed; // Toggle state directly
+                item.completed = !item.completed;
                 renderRoutines();
             }
         }
@@ -695,34 +816,47 @@
             }
         }
 
-        /* --- NOW FEED LOGIC --- */
         function openConfirmModal() {
             if(!isNowFeedDone) {
                 document.getElementById('confirmModal').style.display = 'flex';
             }
         }
 
+        // Action Process Logic with 5-second Reset
         function processAction() {
             closeModals();
             isNowFeedDone = true;
             
-            // Just log recommended action
+            // 기록 저장 (HTML 태그 제거하고 텍스트만 추출)
+            const tempDiv = document.createElement("div");
+            tempDiv.innerHTML = currentFeedMessage;
+            const cleanText = tempDiv.innerText.replace(" 어때요? 🏃‍♂️", "").replace(" 어때요? 💧", "").replace(" 어때요? 📵", "").replace(" 어때요? 😴", "").replace("점심 식사 후,", "").replace("수분 보충을 위해,", "").replace("눈의 피로를 풀게,", "").replace("에너지 충전을 위해,", "").trim();
+
             const now = new Date();
             const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-            nowFeedHistory.unshift({ name: "가벼운 산책", time: timeString });
+            nowFeedHistory.unshift({ name: cleanText, time: timeString });
 
             updateNowFeedUI();
 
             const successModal = document.getElementById('successModal');
             successModal.style.display = 'flex';
             setTimeout(() => { successModal.style.display = 'none'; }, 2000);
+
+            // 5초 뒤에 리셋 및 새로운 메시지로 변경
+            setTimeout(() => {
+                isNowFeedDone = false;
+                
+                // 랜덤 메시지 선택
+                const randomIndex = Math.floor(Math.random() * feedMessages.length);
+                currentFeedMessage = feedMessages[randomIndex];
+                
+                updateNowFeedUI(); // UI 업데이트
+            }, 5000);
         }
 
         function updateNowFeedUI() {
             const homeCard = document.getElementById('homeNowFeedCard');
-            // Routine card ID is 'routineNowFeedCard' but we don't change its style based on Home state anymore.
             
-            // Only update Home Card
             if(homeCard) {
                 if(isNowFeedDone) {
                     homeCard.classList.add('done-state');
@@ -730,7 +864,7 @@
                     homeCard.querySelector('.action-btn').innerText = "완료됨 ✔";
                 } else {
                     homeCard.classList.remove('done-state');
-                    homeCard.querySelector('.now-title').innerHTML = "점심 식사 후,<br><span style='color:var(--primary-lime)'>가벼운 산책</span> 어때요? 🏃‍♂️";
+                    homeCard.querySelector('.now-title').innerHTML = currentFeedMessage;
                     homeCard.querySelector('.action-btn').innerText = "지금 실천하기";
                 }
             }
@@ -759,7 +893,6 @@
             document.getElementById('historyModal').style.display = 'flex';
         }
 
-        /* --- UI Helpers --- */
         function switchTab(tabId, navElement) {
             document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
             document.getElementById(tabId).classList.add('active');
